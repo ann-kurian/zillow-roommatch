@@ -424,10 +424,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
 
       <div style="margin-bottom:20px;">
         <div class="screen-tabs" id="screenTabs">
-          <button class="screen-tab active" onclick="showProtoScreen('home',0)">🏠 Home</button>
-          <button class="screen-tab" onclick="showProtoScreen('matches',1)">💫 Matches</button>
-          <button class="screen-tab" onclick="showProtoScreen('setup',2)">📝 Profile</button>
-          <button class="screen-tab" onclick="showProtoScreen('detail',3)">👤 Detail</button>
+          <button class="screen-tab active" onclick="showProtoScreen('home',0)">Search</button>
+          <button class="screen-tab" onclick="showProtoScreen('matches',1)">RoomMatch</button>
+          <button class="screen-tab" onclick="showProtoScreen('setup',2)">Profile Setup</button>
+          <button class="screen-tab" onclick="showProtoScreen('detail',3)">Match Detail</button>
         </div>
       </div>
 
@@ -441,14 +441,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
             <div class="screen active" id="proto-home">
               <div class="status-bar">
                 <span>9:41</span>
-                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span>🔋</span></div>
+                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span></span></div>
               </div>
               <div class="z-topbar">
                 <div class="z-logo">Z<span>illow</span></div>
                 <div class="z-avatar">AM</div>
               </div>
               <div class="z-search">
-                <span class="z-search-icon">🔍</span>
+                <span class="z-search-icon"></span>
                 <span class="z-search-text">Search by city, neighbourhood, ZIP…</span>
               </div>
               <!-- Listing card 1 -->
@@ -456,11 +456,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
                 <div class="listing-img" style="background:linear-gradient(135deg,#1a3a5c,#2d5a8e);">
                   <div class="listing-img-overlay"></div>
                   <div class="listing-badge">FOR RENT</div>
-                  <div class="listing-heart">♡</div>
+                  <div class="listing-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
                 </div>
                 <div class="listing-body">
                   <div class="listing-price">$2,400<span>/mo</span></div>
-                  <div class="listing-addr">📍 1842 Fillmore St, San Francisco, CA</div>
+                  <div class="listing-addr"> 1842 Fillmore St, San Francisco, CA</div>
                   <div class="listing-tags">
                     <span class="listing-tag">2 bed</span>
                     <span class="listing-tag">1 bath</span>
@@ -473,7 +473,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
               <div class="listing-card" style="cursor:pointer;">
                 <div class="listing-body" style="padding:14px;">
                   <div class="listing-price">$3,100<span>/mo</span></div>
-                  <div class="listing-addr">📍 490 Post St, San Francisco, CA</div>
+                  <div class="listing-addr"> 490 Post St, San Francisco, CA</div>
                   <div class="listing-tags">
                     <span class="listing-tag">3 bed</span>
                     <span class="listing-tag">2 bath</span>
@@ -484,22 +484,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
               <!-- Bottom nav with RoomMatch -->
               <div class="z-bottomnav">
                 <div class="z-nav-item active">
-                  <div class="z-nav-icon">🏠</div>
+                  <div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
                   <span>Search</span>
                 </div>
                 <div class="z-nav-item">
-                  <div class="z-nav-icon">❤️</div>
+                  <div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
                   <span>Saved</span>
                 </div>
                 <div class="z-nav-item" onclick="showProtoScreen('matches',1)" style="cursor:pointer;position:relative;">
                   <div class="z-nav-icon" style="position:relative;display:inline-block;">
-                    🤝
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     <div class="z-nav-dot"></div>
                   </div>
                   <span style="color:#6BA3FF;font-weight:600;">RoomMatch</span>
                 </div>
                 <div class="z-nav-item">
-                  <div class="z-nav-icon">👤</div>
+                  <div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
                   <span>Profile</span>
                 </div>
               </div>
@@ -509,7 +509,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
             <div class="screen" id="proto-matches">
               <div class="status-bar">
                 <span>9:41</span>
-                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span>🔋</span></div>
+                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span></span></div>
               </div>
               <div class="rm-header">
                 <div class="rm-title">RoomMatch</div>
@@ -563,10 +563,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
                 </div>
               </div>
               <div class="z-bottomnav">
-                <div class="z-nav-item" onclick="showProtoScreen('home',0)"><div class="z-nav-icon">🏠</div><span>Search</span></div>
-                <div class="z-nav-item"><div class="z-nav-icon">❤️</div><span>Saved</span></div>
-                <div class="z-nav-item active"><div class="z-nav-icon">🤝</div><span style="color:#6BA3FF;">RoomMatch</span></div>
-                <div class="z-nav-item" onclick="showProtoScreen('setup',2)"><div class="z-nav-icon">👤</div><span>Profile</span></div>
+                <div class="z-nav-item" onclick="showProtoScreen('home',0)"><div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><span>Search</span></div>
+                <div class="z-nav-item"><div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span>Saved</span></div>
+                <div class="z-nav-item active"><div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span style="color:#6BA3FF;">RoomMatch</span></div>
+                <div class="z-nav-item" onclick="showProtoScreen('setup',2)"><div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span>Profile</span></div>
               </div>
             </div>
 
@@ -574,7 +574,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
             <div class="screen" id="proto-setup">
               <div class="status-bar">
                 <span>9:41</span>
-                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span>🔋</span></div>
+                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span></span></div>
               </div>
               <div class="setup-header">
                 <div class="setup-back" onclick="showProtoScreen('home',0)">←</div>
@@ -612,7 +612,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
             <div class="screen" id="proto-detail">
               <div class="status-bar">
                 <span>9:41</span>
-                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span>🔋</span></div>
+                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span></span></div>
               </div>
               <div class="match-header">
                 <div class="match-back" onclick="showProtoScreen('matches',1)">←</div>
@@ -638,21 +638,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
               <div class="match-section">
                 <div class="match-section-title">Lifestyle Preferences</div>
                 <div class="match-pref-tags">
-                  <span class="match-pref-tag">🌅 Early riser</span>
-                  <span class="match-pref-tag">🚭 Non-smoker</span>
-                  <span class="match-pref-tag">🤫 Quiet hours</span>
-                  <span class="match-pref-tag">🐱 No pets</span>
+                  <span class="match-pref-tag"> Early riser</span>
+                  <span class="match-pref-tag"> Non-smoker</span>
+                  <span class="match-pref-tag"> Quiet hours</span>
+                  <span class="match-pref-tag"> No pets</span>
                 </div>
               </div>
               <div class="match-section">
                 <div class="match-section-title">Searching In</div>
                 <div class="match-pref-tags">
-                  <span class="match-pref-tag">📍 Marina, SF</span>
-                  <span class="match-pref-tag">📍 Nob Hill, SF</span>
-                  <span class="match-pref-tag">📍 Mission, SF</span>
+                  <span class="match-pref-tag"> Marina, SF</span>
+                  <span class="match-pref-tag"> Nob Hill, SF</span>
+                  <span class="match-pref-tag"> Mission, SF</span>
                 </div>
               </div>
-              <button class="match-msg-btn">💬 Send Message</button>
+              <button class="match-msg-btn">Send Message</button>
             </div>
 
           </div><!-- /phone-screen -->
@@ -722,12 +722,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
     <p class="body-text">Good PM thinking always ends with measurability. These five metrics would form the core of a RoomMatch launch dashboard — covering activation, engagement, outcome quality, and retention.</p>
     <div class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-icon">📊</div>
+        <div class="metric-icon"></div>
         <div class="metric-label">% of rental searches with RoomMatch enabled</div>
         <div class="metric-desc">Feature adoption rate — tracks how many users in the target cohort activate RoomMatch during their rental search.</div>
       </div>
       <div class="metric-card">
-        <div class="metric-icon">🤝</div>
+        <div class="metric-icon"></div>
         <div class="metric-label">Number of successful roommate matches per month</div>
         <div class="metric-desc">Core outcome metric — a "match" defined as mutual connection request + in-app message exchange.</div>
       </div>
@@ -737,17 +737,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
         <div class="metric-desc">Quality of the matching algorithm — shorter time-to-match indicates better preference alignment and UX efficiency.</div>
       </div>
       <div class="metric-card">
-        <div class="metric-icon">🔄</div>
+        <div class="metric-icon"></div>
         <div class="metric-label">User retention rate among RoomMatch users</div>
         <div class="metric-desc">Retention lift — do users who engage with RoomMatch continue to use Zillow after finding a roommate?</div>
       </div>
       <div class="metric-card">
-        <div class="metric-icon">📈</div>
+        <div class="metric-icon"></div>
         <div class="metric-label">% increase in new users via RoomMatch</div>
         <div class="metric-desc">Growth metric — tracks whether RoomMatch attracts new users to Zillow who were previously using competing platforms for roommate discovery.</div>
       </div>
       <div class="metric-card" style="background:var(--amber-light);border:1px solid var(--amber);">
-        <div class="metric-icon">🎯</div>
+        <div class="metric-icon"></div>
         <div class="metric-label">North Star: Listings saved + RoomMatch match in same session</div>
         <div class="metric-desc">The single metric that captures RoomMatch's core value — a user who finds both a property and a potential roommate without leaving Zillow.</div>
       </div>
@@ -767,8 +767,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
   </div>
 
   <div class="cta-row reveal">
-    <a href="https://www.canva.com/design/DAGvxCT2kg4/view" target="_blank" class="btn-primary">View Full Deck (Canva) →</a>
-    <a href="https://ann-kurian.github.io" class="btn-secondary">← Back to Portfolio</a>
+    <a href="https://ann-kurian.github.io" class="btn-primary">← Back to Portfolio</a>
   </div>
 
 </div>
