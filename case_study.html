@@ -519,23 +519,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 60
             <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
             <div class="p-mtop"><div class="p-mtitle">Your Matches</div><div class="p-mfilter">Marina · Nob Hill</div></div>
             <div class="p-ctx">3 matches near your SF search areas</div>
-            <div class="p-mscroll">
-              <div class="p-mc" onclick="pgo(4)">
-                <div class="p-mct"><div class="p-mava" style="background:linear-gradient(135deg,#667EEA,#764BA2)">AC</div><div><div class="p-mname">Avery Chen</div><div class="p-mrole">Grad Student · USF · Marina</div></div><div><div class="p-mpct">94%</div><div class="p-mpctlbl">match</div></div></div>
-                <div class="p-mdiv"></div>
-                <div class="p-mbot"><div class="p-mtags"><span class="p-mtag">Early riser</span><span class="p-mtag">$1,400/mo</span><span class="p-mtag">BART</span></div><div style="display:flex;gap:4px"><button class="p-pass" onclick="event.stopPropagation()">Pass</button><button class="p-conn" onclick="event.stopPropagation();pgo(4)">Connect</button></div></div>
-              </div>
-              <div class="p-mc">
-                <div class="p-mct"><div class="p-mava" style="background:linear-gradient(135deg,#11998e,#38ef7d)">JL</div><div><div class="p-mname">Jordan Lee</div><div class="p-mrole">Engineer · Salesforce · SOMA</div></div><div><div class="p-mpct">87%</div><div class="p-mpctlbl">match</div></div></div>
-                <div class="p-mdiv"></div>
-                <div class="p-mbot"><div class="p-mtags"><span class="p-mtag">WFH</span><span class="p-mtag">$1,500/mo</span><span class="p-mtag">Caltrain</span></div><div style="display:flex;gap:4px"><button class="p-pass">Pass</button><button class="p-conn">Connect</button></div></div>
-              </div>
-              <div class="p-mc">
-                <div class="p-mct"><div class="p-mava" style="background:linear-gradient(135deg,#f7971e,#ffd200)">MK</div><div><div class="p-mname">Maya Krishnan</div><div class="p-mrole">Designer · Airbnb · Mission</div></div><div><div class="p-mpct">82%</div><div class="p-mpctlbl">match</div></div></div>
-                <div class="p-mdiv"></div>
-                <div class="p-mbot"><div class="p-mtags"><span class="p-mtag">Non-smoker</span><span class="p-mtag">$1,300/mo</span><span class="p-mtag">BART 0.2mi</span></div><div style="display:flex;gap:4px"><button class="p-pass">Pass</button><button class="p-conn">Connect</button></div></div>
-              </div>
-            </div>
+            <div class="p-mscroll" id="matchScroll"></div>
             <div class="pnav" style="position:absolute;bottom:0;left:0;right:0">
               <div class="pni" onclick="pgo(0)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="pnl">Search</span></div>
               <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="pnl">Saved</span></div>
@@ -697,12 +681,174 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.07 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-/* ── PROTOTYPE ─────────────────────────────── */
+/* ══════════════════════════════════════════════
+   ROOMMATCH SCORING ENGINE
+   All match percentages, tags, and card order
+   are calculated live from the user's profile.
+   ══════════════════════════════════════════════ */
+
+// ── CANDIDATE DATABASE ────────────────────────
+// Each candidate has: traits the algorithm scores against
+const CANDIDATES = [
+  {
+    id: 'avery',
+    name: 'Avery Chen',
+    initials: 'AC',
+    role: 'Grad Student · USF · Marina',
+    gradient: 'linear-gradient(135deg,#667EEA,#764BA2)',
+    budget: 1400,
+    neighbourhoods: ['Marina', 'Nob Hill'],
+    commute: ['Near BART'],
+    lifestyle: ['Early riser', 'Non-smoker', 'Quiet hours'],
+    connectIdx: 4   // goes to detail screen
+  },
+  {
+    id: 'jordan',
+    name: 'Jordan Lee',
+    initials: 'JL',
+    role: 'Engineer · Salesforce · SOMA',
+    gradient: 'linear-gradient(135deg,#11998e,#38ef7d)',
+    budget: 1500,
+    neighbourhoods: ['SOMA', 'Mission'],
+    commute: ['Near Caltrain', 'WFH'],
+    lifestyle: ['Social', 'Night owl'],
+    connectIdx: null
+  },
+  {
+    id: 'maya',
+    name: 'Maya Krishnan',
+    initials: 'MK',
+    role: 'Designer · Airbnb · Mission',
+    gradient: 'linear-gradient(135deg,#f7971e,#ffd200)',
+    budget: 1300,
+    neighbourhoods: ['Mission', 'Hayes Valley'],
+    commute: ['Near BART', 'Bike-friendly'],
+    lifestyle: ['Non-smoker', 'Quiet hours', 'Early riser'],
+    connectIdx: null
+  }
+];
+
+// ── SCORING ALGORITHM ─────────────────────────
+// Weights: budget 35% | neighbourhood 30% | commute 20% | lifestyle 15%
+function scoreCandidate(candidate, userBudget, userNeighbourhoods, userCommute, userLifestyle) {
+  // Budget score: 35 pts — full if within 20%, sliding scale beyond
+  const budgetDiff = Math.abs(candidate.budget - userBudget) / userBudget;
+  const budgetScore = budgetDiff <= 0.05 ? 35
+    : budgetDiff <= 0.10 ? 32
+    : budgetDiff <= 0.20 ? 26
+    : budgetDiff <= 0.35 ? 18
+    : 8;
+
+  // Neighbourhood score: 30 pts — full if any overlap
+  const neighOverlap = candidate.neighbourhoods.filter(n => userNeighbourhoods.includes(n)).length;
+  const neighScore = neighOverlap >= 2 ? 30 : neighOverlap === 1 ? 22 : 5;
+
+  // Commute score: 20 pts — proportional overlap
+  const commuteOverlap = candidate.commute.filter(c => userCommute.includes(c)).length;
+  const commuteMax = Math.max(candidate.commute.length, userCommute.length, 1);
+  const commuteScore = Math.round((commuteOverlap / commuteMax) * 20);
+
+  // Lifestyle score: 15 pts — proportional overlap
+  const lifeOverlap = candidate.lifestyle.filter(l => userLifestyle.includes(l)).length;
+  const lifeMax = Math.max(candidate.lifestyle.length, userLifestyle.length, 1);
+  const lifeScore = Math.round((lifeOverlap / lifeMax) * 15);
+
+  const total = budgetScore + neighScore + commuteScore + lifeScore;
+
+  // Overlapping traits to show as tags on the card
+  const sharedTags = [];
+  // Budget tag always shown
+  sharedTags.push('$' + candidate.budget.toLocaleString() + '/mo');
+  // Commute overlaps
+  candidate.commute.filter(c => userCommute.includes(c)).forEach(c => sharedTags.push(c));
+  // Lifestyle overlaps (max 2 shown on card)
+  candidate.lifestyle.filter(l => userLifestyle.includes(l)).slice(0, 2).forEach(l => sharedTags.push(l));
+  // If no commute/lifestyle overlap, show first candidate trait
+  if (sharedTags.length === 1 && candidate.commute.length) sharedTags.push(candidate.commute[0]);
+
+  return { score: total, sharedTags: sharedTags.slice(0, 3) };
+}
+
+// ── READ USER PROFILE FROM DOM ────────────────
+function getUserProfile() {
+  const budget = parseFloat(document.getElementById('budgetInp')?.value) || 1400;
+  const onChips = (selector) =>
+    [...document.querySelectorAll(selector + ' .p-chip.on')].map(c => c.textContent.trim());
+  // Chips live in screen ps2
+  const allChips = document.querySelectorAll('#ps2 .p-chip.on');
+  const neighbourhoods = [], commute = [], lifestyle = [];
+  const NEIGH  = ['Marina','Nob Hill','Mission','SOMA','Hayes Valley'];
+  const COMMUT = ['Near BART','Near Caltrain','WFH','Bike-friendly'];
+  allChips.forEach(chip => {
+    const t = chip.textContent.trim();
+    if (NEIGH.includes(t))   neighbourhoods.push(t);
+    else if (COMMUT.includes(t)) commute.push(t);
+    else                     lifestyle.push(t);
+  });
+  return { budget, neighbourhoods, commute, lifestyle };
+}
+
+// ── RENDER MATCH CARDS ────────────────────────
+function renderMatches() {
+  const { budget, neighbourhoods, commute, lifestyle } = getUserProfile();
+  const container = document.getElementById('matchScroll');
+  if (!container) return;
+
+  // Score all candidates
+  const scored = CANDIDATES.map(c => {
+    const { score, sharedTags } = scoreCandidate(c, budget, neighbourhoods, commute, lifestyle);
+    return { ...c, score, sharedTags };
+  }).sort((a, b) => b.score - a.score);   // rank by score descending
+
+  // Update context pill
+  const matchedNeigh = [...new Set(scored.flatMap(c => c.neighbourhoods.filter(n => neighbourhoods.includes(n))))];
+  const ctxEl = document.querySelector('.p-ctx');
+  if (ctxEl) {
+    const neighStr = matchedNeigh.slice(0,2).join(' · ') || 'SF';
+    ctxEl.textContent = scored.length + ' matches near ' + neighStr;
+  }
+
+  // Build cards HTML
+  container.innerHTML = scored.map((c, rank) => {
+    const pct = c.score;
+    const pctColor = pct >= 85 ? '#00C48C' : pct >= 70 ? '#F5A623' : '#8892A4';
+    const isTopMatch = rank === 0;
+    const tagsHtml = c.sharedTags.map(t => `<span class="p-mtag">${t}</span>`).join('');
+    const connectBtn = isTopMatch
+      ? `<button class="p-conn" onclick="event.stopPropagation();pgo(4)">Connect</button>`
+      : `<button class="p-conn" onclick="event.stopPropagation()">Connect</button>`;
+
+    return `
+      <div class="p-mc" onclick="${isTopMatch ? 'pgo(4)' : ''}">
+        <div class="p-mct">
+          <div class="p-mava" style="background:${c.gradient}">${c.initials}</div>
+          <div>
+            <div class="p-mname">${c.name}</div>
+            <div class="p-mrole">${c.role}</div>
+          </div>
+          <div>
+            <div class="p-mpct" style="color:${pctColor}">${pct}%</div>
+            <div class="p-mpctlbl">match</div>
+          </div>
+        </div>
+        <div class="p-mdiv"></div>
+        <div class="p-mbot">
+          <div class="p-mtags">${tagsHtml}</div>
+          <div style="display:flex;gap:4px">
+            <button class="p-pass" onclick="event.stopPropagation()">Pass</button>
+            ${connectBtn}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ── ANNOTATIONS ─────────────────────────────── */
 const ANNS = [
   { title: 'Contextual Discovery', desc: 'RoomMatch appears as a banner inside Zillow\'s existing SF search — no new app needed. The nav dot signals activity without disrupting the existing user flow.' },
   { title: 'SF-first Value Framing', desc: 'The enable screen leads with San Francisco context. The split rent calculator is highlighted upfront because in SF\'s market, cost-splitting is the primary driver.' },
-  { title: 'SF Neighbourhood + Commute Tags', desc: 'Real SF areas (Marina, Nob Hill, Mission, SOMA) and commute tags (Near BART, Near Caltrain). All chips are interactive — tap to toggle on or off.' },
-  { title: 'Budget + Commute on Match Cards', desc: 'Each card shows monthly budget share and a commute tag prominently. In SF these two factors dominate the decision before lifestyle even comes into it.' },
+  { title: 'SF Neighbourhood + Commute Tags', desc: 'Real SF areas (Marina, Nob Hill, Mission, SOMA) and commute tags (Near BART, Near Caltrain). All chips are interactive — toggle them and watch match scores update on Screen 4.' },
+  { title: 'Dynamic Match Scoring', desc: 'Scores are calculated live from your profile. Budget (35%), neighbourhood (30%), commute (20%) and lifestyle (15%) are weighted and compared against each candidate. Tags show only shared traits.' },
   { title: 'Live Split Rent Calculator', desc: 'Edit total rent and utilities — the share recalculates instantly. Toggle 50/50, 60/40 and 70/30. The note flags when a match\'s budget is close but misaligned.' },
   { title: 'Working Messenger', desc: 'Type and send real messages. The chat includes a shareable listing card and a split rent summary — so both users reference the same numbers when coordinating.' }
 ];
@@ -711,6 +857,8 @@ let pCur = 0, splitPct = 50;
 
 function pgo(idx) {
   if (idx === pCur) return;
+  // Re-render matches every time Screen 3 is visited, picking up latest profile chips
+  if (idx === 3) renderMatches();
   document.getElementById('ps' + pCur).classList.remove('on');
   document.getElementById('ps' + idx).classList.add('on');
 
@@ -719,9 +867,8 @@ function pgo(idx) {
     if (i < idx) s.classList.add('done');
     if (i === idx) s.classList.add('on');
     const dot = s.querySelector('.proto-step-dot');
-    dot.textContent = i < idx
-      ? '' : i + 1;
     if (i < idx) dot.innerHTML = '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    else dot.textContent = i + 1;
   });
 
   const a = ANNS[idx];
@@ -736,7 +883,7 @@ function pgo(idx) {
   }, 80);
 }
 
-/* ── CALCULATOR ────────────────────────────── */
+/* ── CALCULATOR ─────────────────────────────── */
 function setSplit(pct) {
   splitPct = pct;
   ['50','60','70'].forEach(p => document.getElementById('sb'+p).classList.remove('on'));
@@ -756,9 +903,9 @@ function calcUpdate() {
   const note = document.getElementById('calcNote');
   if (note) {
     const diff = share - bgt;
-    if (diff <= 0)       { note.textContent = 'Budget covers this split comfortably.'; note.className = 'p-calcnote'; }
-    else if (diff <= 150){ note.textContent = 'Budget is $' + diff + ' below this split. Within negotiation range.'; note.className = 'p-calcnote warn'; }
-    else                 { note.textContent = 'Budget gap is $' + diff + '. Try a different split or listing.'; note.className = 'p-calcnote warn'; }
+    if (diff <= 0)        { note.textContent = 'Budget covers this split comfortably.'; note.className = 'p-calcnote'; }
+    else if (diff <= 150) { note.textContent = 'Budget is $' + diff + ' below this split. Within negotiation range.'; note.className = 'p-calcnote warn'; }
+    else                  { note.textContent = 'Budget gap is $' + diff + '. Try a different split or listing.'; note.className = 'p-calcnote warn'; }
   }
 
   if (document.getElementById('cbTotal')) document.getElementById('cbTotal').textContent = '$' + rent.toLocaleString() + '/mo';
@@ -795,6 +942,8 @@ function sendMsg() {
   }, 1100);
 }
 
+// Initialise
+renderMatches();
 calcUpdate();
 </script>
 </body>
