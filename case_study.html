@@ -528,40 +528,11 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 60
             </div>
           </div>
 
-          <!-- S4: MATCH DETAIL + CALCULATOR -->
+          <!-- S4: MATCH DETAIL + CALCULATOR — rendered dynamically -->
           <div class="sc" id="ps4">
             <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
             <div class="ptop"><div class="pbk" onclick="pgo(3)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><span style="font-size:13px;font-weight:700;color:#E8EDF5">Roommate Profile</span><div style="width:26px"></div></div>
-            <div class="p-dscroll">
-              <div class="p-daw"><div class="p-da" style="background:linear-gradient(135deg,#667EEA,#764BA2)">AC</div></div>
-              <div class="p-dn">Avery Chen</div>
-              <div class="p-dr">Graduate Student · USF — Incoming Fall 2025</div>
-              <div class="p-dscores">
-                <div class="p-dscore"><div class="p-dsv" style="color:#00C48C">94%</div><div class="p-dsl">Match</div></div>
-                <div class="p-dscore"><div class="p-dsv" style="color:#7AB0FF" id="avBudget">$1,400</div><div class="p-dsl">Budget/mo</div></div>
-                <div class="p-dscore"><div class="p-dsv" style="color:#F5A623">Aug</div><div class="p-dsl">Move-in</div></div>
-              </div>
-              <div class="p-dsec"><div class="p-dsecl">Lifestyle</div><div class="p-dtags"><span class="p-dtag">Early riser</span><span class="p-dtag">Non-smoker</span><span class="p-dtag">Near BART</span><span class="p-dtag">No pets</span></div></div>
-              <div class="p-dsec"><div class="p-dsecl">About</div><div class="p-dabout">Moving from Seattle for USF grad programme. Looking for a quiet, reliable housemate in Marina or Nob Hill.</div></div>
-              <div class="p-dsec"><div class="p-dsecl">Also Saved</div></div>
-              <div class="p-dlisting"><div class="p-dlicon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="p-dladdr">1842 Fillmore St, Marina SF</div><div class="p-dlsub">$2,800/mo · 2 bed · 1 bath</div></div></div>
-              <div class="p-calc">
-                <div class="p-calch"><div class="p-calctitle">Split Rent Calculator</div><div class="p-calcbadge">Live</div></div>
-                <div class="p-calcrow">
-                  <div class="p-calcwrap"><div class="p-calclbl">Total Rent</div><input class="p-calcinput" type="number" id="rentInp" value="2800" oninput="calcUpdate()"></div>
-                  <div class="p-calcwrap"><div class="p-calclbl">Utilities</div><input class="p-calcinput" type="number" id="utilInp" value="120" oninput="calcUpdate()"></div>
-                </div>
-                <div class="p-splitbtns">
-                  <button class="p-sbtn on" id="sb50" onclick="setSplit(50)">50/50</button>
-                  <button class="p-sbtn" id="sb60" onclick="setSplit(60)">60/40</button>
-                  <button class="p-sbtn" id="sb70" onclick="setSplit(70)">70/30</button>
-                </div>
-                <div class="p-calcdiv"></div>
-                <div class="p-calcres"><div class="p-calcres-lbl">Your share</div><div class="p-calcres-val" id="shareDisp">$1,460<span>/mo</span></div></div>
-                <div class="p-calcnote" id="calcNote">Avery's budget is $1,400/mo — $60 below. Within negotiation range.</div>
-              </div>
-              <div class="p-dctas"><button class="p-dmsg" onclick="pgo(5)">Send Message</button><button class="p-dsave">Save</button></div>
-            </div>
+            <div class="p-dscroll" id="detailScroll"></div>
             <div class="pnav" style="position:absolute;bottom:0;left:0;right:0">
               <div class="pni" onclick="pgo(0)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="pnl">Search</span></div>
               <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="pnl">Saved</span></div>
@@ -570,25 +541,15 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 60
             </div>
           </div>
 
-          <!-- S5: MESSAGING -->
+          <!-- S5: MESSAGING — rendered dynamically -->
           <div class="sc" id="ps5">
             <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
-            <div class="p-msgtb"><div class="pbk" onclick="pgo(4)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="p-msgav">AC</div><div><div class="p-msgn">Avery Chen</div><div class="p-msgs">Active now</div></div></div>
-            <div class="p-msga" id="msgArea">
-              <div class="p-msgtm">Today 9:30 AM</div>
-              <div class="p-bu t">Hi! I saw we matched. Have you seen anything near Fillmore?</div>
-              <div class="p-bu m">Yes — I saved this 2-bed on Fillmore. Right in the Marina, BART is close.</div>
-              <div class="p-msgls"><div class="p-mslth"></div><div><div class="p-mslla">1842 Fillmore St, Marina SF</div><div class="p-msllp">$2,800/mo · 2 bed · 1 bath</div></div></div>
-              <div class="p-bu t">That looks great. What does the split come to?</div>
-              <div class="p-cbubble">
-                <div class="p-cbt">Split Rent — 1842 Fillmore</div>
-                <div class="p-cbr"><span class="p-cbl">Total rent</span><span class="p-cbv" id="cbTotal">$2,800/mo</span></div>
-                <div class="p-cbr"><span class="p-cbl">Utilities</span><span class="p-cbv" id="cbUtils">$120/mo</span></div>
-                <div class="p-cbtot"><span class="p-cbtl">Your share (50/50)</span><span class="p-cbtv" id="cbShare">$1,460/mo</span></div>
-              </div>
-              <div class="p-bu m">$1,460 each — let us request a joint viewing. I will message the agent now.</div>
-              <div class="p-msgtmr">Delivered</div>
+            <div class="p-msgtb" id="msgTopBar">
+              <div class="pbk" onclick="pgo(4)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+              <div class="p-msgav" id="msgAva">AC</div>
+              <div><div class="p-msgn" id="msgName">Loading...</div><div class="p-msgs">Active now</div></div>
             </div>
+            <div class="p-msga" id="msgArea"></div>
             <div class="p-msgibar">
               <input class="p-msginput" id="msgInp" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()">
               <button class="p-msgsend" onclick="sendMsg()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
@@ -687,46 +648,67 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
    are calculated live from the user's profile.
    ══════════════════════════════════════════════ */
 
-// ── CANDIDATE DATABASE ────────────────────────
-// Each candidate has: traits the algorithm scores against
+// ── CANDIDATE DATABASE ─────────────────────────────────────────────
+// Full profile for each candidate — used by scoring, detail, and messaging
 const CANDIDATES = [
   {
     id: 'avery',
     name: 'Avery Chen',
     initials: 'AC',
     role: 'Grad Student · USF · Marina',
+    fullRole: 'Graduate Student · USF — Incoming Fall 2025',
     gradient: 'linear-gradient(135deg,#667EEA,#764BA2)',
     budget: 1400,
+    moveIn: 'Aug 2025',
     neighbourhoods: ['Marina', 'Nob Hill'],
     commute: ['Near BART'],
     lifestyle: ['Early riser', 'Non-smoker', 'Quiet hours'],
-    connectIdx: 4   // goes to detail screen
+    allTags: ['Early riser', 'Non-smoker', 'Near BART', 'No pets', 'Quiet hours'],
+    about: 'Moving from Seattle for my grad programme at USF. Looking for a quiet, reliable housemate in Marina or Nob Hill. Happy to split groceries and chores equally.',
+    savedListing: { addr: '1842 Fillmore St, Marina SF', sub: '$2,800/mo · 2 bed · 1 bath', rent: 2800 },
+    openingMsg: 'Hi! I saw we matched. Have you seen anything near Fillmore yet?',
+    msgContext: 'Marina / Nob Hill',
   },
   {
     id: 'jordan',
     name: 'Jordan Lee',
     initials: 'JL',
     role: 'Engineer · Salesforce · SOMA',
+    fullRole: 'Software Engineer · Salesforce — New Hire, SOMA',
     gradient: 'linear-gradient(135deg,#11998e,#38ef7d)',
     budget: 1500,
+    moveIn: 'Sep 2025',
     neighbourhoods: ['SOMA', 'Mission'],
     commute: ['Near Caltrain', 'WFH'],
     lifestyle: ['Social', 'Night owl'],
-    connectIdx: null
+    allTags: ['Near Caltrain', 'WFH friendly', 'Social', 'Night owl', 'Pet friendly'],
+    about: 'Starting at Salesforce in September and looking for somewhere close to the Caltrain depot. Sociable but respectful of space. Fine with pets. Happy to split costs fairly.',
+    savedListing: { addr: '285 9th St, SOMA SF', sub: '$4,200/mo · 2 bed · 1 bath', rent: 4200 },
+    openingMsg: 'Hey! Great to match. I am focused on SOMA and Mission — close to the Caltrain depot for work.',
+    msgContext: 'SOMA / Mission',
   },
   {
     id: 'maya',
     name: 'Maya Krishnan',
     initials: 'MK',
     role: 'Designer · Airbnb · Mission',
+    fullRole: 'UX Designer · Airbnb — Remote-first, Mission',
     gradient: 'linear-gradient(135deg,#f7971e,#ffd200)',
     budget: 1300,
+    moveIn: 'Aug 2025',
     neighbourhoods: ['Mission', 'Hayes Valley'],
     commute: ['Near BART', 'Bike-friendly'],
     lifestyle: ['Non-smoker', 'Quiet hours', 'Early riser'],
-    connectIdx: null
+    allTags: ['Non-smoker', 'Quiet hours', 'Near BART', 'Bike-friendly', 'Early riser'],
+    about: 'Remote designer at Airbnb, mostly working from home. Love the Mission and Hayes Valley vibe. Early riser, keep a clean home, and prefer a calm living environment.',
+    savedListing: { addr: '3242 22nd St, Mission SF', sub: '$3,200/mo · 2 bed · 1 bath', rent: 3200 },
+    openingMsg: 'Hi there! I am searching in the Mission and Hayes Valley. Would love to find somewhere quiet with good BART access.',
+    msgContext: 'Mission / Hayes Valley',
   }
 ];
+
+// Track which candidate is currently selected for detail/messaging
+let selectedCandidateId = 'avery';
 
 // ── SCORING ALGORITHM ─────────────────────────
 // Weights: budget 35% | neighbourhood 30% | commute 20% | lifestyle 15%
@@ -812,14 +794,10 @@ function renderMatches() {
   container.innerHTML = scored.map((c, rank) => {
     const pct = c.score;
     const pctColor = pct >= 85 ? '#00C48C' : pct >= 70 ? '#F5A623' : '#8892A4';
-    const isTopMatch = rank === 0;
     const tagsHtml = c.sharedTags.map(t => `<span class="p-mtag">${t}</span>`).join('');
-    const connectBtn = isTopMatch
-      ? `<button class="p-conn" onclick="event.stopPropagation();pgo(4)">Connect</button>`
-      : `<button class="p-conn" onclick="event.stopPropagation()">Connect</button>`;
 
     return `
-      <div class="p-mc" onclick="${isTopMatch ? 'pgo(4)' : ''}">
+      <div class="p-mc" onclick="selectCandidate('${c.id}')">
         <div class="p-mct">
           <div class="p-mava" style="background:${c.gradient}">${c.initials}</div>
           <div>
@@ -836,11 +814,106 @@ function renderMatches() {
           <div class="p-mtags">${tagsHtml}</div>
           <div style="display:flex;gap:4px">
             <button class="p-pass" onclick="event.stopPropagation()">Pass</button>
-            ${connectBtn}
+            <button class="p-conn" onclick="event.stopPropagation();selectCandidate('${c.id}')">Connect</button>
           </div>
         </div>
       </div>`;
   }).join('');
+}
+
+// ── SELECT CANDIDATE + RENDER DETAIL/MESSAGING ─
+function selectCandidate(id) {
+  selectedCandidateId = id;
+  renderDetail();
+  pgo(4);
+}
+
+function renderDetail() {
+  const c = CANDIDATES.find(x => x.id === selectedCandidateId);
+  if (!c) return;
+
+  const { budget: userBudget, neighbourhoods, commute, lifestyle } = getUserProfile();
+  const { score } = scoreCandidate(c, userBudget, neighbourhoods, commute, lifestyle);
+  const pctColor = score >= 85 ? '#00C48C' : score >= 70 ? '#F5A623' : '#8892A4';
+  const rent = c.savedListing.rent;
+  const utils = 120;
+  const share = Math.round((rent + utils) * (splitPct / 100));
+  const diff = share - userBudget;
+
+  let noteText, noteClass;
+  if (diff <= 0)        { noteText = `${c.name.split(' ')[0]}'s budget covers this split comfortably.`; noteClass = 'p-calcnote'; }
+  else if (diff <= 150) { noteText = `${c.name.split(' ')[0]}'s budget is $${diff} below this split. Within negotiation range.`; noteClass = 'p-calcnote warn'; }
+  else                  { noteText = `Budget gap is $${diff}. Consider a different split or listing.`; noteClass = 'p-calcnote warn'; }
+
+  const tagsHtml = c.allTags.map(t => `<span class="p-dtag">${t}</span>`).join('');
+
+  document.getElementById('detailScroll').innerHTML = `
+    <div class="p-daw"><div class="p-da" style="background:${c.gradient}">${c.initials}</div></div>
+    <div class="p-dn">${c.name}</div>
+    <div class="p-dr">${c.fullRole}</div>
+    <div class="p-dscores">
+      <div class="p-dscore"><div class="p-dsv" style="color:${pctColor}">${score}%</div><div class="p-dsl">Match</div></div>
+      <div class="p-dscore"><div class="p-dsv" style="color:#7AB0FF">$${c.budget.toLocaleString()}</div><div class="p-dsl">Budget/mo</div></div>
+      <div class="p-dscore"><div class="p-dsv" style="color:#F5A623">${c.moveIn.split(' ')[0]}</div><div class="p-dsl">Move-in</div></div>
+    </div>
+    <div class="p-dsec"><div class="p-dsecl">Lifestyle &amp; Commute</div><div class="p-dtags">${tagsHtml}</div></div>
+    <div class="p-dsec"><div class="p-dsecl">About</div><div class="p-dabout">${c.about}</div></div>
+    <div class="p-dsec"><div class="p-dsecl">Also Saved in ${c.neighbourhoods[0]}</div></div>
+    <div class="p-dlisting">
+      <div class="p-dlicon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div><div class="p-dladdr">${c.savedListing.addr}</div><div class="p-dlsub">${c.savedListing.sub}</div></div>
+    </div>
+    <div class="p-calc">
+      <div class="p-calch"><div class="p-calctitle">Split Rent Calculator</div><div class="p-calcbadge">Live</div></div>
+      <div class="p-calcrow">
+        <div class="p-calcwrap"><div class="p-calclbl">Total Rent</div><input class="p-calcinput" type="number" id="rentInp" value="${rent}" oninput="calcUpdate()"></div>
+        <div class="p-calcwrap"><div class="p-calclbl">Utilities</div><input class="p-calcinput" type="number" id="utilInp" value="${utils}" oninput="calcUpdate()"></div>
+      </div>
+      <div class="p-splitbtns">
+        <button class="p-sbtn ${splitPct===50?'on':''}" id="sb50" onclick="setSplit(50)">50/50</button>
+        <button class="p-sbtn ${splitPct===60?'on':''}" id="sb60" onclick="setSplit(60)">60/40</button>
+        <button class="p-sbtn ${splitPct===70?'on':''}" id="sb70" onclick="setSplit(70)">70/30</button>
+      </div>
+      <div class="p-calcdiv"></div>
+      <div class="p-calcres"><div class="p-calcres-lbl">Your share</div><div class="p-calcres-val" id="shareDisp">$${share.toLocaleString()}<span>/mo</span></div></div>
+      <div class="${noteClass}" id="calcNote">${noteText}</div>
+    </div>
+    <div class="p-dctas"><button class="p-dmsg" onclick="renderMessaging();pgo(5)">Send Message</button><button class="p-dsave">Save</button></div>
+  `;
+}
+
+function renderMessaging() {
+  const c = CANDIDATES.find(x => x.id === selectedCandidateId);
+  if (!c) return;
+
+  const rent = parseFloat(document.getElementById('rentInp')?.value) || c.savedListing.rent;
+  const utils = parseFloat(document.getElementById('utilInp')?.value) || 120;
+  const share = Math.round((rent + utils) * (splitPct / 100));
+  const firstName = c.name.split(' ')[0];
+
+  // Update topbar
+  document.getElementById('msgAva').textContent = c.initials;
+  document.getElementById('msgAva').style.background = c.gradient;
+  document.getElementById('msgName').textContent = c.name;
+
+  document.getElementById('msgArea').innerHTML = `
+    <div class="p-msgtm">Today 9:30 AM</div>
+    <div class="p-bu t">${c.openingMsg}</div>
+    <div class="p-bu m">Yes — I saved this one in ${c.msgContext}. Looks like great value for the area.</div>
+    <div class="p-msgls">
+      <div class="p-mslth"></div>
+      <div><div class="p-mslla">${c.savedListing.addr}</div><div class="p-msllp">${c.savedListing.sub}</div></div>
+    </div>
+    <div class="p-bu t">Nice find. What does the split come out to?</div>
+    <div class="p-cbubble">
+      <div class="p-cbt">Split Rent — ${c.savedListing.addr.split(',')[0]}</div>
+      <div class="p-cbr"><span class="p-cbl">Total rent</span><span class="p-cbv" id="cbTotal">$${rent.toLocaleString()}/mo</span></div>
+      <div class="p-cbr"><span class="p-cbl">Utilities</span><span class="p-cbv" id="cbUtils">$${utils.toLocaleString()}/mo</span></div>
+      <div class="p-cbtot"><span class="p-cbtl">Your share (${splitPct}/${100-splitPct})</span><span class="p-cbtv" id="cbShare">$${share.toLocaleString()}/mo</span></div>
+    </div>
+    <div class="p-bu m">$${share.toLocaleString()} each — shall we request a joint viewing? I can message the agent today.</div>
+    <div class="p-msgtmr">Delivered</div>
+  `;
 }
 
 /* ── ANNOTATIONS ─────────────────────────────── */
@@ -859,6 +932,8 @@ function pgo(idx) {
   if (idx === pCur) return;
   // Re-render matches every time Screen 3 is visited, picking up latest profile chips
   if (idx === 3) renderMatches();
+  // Re-render messaging when navigating to screen 5 directly from detail
+  if (idx === 5 && pCur === 4) renderMessaging();
   document.getElementById('ps' + pCur).classList.remove('on');
   document.getElementById('ps' + idx).classList.add('on');
 
@@ -944,6 +1019,7 @@ function sendMsg() {
 
 // Initialise
 renderMatches();
+renderDetail();
 calcUpdate();
 </script>
 </body>
