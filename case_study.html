@@ -6,340 +6,331 @@
 <title>Zillow RoomMatch · Product Teardown · Ann Mary Kurian</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ── CASE STUDY STYLES ──────────────────────────────────────────── */
 :root {
-  --cream:#F5F0E8; --cream-dark:#EDE6D6; --navy:#1C2B4A; --navy-mid:#2D4470;
-  --teal:#1A7A6E; --teal-light:#E8F5F3; --amber:#C4873A; --amber-light:#FDF3E7;
-  --green:#1A7A3C; --green-light:#F0FDF4; --red:#C0392B; --red-light:#FEF2F2;
-  --text:#1C2B4A; --muted:#7A8499; --border:#DDD6C8;
-  --serif:'Playfair Display',Georgia,serif; --sans:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
-  --zb:#0D1117; --zs:#161B26; --zc:#1C2333; --zc2:#222840;
-  --zbr:#2D3A52; --zbr2:#3A4A68; --blue:#006AFF;
-  --zm:#8892A4; --zg:#00C48C; --za:#F5A623;
-  --zt:#E8EDF5; --zt2:#C8D0DC;
+  --cream: #F5F0E8; --cream-dark: #EDE6D6;
+  --navy: #1C2B4A;  --navy-mid: #2D4470;
+  --teal: #1A7A6E;  --teal-light: #E8F5F3;
+  --amber: #C4873A; --amber-light: #FDF3E7;
+  --green: #1A7A3C; --green-light: #F0FDF4;
+  --red: #C0392B;   --red-light: #FEF2F2;
+  --text: #1C2B4A;  --muted: #7A8499; --border: #DDD6C8;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans:  'DM Sans', sans-serif;
+  --mono:  'DM Mono', monospace;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--sans);background:var(--cream);color:var(--text);font-size:16px;line-height:1.6;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.4;}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,240,232,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
-.nav-back{font-family:var(--mono);font-size:12px;letter-spacing:0.08em;color:var(--muted);text-decoration:none;transition:color 0.2s;}
-.nav-back:hover{color:var(--navy);}
-.nav-name{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--navy);text-decoration:none;}
-.hero{padding:140px 60px 80px;max-width:900px;margin:0 auto;}
-.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal);margin-bottom:20px;opacity:0;animation:fadeUp 0.7s ease forwards 0.2s;}
-.hero-title{font-family:var(--serif);font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.05;color:var(--navy);margin-bottom:12px;opacity:0;animation:fadeUp 0.7s ease forwards 0.35s;}
-.hero-title em{font-style:italic;color:var(--amber);}
-.hero-subtitle{font-family:var(--serif);font-size:19px;font-style:italic;color:var(--muted);margin-bottom:40px;max-width:680px;line-height:1.5;opacity:0;animation:fadeUp 0.7s ease forwards 0.45s;}
-.hero-meta{display:flex;flex-wrap:wrap;gap:32px;margin-bottom:40px;opacity:0;animation:fadeUp 0.7s ease forwards 0.55s;}
-.meta-item{display:flex;flex-direction:column;gap:4px;}
-.meta-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);}
-.meta-value{font-size:14px;font-weight:500;color:var(--navy);}
-.hero-tags{display:flex;flex-wrap:wrap;gap:8px;opacity:0;animation:fadeUp 0.7s ease forwards 0.65s;}
-.tag{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;padding:5px 12px;border:1px solid var(--border);color:var(--muted);border-radius:2px;background:white;}
-.divider{height:1px;background:var(--border);margin:0 60px;}
-.content{max-width:900px;margin:0 auto;padding:0 60px;}
-.section{padding:72px 0;border-bottom:1px solid var(--border);}
-.section:last-child{border-bottom:none;}
-.section-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
-.section-title{font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:700;color:var(--navy);line-height:1.15;margin-bottom:24px;}
-.section-title em{font-style:italic;color:var(--amber);}
-.body-text{font-size:16px;line-height:1.85;color:var(--text);margin-bottom:20px;}
-.problem-box{background:var(--navy);padding:40px 48px;margin:32px 0;}
-.problem-label{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.4);margin-bottom:10px;}
-.problem-text{font-family:var(--serif);font-size:clamp(17px,2.2vw,23px);font-style:italic;color:var(--cream);line-height:1.55;}
-.flow-steps{display:flex;flex-direction:column;gap:2px;margin-top:32px;}
-.flow-step{background:white;border:1px solid var(--border);border-left:4px solid var(--teal);padding:20px 24px;display:grid;grid-template-columns:36px 1fr;gap:16px;}
-.flow-gap{border-left-color:var(--red);}
-.flow-num{font-family:var(--mono);font-size:18px;font-weight:500;color:var(--teal);opacity:0.5;line-height:1;margin-top:2px;}
-.flow-gap .flow-num{color:var(--red);}
-.flow-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;}
-.flow-desc{font-size:13px;color:var(--muted);line-height:1.6;}
-.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:32px;}
-.swot-card{background:white;border:1px solid var(--border);padding:28px;}
-.swot-card.s{border-top:3px solid var(--teal);}
-.swot-card.w{border-top:3px solid var(--amber);}
-.swot-card.o{border-top:3px solid var(--green);}
-.swot-card.t{border-top:3px solid var(--red);}
-.swot-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;padding:3px 10px;border-radius:2px;display:inline-block;margin-bottom:14px;}
-.swot-card.s .swot-badge{background:var(--teal-light);color:var(--teal);}
-.swot-card.w .swot-badge{background:var(--amber-light);color:var(--amber);}
-.swot-card.o .swot-badge{background:var(--green-light);color:var(--green);}
-.swot-card.t .swot-badge{background:var(--red-light);color:var(--red);}
-.swot-item{font-size:13px;color:var(--muted);padding-left:14px;position:relative;margin-bottom:8px;line-height:1.6;}
-.swot-item::before{content:'--';position:absolute;left:0;font-size:11px;}
-.swot-card.s .swot-item::before{color:var(--teal);}
-.swot-card.w .swot-item::before{color:var(--amber);}
-.swot-card.o .swot-item::before{color:var(--green);}
-.swot-card.t .swot-item::before{color:var(--red);}
-.persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:32px;}
-.persona-card{background:white;border:1px solid var(--border);border-top:3px solid var(--amber);padding:28px;}
-.persona-name{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:2px;}
-.persona-role{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:var(--amber);margin-bottom:14px;text-transform:uppercase;}
-.persona-row{display:grid;grid-template-columns:90px 1fr;gap:8px;margin-bottom:10px;font-size:13px;}
-.persona-row-label{font-weight:600;color:var(--navy);}
-.persona-row-val{color:var(--muted);line-height:1.6;}
-.value-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:32px;}
-.value-card{background:white;border:1px solid var(--border);padding:28px;}
-.value-card.u{border-top:3px solid var(--teal);}
-.value-card.z{border-top:3px solid var(--navy);}
-.value-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;display:inline-block;padding:3px 10px;border-radius:2px;}
-.value-card.u .value-badge{background:var(--teal-light);color:var(--teal);}
-.value-card.z .value-badge{background:var(--cream-dark);color:var(--navy);}
-.value-item{font-size:13px;color:var(--muted);padding-left:14px;position:relative;margin-bottom:8px;line-height:1.6;}
-.value-item::before{content:'>';position:absolute;left:0;font-size:11px;color:var(--muted);}
-.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:32px;}
-.metric-card{background:white;border:1px solid var(--border);padding:24px;}
-.metric-card.ns{grid-column:1/-1;background:var(--amber-light);border-color:var(--amber);}
-.metric-num{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-.metric-card.ns .metric-num{color:var(--amber);}
-.metric-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;line-height:1.4;}
-.metric-desc{font-size:12px;color:var(--muted);line-height:1.6;}
-.reflection-block{background:var(--navy);padding:48px;margin-top:32px;}
-.reflection-quote{font-family:var(--serif);font-size:clamp(17px,2.2vw,23px);font-style:italic;color:var(--cream);line-height:1.6;margin-bottom:20px;}
-.reflection-attr{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,240,232,0.4);}
-.cta-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:48px;padding-bottom:80px;}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:var(--cream);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.06em;padding:14px 28px;border-radius:2px;transition:background 0.2s,transform 0.2s;}
-.btn-primary:hover{background:var(--navy-mid);transform:translateY(-1px);}
-.proto-embed-wrap {
-  margin-top: 32px;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--text); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: .4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E"); }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 60px; display: flex; align-items: center; justify-content: space-between; background: rgba(245,240,232,.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-back { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--muted); text-decoration: none; transition: color .2s; }
+.nav-back:hover { color: var(--navy); }
+.nav-name { font-family: var(--serif); font-size: 16px; font-weight: 600; color: var(--navy); text-decoration: none; }
+.hero { padding: 140px 60px 80px; max-width: 900px; margin: 0 auto; }
+.hero-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; opacity: 0; animation: fadeUp .7s ease forwards .2s; }
+.hero-title { font-family: var(--serif); font-size: clamp(36px,5vw,60px); font-weight: 700; line-height: 1.05; color: var(--navy); margin-bottom: 12px; opacity: 0; animation: fadeUp .7s ease forwards .35s; }
+.hero-title em { font-style: italic; color: var(--amber); }
+.hero-subtitle { font-family: var(--serif); font-size: 19px; font-style: italic; color: var(--muted); margin-bottom: 40px; max-width: 680px; line-height: 1.5; opacity: 0; animation: fadeUp .7s ease forwards .45s; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 32px; margin-bottom: 40px; opacity: 0; animation: fadeUp .7s ease forwards .55s; }
+.meta-item { display: flex; flex-direction: column; gap: 4px; }
+.meta-label { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.meta-value { font-size: 14px; font-weight: 500; color: var(--navy); }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; opacity: 0; animation: fadeUp .7s ease forwards .65s; }
+.tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; padding: 5px 12px; border: 1px solid var(--border); color: var(--muted); border-radius: 2px; background: white; }
+.divider { height: 1px; background: var(--border); margin: 0 60px; }
+.content { max-width: 900px; margin: 0 auto; padding: 0 60px; }
+.section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; }
+.section-label { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.section-title { font-family: var(--serif); font-size: clamp(24px,3vw,34px); font-weight: 700; color: var(--navy); line-height: 1.15; margin-bottom: 24px; }
+.section-title em { font-style: italic; color: var(--amber); }
+.body-text { font-size: 16px; line-height: 1.85; color: var(--text); margin-bottom: 20px; }
+.problem-box { background: var(--navy); padding: 40px 48px; margin: 32px 0; }
+.problem-label { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: rgba(245,240,232,.4); margin-bottom: 10px; }
+.problem-text { font-family: var(--serif); font-size: clamp(17px,2.2vw,23px); font-style: italic; color: var(--cream); line-height: 1.55; }
+.flow-steps { display: flex; flex-direction: column; gap: 2px; margin-top: 32px; }
+.flow-step { background: white; border: 1px solid var(--border); border-left: 4px solid var(--teal); padding: 20px 24px; display: grid; grid-template-columns: 36px 1fr; gap: 16px; }
+.flow-gap { border-left-color: var(--red); }
+.flow-num { font-family: var(--mono); font-size: 18px; font-weight: 500; color: var(--teal); opacity: .5; line-height: 1; margin-top: 2px; }
+.flow-gap .flow-num { color: var(--red); }
+.flow-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.flow-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 32px; }
+.swot-card { background: white; border: 1px solid var(--border); padding: 28px; }
+.swot-card.s { border-top: 3px solid var(--teal); }
+.swot-card.w { border-top: 3px solid var(--amber); }
+.swot-card.o { border-top: 3px solid var(--green); }
+.swot-card.t { border-top: 3px solid var(--red); }
+.swot-badge { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; display: inline-block; margin-bottom: 14px; }
+.swot-card.s .swot-badge { background: var(--teal-light); color: var(--teal); }
+.swot-card.w .swot-badge { background: var(--amber-light); color: var(--amber); }
+.swot-card.o .swot-badge { background: var(--green-light); color: var(--green); }
+.swot-card.t .swot-badge { background: var(--red-light); color: var(--red); }
+.swot-item { font-size: 13px; color: var(--muted); padding-left: 14px; position: relative; margin-bottom: 8px; line-height: 1.6; }
+.swot-item::before { content: '--'; position: absolute; left: 0; font-size: 11px; }
+.swot-card.s .swot-item::before { color: var(--teal); }
+.swot-card.w .swot-item::before { color: var(--amber); }
+.swot-card.o .swot-item::before { color: var(--green); }
+.swot-card.t .swot-item::before { color: var(--red); }
+.persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 32px; }
+.persona-card { background: white; border: 1px solid var(--border); border-top: 3px solid var(--amber); padding: 28px; }
+.persona-name { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+.persona-role { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--amber); margin-bottom: 14px; text-transform: uppercase; }
+.persona-row { display: grid; grid-template-columns: 90px 1fr; gap: 8px; margin-bottom: 10px; font-size: 13px; }
+.persona-row-label { font-weight: 600; color: var(--navy); }
+.persona-row-val { color: var(--muted); line-height: 1.6; }
+.value-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 32px; }
+.value-card { background: white; border: 1px solid var(--border); padding: 28px; }
+.value-card.u { border-top: 3px solid var(--teal); }
+.value-card.z { border-top: 3px solid var(--navy); }
+.value-badge { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; display: inline-block; padding: 3px 10px; border-radius: 2px; }
+.value-card.u .value-badge { background: var(--teal-light); color: var(--teal); }
+.value-card.z .value-badge { background: var(--cream-dark); color: var(--navy); }
+.value-item { font-size: 13px; color: var(--muted); padding-left: 14px; position: relative; margin-bottom: 8px; line-height: 1.6; }
+.value-item::before { content: '>'; position: absolute; left: 0; font-size: 11px; color: var(--muted); }
+.metrics-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 32px; }
+.metric-card { background: white; border: 1px solid var(--border); padding: 24px; }
+.metric-card.ns { grid-column: 1/-1; background: var(--amber-light); border-color: var(--amber); }
+.metric-num { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.metric-card.ns .metric-num { color: var(--amber); }
+.metric-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; line-height: 1.4; }
+.metric-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.reflection-block { background: var(--navy); padding: 48px; margin-top: 32px; }
+.reflection-quote { font-family: var(--serif); font-size: clamp(17px,2.2vw,23px); font-style: italic; color: var(--cream); line-height: 1.6; margin-bottom: 20px; }
+.reflection-attr { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(245,240,232,.4); }
+.cta-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding-bottom: 80px; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--navy); color: var(--cream); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: .06em; padding: 14px 28px; border-radius: 2px; transition: background .2s, transform .2s; }
+.btn-primary:hover { background: var(--navy-mid); transform: translateY(-1px); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--navy); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: .06em; padding: 14px 28px; border-radius: 2px; border: 1.5px solid var(--border); transition: border-color .2s, transform .2s; }
+.btn-secondary:hover { border-color: var(--navy); transform: translateY(-1px); }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── PROTOTYPE WRAPPER ─ sits inside .content, dark island ── */
+.proto-island {
+  background: #0D1117;
   border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: #0D1117;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+  padding: 48px;
+  margin-top: 32px;
 }
-.proto-embed {
-  width: 100%;
-  height: 780px;
-  display: block;
-  border: none;
-}
-.proto-embed-note {
-  background: #0D1117;
-  padding: 12px 20px;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: #8892A4;
-  letter-spacing: 0.04em;
-  border-top: 1px solid #2D3A52;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.proto-fullscreen-link {
-  color: #7AB0FF;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-.proto-fullscreen-link:hover { color: #E8EDF5; }
-@media(max-width:768px) {
-  .proto-embed { height: 640px; }
-}
+.proto-island-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: #8892A4; margin-bottom: 8px; }
+.proto-island-title { font-family: var(--serif); font-size: 28px; font-weight: 700; color: #E8EDF5; line-height: 1.15; margin-bottom: 8px; }
+.proto-island-title em { font-style: italic; color: #F5A623; }
+.proto-island-sub { font-size: 13px; color: #8892A4; margin-bottom: 32px; line-height: 1.7; max-width: 520px; }
+.proto-layout { display: flex; gap: 36px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
 
-/* ── PROTOTYPE ─────────────────────────────────────────────────────────── */
-.pw{background:var(--zb);padding:60px;margin:0 -60px;}
-.pe{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--zm);margin-bottom:10px;}
-.pt{font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:700;color:var(--zt);line-height:1.15;margin-bottom:10px;}
-.pt em{font-style:italic;color:var(--za);}
-.ps{font-size:14px;color:var(--zm);margin-bottom:32px;line-height:1.7;max-width:580px;}
-.steps{display:flex;align-items:center;margin-bottom:32px;overflow-x:auto;padding-bottom:4px;}
-.steps::-webkit-scrollbar{display:none;}
-.sb{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 10px;background:none;border:none;cursor:pointer;flex-shrink:0;}
-.sd{width:26px;height:26px;border-radius:50%;border:2px solid var(--zbr2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--zm);transition:all 0.25s;background:var(--zs);}
-.sb.active .sd{background:var(--blue);border-color:var(--blue);color:white;}
-.sb.done .sd{background:var(--zg);border-color:var(--zg);color:white;}
-.sl{font-size:10px;font-family:var(--mono);color:var(--zm);white-space:nowrap;letter-spacing:0.04em;}
-.sb.active .sl{color:var(--zt);}
-.sb.done .sl{color:var(--zg);}
-.sline{width:26px;height:2px;background:var(--zbr);margin-top:-12px;flex-shrink:0;transition:background 0.3s;}
-.sline.done{background:var(--zg);}
-.pb{display:flex;gap:32px;align-items:flex-start;justify-content:center;flex-wrap:wrap;}
-.phone{width:292px;flex-shrink:0;background:#07090F;border-radius:44px;border:1.5px solid #252E42;padding:10px;box-shadow:0 28px 56px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.03);}
-.ppill{width:80px;height:22px;background:#0D1117;border-radius:0 0 14px 14px;margin:0 auto 6px;position:relative;}
-.ppill::after{content:'';width:44px;height:3px;background:#1C2333;border-radius:3px;position:absolute;bottom:4px;left:50%;transform:translateX(-50%);}
-.psc{background:var(--zb);border-radius:34px;overflow:hidden;height:578px;position:relative;}
-.sc{position:absolute;inset:0;overflow:hidden;opacity:0;pointer-events:none;transform:translateX(18px);transition:opacity 0.28s ease,transform 0.28s ease;}
-.sc.active{opacity:1;pointer-events:all;transform:translateX(0);}
-.sbar{display:flex;justify-content:space-between;align-items:center;padding:9px 16px 4px;font-size:9px;font-weight:700;color:var(--zt2);font-family:var(--mono);}
-/* elements */
-.zl{font-size:18px;font-weight:900;color:var(--zt);letter-spacing:-0.5px;}
-.zl b{color:var(--blue);}
-.zav{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#0044CC);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;}
-.tr{display:flex;align-items:center;justify-content:space-between;padding:1px 13px 7px;}
-.zsb{margin:0 11px 9px;background:var(--zs);border:1px solid var(--zbr2);border-radius:10px;padding:8px 11px;display:flex;align-items:center;gap:6px;}
-.zst{font-size:11px;color:var(--zm);}
-.zsc{margin-left:auto;background:rgba(0,106,255,0.12);border:1px solid rgba(0,106,255,0.28);border-radius:6px;padding:2px 7px;font-size:8px;font-weight:600;color:#7AB0FF;font-family:var(--mono);}
-.rmb{margin:0 11px 9px;background:linear-gradient(135deg,rgba(0,106,255,0.13),rgba(0,106,255,0.04));border:1px solid rgba(0,106,255,0.26);border-radius:10px;padding:9px 11px;display:flex;align-items:center;gap:8px;cursor:pointer;}
-.rmbi{width:28px;height:28px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.rmbt{font-size:11px;font-weight:700;color:var(--zt);margin-bottom:1px;}
-.rmbs{font-size:9px;color:#7AB0FF;}
-.rmbar{margin-left:auto;color:#7AB0FF;font-size:14px;}
-.ls{margin:0 11px 8px;background:var(--zc);border-radius:12px;overflow:hidden;border:1px solid var(--zbr);}
-.li{height:90px;position:relative;}
-.libg{position:absolute;inset:0;}
-.lig{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,0.65));}
-.lbg{position:absolute;top:6px;left:6px;background:var(--blue);color:white;font-size:7px;font-weight:700;padding:2px 5px;border-radius:4px;letter-spacing:0.06em;}
-.lsv{position:absolute;top:6px;right:6px;width:22px;height:22px;background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.lb{padding:7px 9px;}
-.lp{font-size:13px;font-weight:700;color:var(--zt);margin-bottom:1px;}
-.lp span{font-size:9px;font-weight:400;color:var(--zm);}
-.la{font-size:9px;color:var(--zm);margin-bottom:5px;}
-.lcs{display:flex;gap:3px;}
-.lc{background:rgba(255,255,255,0.05);border:1px solid var(--zbr);font-size:7px;color:var(--zm);padding:1px 5px;border-radius:4px;}
-.zn{position:absolute;bottom:0;left:0;right:0;background:var(--zs);border-top:1px solid var(--zbr);display:flex;justify-content:space-around;padding:6px 0 12px;}
-.zni{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;}
-.znl{font-size:7px;font-family:var(--mono);letter-spacing:0.04em;color:var(--zm);}
-.zni.a .znl{color:var(--blue);}
-.znd{width:5px;height:5px;background:var(--blue);border-radius:50%;position:absolute;top:-1px;right:-1px;border:1.5px solid var(--zs);}
-/* setup */
-.stb{padding:6px 12px 3px;display:flex;align-items:center;gap:8px;}
-.bk{width:24px;height:24px;background:var(--zs);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--zbr);}
-.stt{font-size:13px;font-weight:700;color:var(--zt);}
-.eh{margin:7px 12px 11px;background:linear-gradient(135deg,#0A1628,#142240);border-radius:13px;padding:16px;border:1px solid var(--zbr2);text-align:center;}
-.ei{width:44px;height:44px;background:var(--blue);border-radius:12px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;}
-.ett{font-size:15px;font-weight:700;color:var(--zt);margin-bottom:4px;}
-.ed{font-size:11px;color:var(--zm);line-height:1.55;}
-.pl{margin:0 12px 9px;display:flex;flex-direction:column;gap:6px;}
-.pi{background:var(--zs);border:1px solid var(--zbr);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;}
-.pii{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.pit{font-size:11px;font-weight:600;color:var(--zt);}
-.pis{font-size:9px;color:var(--zm);}
-.eb{margin:0 12px;}
-.ebt{width:100%;background:var(--blue);color:white;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;}
+/* phone */
+.phone { width: 295px; flex-shrink: 0; background: #07090F; border-radius: 44px; border: 1.5px solid #1E2535; padding: 10px;
+  box-shadow: 0 32px 64px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.03); }
+.phone-pill { width: 80px; height: 22px; background: #07090F; border-radius: 0 0 14px 14px; margin: 0 auto 6px; position: relative; }
+.phone-pill::after { content: ''; width: 44px; height: 3px; background: #1A2030; border-radius: 3px; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); }
+.phone-screen { background: #0D1117; border-radius: 34px; overflow: hidden; height: 576px; position: relative; }
+
+/* screens */
+.sc { position: absolute; inset: 0; display: flex; flex-direction: column; background: #0D1117;
+  opacity: 0; transform: translateX(14px); transition: opacity .26s ease, transform .26s ease; pointer-events: none; }
+.sc.on { opacity: 1; transform: translateX(0); pointer-events: all; }
+
+/* reusable phone pieces */
+.sbar { display: flex; justify-content: space-between; align-items: center; padding: 9px 16px 4px; font-size: 9px; font-weight: 700; color: #C8D0DC; font-family: var(--mono); flex-shrink: 0; }
+.ptop { display: flex; align-items: center; justify-content: space-between; padding: 2px 13px 8px; flex-shrink: 0; }
+.plogo { font-size: 19px; font-weight: 900; color: #E8EDF5; letter-spacing: -.5px; }
+.plogo b { color: #006AFF; }
+.pava { width: 27px; height: 27px; border-radius: 50%; background: linear-gradient(135deg,#006AFF,#0044CC); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: white; }
+.pbk { width: 26px; height: 26px; background: #161B26; border: 1px solid #2D3A52; border-radius: 7px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.psearch { margin: 0 12px 10px; background: #161B26; border: 1px solid #2D3A52; border-radius: 11px; padding: 9px 12px; display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.psearch-txt { font-size: 11px; color: #8892A4; }
+.psearch-chip { margin-left: auto; background: rgba(0,106,255,.12); border: 1px solid rgba(0,106,255,.28); border-radius: 6px; padding: 2px 7px; font-size: 8px; font-weight: 600; color: #7AB0FF; font-family: var(--mono); }
+.prmbanner { margin: 0 12px 10px; background: linear-gradient(135deg,rgba(0,106,255,.13),rgba(0,106,255,.04)); border: 1px solid rgba(0,106,255,.28); border-radius: 11px; padding: 10px 12px; display: flex; align-items: center; gap: 9px; cursor: pointer; transition: border-color .2s; flex-shrink: 0; }
+.prmbanner:hover { border-color: rgba(0,106,255,.5); }
+.prmicon { width: 30px; height: 30px; background: #006AFF; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.prmtitle { font-size: 11px; font-weight: 700; color: #E8EDF5; margin-bottom: 1px; }
+.prmsub { font-size: 9px; color: #7AB0FF; }
+.prmarr { margin-left: auto; color: #7AB0FF; font-size: 14px; }
+.pcard { margin: 0 12px 8px; background: #161B26; border: 1px solid #2D3A52; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
+.pcard-img { height: 82px; position: relative; }
+.pcard-grad { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%,rgba(0,0,0,.6)); }
+.pcard-badge { position: absolute; top: 6px; left: 6px; background: #006AFF; color: white; font-size: 7px; font-weight: 700; padding: 2px 5px; border-radius: 4px; }
+.pcard-body { padding: 7px 10px; }
+.pcard-price { font-size: 13px; font-weight: 700; color: #E8EDF5; margin-bottom: 1px; }
+.pcard-price span { font-size: 9px; font-weight: 400; color: #8892A4; }
+.pcard-addr { font-size: 9px; color: #8892A4; margin-bottom: 4px; }
+.pcard-chips { display: flex; gap: 3px; }
+.pchip-sm { background: rgba(255,255,255,.05); border: 1px solid #2D3A52; font-size: 7px; color: #8892A4; padding: 1px 5px; border-radius: 4px; }
+.pnav { position: absolute; bottom: 0; left: 0; right: 0; background: #161B26; border-top: 1px solid #2D3A52; display: flex; justify-content: space-around; padding: 6px 0 12px; }
+.pni { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; position: relative; padding: 0 6px; }
+.pnl { font-size: 7px; font-family: var(--mono); letter-spacing: .04em; color: #8892A4; }
+.pni.on .pnl { color: #006AFF; }
+.pndot { width: 5px; height: 5px; background: #006AFF; border-radius: 50%; position: absolute; top: -1px; right: 2px; border: 1.5px solid #161B26; }
+/* enable */
+.p-ehero { margin: 7px 12px 12px; background: linear-gradient(135deg,#0A1628,#142240); border-radius: 13px; padding: 16px; border: 1px solid #2D3A52; text-align: center; flex-shrink: 0; }
+.p-eicon { width: 44px; height: 44px; background: #006AFF; border-radius: 12px; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; }
+.p-etitle { font-size: 15px; font-weight: 700; color: #E8EDF5; margin-bottom: 5px; }
+.p-edesc { font-size: 11px; color: #8892A4; line-height: 1.55; }
+.p-perks { margin: 0 12px 12px; display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
+.p-perk { background: #161B26; border: 1px solid #2D3A52; border-radius: 9px; padding: 9px 11px; display: flex; align-items: center; gap: 9px; }
+.p-picon { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.p-ptitle { font-size: 11px; font-weight: 600; color: #E8EDF5; }
+.p-psub { font-size: 9px; color: #8892A4; }
+.pbtn { margin: 0 12px; width: calc(100% - 24px); background: #006AFF; color: white; border: none; border-radius: 10px; padding: 11px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: var(--sans); flex-shrink: 0; }
 /* profile */
-.ph{padding:6px 12px 0;display:flex;align-items:center;gap:8px;}
-.pss{display:flex;gap:3px;flex:1;}
-.pst{flex:1;height:3px;border-radius:3px;background:var(--zbr2);}
-.pst.d{background:var(--blue);}
-.pst.c{background:var(--blue);opacity:0.45;}
-.pp{font-family:var(--mono);font-size:9px;color:var(--zm);}
-.psec{margin:8px 12px 0;}
-.psl{font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--zm);margin-bottom:4px;}
-.psh{font-size:13px;font-weight:700;color:var(--zt);margin-bottom:7px;}
-.fi{margin-bottom:7px;}
-.fl{font-size:9px;font-family:var(--mono);letter-spacing:0.1em;text-transform:uppercase;color:var(--zm);margin-bottom:3px;}
-.fv{background:var(--zs);border:1px solid var(--zbr2);border-radius:9px;padding:7px 10px;font-size:11px;color:#7AB0FF;font-weight:600;display:flex;align-items:center;justify-content:space-between;}
-.fh{font-size:9px;color:var(--zm);font-weight:400;}
-.chs{display:flex;gap:4px;flex-wrap:wrap;}
-.ch{background:var(--zs);border:1px solid var(--zbr2);border-radius:16px;padding:4px 9px;font-size:10px;color:var(--zm);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-.ch.on{background:rgba(0,106,255,0.13);border-color:var(--blue);color:#7AB0FF;font-weight:500;}
-.pc{margin:9px 12px 0;}
-.pcb{width:100%;background:var(--blue);color:white;border:none;border-radius:10px;padding:11px;font-size:12px;font-weight:700;cursor:pointer;}
+.p-prog { padding: 6px 12px 0; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.p-pbars { display: flex; gap: 3px; flex: 1; }
+.p-pbar { flex: 1; height: 3px; border-radius: 3px; background: #2D3A52; }
+.p-pbar.d { background: #006AFF; }
+.p-pbar.c { background: rgba(0,106,255,.45); }
+.p-ppct { font-family: var(--mono); font-size: 9px; color: #8892A4; }
+.p-body { padding: 9px 12px 0; overflow-y: auto; flex: 1; }
+.p-slbl { font-family: var(--mono); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; color: #8892A4; margin-bottom: 3px; }
+.p-sh { font-size: 13px; font-weight: 700; color: #E8EDF5; margin-bottom: 10px; }
+.p-field { margin-bottom: 9px; }
+.p-flbl { font-family: var(--mono); font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: #8892A4; margin-bottom: 4px; }
+.p-fval { background: #161B26; border: 1px solid #2D3A52; border-radius: 9px; padding: 8px 10px; font-size: 11px; color: #7AB0FF; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+.p-fval input { background: none; border: none; outline: none; font-size: 11px; font-weight: 600; color: #7AB0FF; width: 100%; font-family: var(--sans); }
+.p-fhint { font-size: 8px; color: #8892A4; font-weight: 400; white-space: nowrap; margin-left: 4px; }
+.p-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+.p-chip { background: #161B26; border: 1.5px solid #2D3A52; border-radius: 16px; padding: 4px 9px; font-size: 9px; color: #8892A4; cursor: pointer; transition: all .18s; user-select: none; }
+.p-chip:hover { border-color: #3A4A68; }
+.p-chip.on { background: rgba(0,106,255,.13); border-color: #006AFF; color: #7AB0FF; font-weight: 500; }
+.p-cta { padding: 10px 12px; flex-shrink: 0; }
 /* matches */
-.mt{padding:6px 12px 3px;display:flex;align-items:center;justify-content:space-between;}
-.mtt{font-size:14px;font-weight:700;color:var(--zt);}
-.mtf{background:var(--zs);border:1px solid var(--zbr2);border-radius:6px;padding:3px 8px;font-size:8px;font-family:var(--mono);color:var(--zm);}
-.cs{margin:0 11px 6px;background:rgba(0,196,140,0.08);border:1px solid rgba(0,196,140,0.18);border-radius:8px;padding:5px 9px;font-size:10px;color:var(--zg);}
-.mc{margin:0 11px 6px;background:var(--zc);border-radius:11px;border:1px solid var(--zbr);overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
-.mc:hover{border-color:var(--zbr2);}
-.mct{padding:9px 9px 6px;display:flex;align-items:center;gap:8px;}
-.mca{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0;}
-.mcn{font-size:12px;font-weight:700;color:var(--zt);margin-bottom:1px;}
-.mcr{font-size:9px;color:var(--zm);}
-.mcp{font-size:18px;font-weight:800;color:var(--zg);line-height:1;margin-left:auto;}
-.mcpl{font-size:7px;font-family:var(--mono);color:var(--zm);letter-spacing:0.06em;text-align:right;}
-.mcd{height:1px;background:var(--zbr);margin:0 9px;}
-.mcb{padding:6px 9px;display:flex;align-items:center;gap:4px;justify-content:space-between;}
-.mts{display:flex;gap:3px;flex-wrap:wrap;}
-.mta{background:rgba(0,106,255,0.09);border:1px solid rgba(0,106,255,0.18);font-size:8px;color:#7AB0FF;padding:2px 5px;border-radius:4px;}
-.map{background:var(--zs);border:1px solid var(--zbr2);color:var(--zm);font-size:9px;font-weight:600;padding:3px 8px;border-radius:6px;cursor:pointer;}
-.mac{background:var(--blue);color:white;font-size:9px;font-weight:600;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;}
+.p-mtop { padding: 7px 12px 4px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.p-mtitle { font-size: 15px; font-weight: 700; color: #E8EDF5; }
+.p-mfilter { background: #161B26; border: 1px solid #2D3A52; border-radius: 6px; padding: 3px 8px; font-size: 8px; font-family: var(--mono); color: #8892A4; }
+.p-ctx { margin: 0 11px 7px; background: rgba(0,196,140,.08); border: 1px solid rgba(0,196,140,.18); border-radius: 8px; padding: 5px 9px; font-size: 9px; color: #00C48C; flex-shrink: 0; }
+.p-mscroll { flex: 1; overflow-y: auto; padding-bottom: 54px; }
+.p-mc { margin: 0 11px 7px; background: #161B26; border: 1.5px solid #2D3A52; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color .18s; }
+.p-mc:hover { border-color: #3A4A68; }
+.p-mct { padding: 10px 10px 7px; display: flex; align-items: center; gap: 8px; }
+.p-mava { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+.p-mname { font-size: 12px; font-weight: 700; color: #E8EDF5; margin-bottom: 1px; }
+.p-mrole { font-size: 9px; color: #8892A4; }
+.p-mpct { font-size: 18px; font-weight: 800; color: #00C48C; line-height: 1; margin-left: auto; }
+.p-mpctlbl { font-size: 7px; font-family: var(--mono); color: #8892A4; letter-spacing: .06em; text-align: right; }
+.p-mdiv { height: 1px; background: #2D3A52; margin: 0 10px; }
+.p-mbot { padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.p-mtags { display: flex; gap: 4px; flex-wrap: wrap; }
+.p-mtag { background: rgba(0,106,255,.09); border: 1px solid rgba(0,106,255,.18); font-size: 7px; color: #7AB0FF; padding: 2px 5px; border-radius: 4px; }
+.p-pass { background: #1C2333; border: 1px solid #2D3A52; color: #8892A4; font-size: 9px; font-weight: 600; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-family: var(--sans); }
+.p-conn { background: #006AFF; color: white; font-size: 9px; font-weight: 600; padding: 4px 8px; border-radius: 6px; border: none; cursor: pointer; font-family: var(--sans); }
 /* detail */
-.dt{padding:6px 11px 3px;display:flex;align-items:center;gap:7px;}
-.db{width:24px;height:24px;background:var(--zs);border:1px solid var(--zbr);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;color:var(--zt);}
-.dtn{font-size:13px;font-weight:700;color:var(--zt);}
-.daw{display:flex;justify-content:center;padding:7px 0 3px;}
-.da{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;border:2px solid var(--zbr2);}
-.dn{font-size:16px;font-weight:700;color:var(--zt);text-align:center;margin-bottom:2px;}
-.dr{font-size:10px;color:var(--zm);text-align:center;margin-bottom:8px;}
-.dsr{display:flex;gap:4px;padding:0 11px;margin-bottom:8px;}
-.ds{flex:1;background:var(--zc);border:1px solid var(--zbr);border-radius:8px;padding:6px;text-align:center;}
-.dsv{font-size:15px;font-weight:800;margin-bottom:1px;line-height:1;}
-.dsl{font-size:7px;font-family:var(--mono);color:var(--zm);letter-spacing:0.06em;}
-.dsc{margin:0 11px 7px;}
-.dscl{font-size:8px;font-family:var(--mono);letter-spacing:0.1em;text-transform:uppercase;color:var(--zm);margin-bottom:4px;}
-.dst{display:flex;gap:4px;flex-wrap:wrap;}
-.dtg{background:var(--zs);border:1px solid var(--zbr);font-size:9px;color:var(--zt2);padding:2px 7px;border-radius:6px;}
-.dab{background:var(--zs);border:1px solid var(--zbr);border-radius:8px;padding:8px 10px;font-size:10px;color:var(--zm);line-height:1.55;}
-.dlc{margin:0 11px 6px;background:linear-gradient(135deg,rgba(0,106,255,0.07),rgba(0,106,255,0.02));border:1px solid rgba(0,106,255,0.18);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;}
-.dlci{width:26px;height:26px;background:rgba(0,106,255,0.14);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.dlca{font-size:10px;font-weight:600;color:var(--zt);}
-.dlcs{font-size:8px;color:var(--zm);}
-/* split rent calculator */
-.calc{margin:0 11px 7px;background:linear-gradient(135deg,rgba(0,196,140,0.07),rgba(0,196,140,0.02));border:1px solid rgba(0,196,140,0.22);border-radius:10px;padding:10px;}
-.calc-title{font-size:11px;font-weight:700;color:var(--zt);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.calc-badge{background:rgba(0,196,140,0.15);color:var(--zg);font-size:8px;font-family:var(--mono);padding:2px 6px;border-radius:4px;}
-.calc-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
-.calc-lbl{font-size:10px;color:var(--zm);}
-.calc-val{font-size:12px;font-weight:700;}
-.calc-divider{height:1px;background:rgba(0,196,140,0.15);margin:6px 0;}
-.calc-total{display:flex;align-items:center;justify-content:space-between;}
-.calc-total-lbl{font-size:10px;font-weight:600;color:var(--zt);}
-.calc-total-val{font-size:16px;font-weight:800;color:var(--zg);}
-.calc-sub{font-size:9px;color:var(--zm);margin-top:3px;text-align:center;}
-.dca{padding:6px 11px 0;display:flex;gap:5px;}
-.dcam{flex:1;background:var(--blue);color:white;border:none;border-radius:9px;padding:9px;font-size:11px;font-weight:700;cursor:pointer;}
-.dcas{background:var(--zs);border:1px solid var(--zbr2);color:var(--zt);border-radius:9px;padding:9px 11px;font-size:11px;font-weight:600;cursor:pointer;}
+.p-dscroll { flex: 1; overflow-y: auto; padding-bottom: 54px; }
+.p-daw { display: flex; justify-content: center; padding: 8px 0 3px; }
+.p-da { width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; color: white; border: 2px solid #2D3A52; }
+.p-dn { font-size: 17px; font-weight: 700; color: #E8EDF5; text-align: center; margin-bottom: 2px; }
+.p-dr { font-size: 10px; color: #8892A4; text-align: center; margin-bottom: 8px; }
+.p-dscores { display: flex; gap: 5px; padding: 0 11px; margin-bottom: 10px; }
+.p-dscore { flex: 1; background: #161B26; border: 1px solid #2D3A52; border-radius: 9px; padding: 7px; text-align: center; }
+.p-dsv { font-size: 16px; font-weight: 800; margin-bottom: 1px; line-height: 1; }
+.p-dsl { font-size: 8px; font-family: var(--mono); color: #8892A4; letter-spacing: .06em; }
+.p-dsec { margin: 0 11px 9px; }
+.p-dsecl { font-size: 8px; font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #8892A4; margin-bottom: 5px; }
+.p-dtags { display: flex; gap: 4px; flex-wrap: wrap; }
+.p-dtag { background: #161B26; border: 1px solid #2D3A52; font-size: 9px; color: #C8D0DC; padding: 3px 7px; border-radius: 6px; }
+.p-dabout { background: #161B26; border: 1px solid #2D3A52; border-radius: 9px; padding: 9px 10px; font-size: 10px; color: #8892A4; line-height: 1.6; }
+.p-dlisting { margin: 0 11px 9px; background: linear-gradient(135deg,rgba(0,106,255,.07),rgba(0,106,255,.02)); border: 1px solid rgba(0,106,255,.18); border-radius: 9px; padding: 9px 11px; display: flex; align-items: center; gap: 8px; }
+.p-dlicon { width: 26px; height: 26px; background: rgba(0,106,255,.14); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.p-dladdr { font-size: 10px; font-weight: 600; color: #E8EDF5; }
+.p-dlsub { font-size: 8px; color: #8892A4; }
+/* calc */
+.p-calc { margin: 0 11px 9px; background: linear-gradient(135deg,rgba(0,196,140,.07),rgba(0,196,140,.02)); border: 1.5px solid rgba(0,196,140,.22); border-radius: 11px; padding: 11px; }
+.p-calch { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+.p-calctitle { font-size: 12px; font-weight: 700; color: #E8EDF5; }
+.p-calcbadge { background: rgba(0,196,140,.15); color: #00C48C; font-size: 8px; font-family: var(--mono); padding: 2px 6px; border-radius: 4px; }
+.p-calcrow { display: flex; gap: 7px; margin-bottom: 8px; }
+.p-calcwrap { flex: 1; }
+.p-calclbl { font-size: 8px; font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase; color: #8892A4; margin-bottom: 3px; }
+.p-calcinput { background: #161B26; border: 1px solid #2D3A52; border-radius: 8px; padding: 6px 8px; font-size: 12px; font-weight: 600; color: #7AB0FF; width: 100%; outline: none; font-family: var(--sans); transition: border-color .15s; }
+.p-calcinput:focus { border-color: #006AFF; }
+.p-splitbtns { display: flex; gap: 4px; margin-bottom: 8px; }
+.p-sbtn { flex: 1; padding: 6px; border-radius: 7px; font-size: 10px; font-weight: 600; cursor: pointer; font-family: var(--sans); background: #161B26; border: 1.5px solid #2D3A52; color: #8892A4; transition: all .15s; }
+.p-sbtn.on { background: rgba(0,106,255,.13); border-color: #006AFF; color: #7AB0FF; }
+.p-calcdiv { height: 1px; background: rgba(0,196,140,.15); margin: 6px 0; }
+.p-calcres { display: flex; align-items: baseline; justify-content: space-between; }
+.p-calcres-lbl { font-size: 11px; font-weight: 600; color: #E8EDF5; }
+.p-calcres-val { font-size: 20px; font-weight: 800; color: #00C48C; }
+.p-calcres-val span { font-size: 11px; color: #8892A4; font-weight: 400; }
+.p-calcnote { font-size: 9px; color: #8892A4; margin-top: 4px; line-height: 1.5; }
+.p-calcnote.warn { color: #F5A623; }
+.p-dctas { display: flex; gap: 6px; padding: 0 11px 10px; }
+.p-dmsg { flex: 1; background: #006AFF; color: white; border: none; border-radius: 10px; padding: 10px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: var(--sans); }
+.p-dsave { background: #161B26; border: 1.5px solid #2D3A52; color: #E8EDF5; border-radius: 10px; padding: 10px 12px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--sans); }
 /* messaging */
-.msgtb{padding:6px 11px 4px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--zbr);}
-.msgbk{background:var(--zs);border:1px solid var(--zbr);border-radius:6px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.msgav{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#667EEA,#764BA2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;}
-.msgn{font-size:11px;font-weight:700;color:var(--zt);}
-.msgs{font-size:8px;color:var(--zg);}
-.msga{padding:9px 11px 42px;display:flex;flex-direction:column;gap:5px;overflow-y:auto;height:498px;}
-.bu{max-width:82%;padding:7px 10px;border-radius:10px;font-size:10px;line-height:1.5;}
-.bu.t{background:var(--zc);border:1px solid var(--zbr);color:var(--zt2);border-bottom-left-radius:3px;align-self:flex-start;}
-.bu.m{background:var(--blue);color:white;border-bottom-right-radius:3px;align-self:flex-end;}
-.msgtm{font-size:8px;color:var(--zm);font-family:var(--mono);}
-.msgtm.r{align-self:flex-end;}
-.msgls{background:var(--zs);border:1px solid var(--zbr2);border-radius:8px;padding:6px 8px;display:flex;align-items:center;gap:6px;align-self:flex-start;max-width:84%;}
-.mslth{width:32px;height:32px;background:linear-gradient(135deg,#1a3a5c,#2d5a8e);border-radius:4px;flex-shrink:0;}
-.msla{font-size:9px;font-weight:600;color:var(--zt);}
-.mslp{font-size:8px;color:var(--zm);}
-/* calc share bubble */
-.calc-share{background:linear-gradient(135deg,rgba(0,196,140,0.12),rgba(0,196,140,0.04));border:1px solid rgba(0,196,140,0.25);border-radius:8px;padding:7px 9px;align-self:flex-start;max-width:84%;}
-.cs-title{font-size:9px;font-weight:700;color:var(--zg);margin-bottom:4px;}
-.cs-row{display:flex;justify-content:space-between;font-size:9px;margin-bottom:2px;}
-.cs-lbl{color:var(--zm);}
-.cs-val{color:var(--zt);font-weight:600;}
-.msgib{position:absolute;bottom:42px;left:0;right:0;padding:6px 9px;background:var(--zs);border-top:1px solid var(--zbr);display:flex;gap:5px;align-items:center;}
-.msgi{flex:1;background:var(--zc);border:1px solid var(--zbr2);border-radius:16px;padding:5px 10px;font-size:10px;color:var(--zm);}
-.msgsd{background:var(--blue);border:none;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
-/* annotation */
-.ap{width:222px;flex-shrink:0;}
-.ac{background:var(--zc);border:1px solid var(--zbr);border-radius:10px;padding:13px;margin-bottom:8px;}
-.ac.hl{border-color:var(--blue);background:rgba(0,106,255,0.06);}
-.an{width:18px;height:18px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:white;margin-bottom:6px;font-family:var(--mono);}
-.at{font-size:12px;font-weight:700;color:var(--zt);margin-bottom:3px;}
-.ad{font-size:11px;color:var(--zm);line-height:1.65;}
-.navr{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
-.nb{background:var(--zs);border:1px solid var(--zbr2);color:var(--zt2);font-size:11px;font-family:var(--mono);letter-spacing:0.06em;padding:7px 16px;border-radius:7px;cursor:pointer;transition:all 0.2s;}
-.nb:hover{border-color:var(--blue);color:var(--zt);}
-.nb:disabled{opacity:0.3;cursor:not-allowed;}
-.nc{font-family:var(--mono);font-size:11px;color:var(--zm);}
-.pn{font-family:var(--mono);font-size:11px;color:var(--zm);margin-top:12px;letter-spacing:0.03em;text-align:center;}
+.p-msgtb { padding: 7px 12px 5px; display: flex; align-items: center; gap: 7px; border-bottom: 1px solid #2D3A52; flex-shrink: 0; }
+.p-msgav { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,#667EEA,#764BA2); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; }
+.p-msgn { font-size: 12px; font-weight: 700; color: #E8EDF5; }
+.p-msgs { font-size: 9px; color: #00C48C; }
+.p-msga { flex: 1; overflow-y: auto; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.p-msgtm { font-size: 8px; color: #8892A4; font-family: var(--mono); text-align: center; }
+.p-msgtmr { font-size: 8px; color: #8892A4; font-family: var(--mono); align-self: flex-end; }
+.p-bu { max-width: 82%; padding: 8px 10px; font-size: 10px; line-height: 1.5; border-radius: 11px; }
+.p-bu.t { background: #1C2333; border: 1px solid #2D3A52; color: #C8D0DC; align-self: flex-start; border-bottom-left-radius: 3px; }
+.p-bu.m { background: #006AFF; color: white; align-self: flex-end; border-bottom-right-radius: 3px; }
+.p-msgls { background: #1C2333; border: 1px solid #2D3A52; border-radius: 9px; padding: 6px 8px; display: flex; align-items: center; gap: 7px; align-self: flex-start; max-width: 82%; }
+.p-mslth { width: 30px; height: 30px; background: linear-gradient(135deg,#1a3a5c,#2d5a8e); border-radius: 5px; flex-shrink: 0; }
+.p-mslla { font-size: 9px; font-weight: 600; color: #E8EDF5; }
+.p-msllp { font-size: 8px; color: #8892A4; }
+.p-cbubble { background: linear-gradient(135deg,rgba(0,196,140,.12),rgba(0,196,140,.04)); border: 1px solid rgba(0,196,140,.25); border-radius: 9px; padding: 8px 10px; align-self: flex-start; max-width: 84%; }
+.p-cbt { font-size: 10px; font-weight: 700; color: #00C48C; margin-bottom: 5px; }
+.p-cbr { display: flex; justify-content: space-between; font-size: 9px; margin-bottom: 2px; }
+.p-cbl { color: #8892A4; }
+.p-cbv { color: #E8EDF5; font-weight: 600; }
+.p-cbtot { display: flex; justify-content: space-between; font-size: 11px; margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(0,196,140,.15); }
+.p-cbtl { color: #E8EDF5; font-weight: 700; }
+.p-cbtv { color: #00C48C; font-weight: 800; }
+.p-msgibar { padding: 6px 10px 14px; display: flex; gap: 6px; align-items: center; background: #161B26; border-top: 1px solid #2D3A52; flex-shrink: 0; }
+.p-msginput { flex: 1; background: #1C2333; border: 1px solid #2D3A52; border-radius: 16px; padding: 7px 11px; font-size: 11px; color: #E8EDF5; font-family: var(--sans); outline: none; }
+.p-msginput::placeholder { color: #8892A4; }
+.p-msgsend { width: 28px; height: 28px; background: #006AFF; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
 
-@media(max-width:768px){
-  nav{padding:16px 24px;}.hero{padding:100px 24px 60px;}.content{padding:0 24px;}
-  .swot-grid,.persona-grid,.value-grid{grid-template-columns:1fr;}
-  .metrics-grid{grid-template-columns:1fr 1fr;}
-  .pw{padding:32px 20px;margin:0 -24px;}
-  .ap{width:100%;}
-  .problem-box,.reflection-block{padding:28px 24px;}.divider{margin:0 24px;}
+/* annotation sidebar */
+.proto-ann { width: 216px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+.proto-steplist { background: #161B26; border: 1px solid #2D3A52; border-radius: 12px; padding: 12px; }
+.proto-step { display: flex; align-items: center; gap: 9px; padding: 7px 0; cursor: pointer; border-radius: 6px; transition: background .15s; }
+.proto-step:hover { background: rgba(255,255,255,.03); }
+.proto-step-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #2D3A52; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 9px; font-weight: 700; color: #8892A4; background: #0D1117; flex-shrink: 0; transition: all .2s; }
+.proto-step.on .proto-step-dot { background: #006AFF; border-color: #006AFF; color: white; }
+.proto-step.done .proto-step-dot { background: #00C48C; border-color: #00C48C; color: white; }
+.proto-step-name { font-size: 11px; font-weight: 600; color: #8892A4; transition: color .2s; }
+.proto-step.on .proto-step-name { color: #E8EDF5; }
+.proto-step.done .proto-step-name { color: #00C48C; }
+.proto-anncard { background: #161B26; border: 1.5px solid #2D3A52; border-radius: 12px; padding: 14px; }
+.proto-anncard.hl { border-color: #006AFF; background: rgba(0,106,255,.06); }
+.proto-annnum { width: 18px; height: 18px; background: #006AFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; color: white; margin-bottom: 7px; font-family: var(--mono); }
+.proto-anntitle { font-size: 12px; font-weight: 700; color: #E8EDF5; margin-bottom: 3px; }
+.proto-anndesc { font-size: 11px; color: #8892A4; line-height: 1.65; }
+.proto-footer { margin-top: 16px; font-family: var(--mono); font-size: 10px; color: #8892A4; text-align: center; letter-spacing: .03em; }
+.proto-footer a { color: #7AB0FF; text-decoration: none; }
+.proto-footer a:hover { color: #E8EDF5; }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .hero { padding: 100px 24px 60px; }
+  .content { padding: 0 24px; }
+  .divider { margin: 0 24px; }
+  .swot-grid, .persona-grid, .value-grid { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .problem-box, .reflection-block { padding: 28px 24px; }
+  .proto-island { padding: 28px 20px; }
+  .proto-ann { display: none; }
 }
 </style>
 </head>
 <body>
+
 <nav>
-  <a href="https://ann-kurian.github.io" class="nav-back">Back to Portfolio</a>
+  <a href="https://ann-kurian.github.io" class="nav-back">← Portfolio</a>
   <a href="https://ann-kurian.github.io" class="nav-name">Ann Mary Kurian</a>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
   <div class="hero-eyebrow">Product Strategy · Personal Project · Feature Design</div>
   <h1 class="hero-title">Zillow Rental Search<br><em>Product Teardown</em></h1>
-  <p class="hero-subtitle">A self-initiated product analysis identifying a critical gap in Zillow's rental experience — and proposing RoomMatch, a roommate-matching feature built for San Francisco's student and early-career professional market.</p>
+  <p class="hero-subtitle">A self-initiated analysis identifying a critical gap in Zillow's rental experience — and proposing RoomMatch, a roommate-matching feature built for San Francisco's student and early-career professional market.</p>
   <div class="hero-meta">
     <div class="meta-item"><span class="meta-label">Product</span><span class="meta-value">Zillow Rental Search</span></div>
     <div class="meta-item"><span class="meta-label">Market</span><span class="meta-value">San Francisco, CA</span></div>
@@ -355,38 +346,41 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
 <div class="divider"></div>
 <div class="content">
 
+<!-- OVERVIEW -->
 <div class="section reveal">
   <div class="section-label">Product Overview</div>
   <h2 class="section-title">What Zillow does — and <em>where it falls short</em></h2>
-  <p class="body-text">Zillow is the United States' leading housing marketplace — used by renters, buyers, and sellers to browse listings, access price estimates, and explore neighbourhood data. In San Francisco specifically, where median one-bedroom rents exceed $2,800 per month, the platform is the dominant starting point for apartment hunting. Its rental search feature offers map-based browsing, detailed filters, virtual tours, and comprehensive listing information.</p>
-  <p class="body-text">For most renters the experience is well-designed. But for students and early-career professionals in a city where shared living is not a preference but a financial necessity — Zillow stops short of solving the full problem. It helps users find a place to live. It does not help them find someone to live with.</p>
+  <p class="body-text">Zillow is the United States' leading housing marketplace used by renters, buyers, and sellers to browse listings, access price estimates, and explore neighbourhood data. In San Francisco specifically, where median one-bedroom rents exceed $2,800 per month, the platform is the dominant starting point for apartment hunting.</p>
+  <p class="body-text">For most renters the experience is well-designed. But for students and early-career professionals in a city where shared living is a financial necessity — Zillow stops short. It helps users find a place to live. It does not help them find someone to live with.</p>
   <div class="problem-box">
     <div class="problem-label">Problem Statement</div>
     <div class="problem-text">"Zillow does not provide a one-stop solution for users seeking rentals with an intention to share with roommates — forcing them to manage two separate searches across two different platforms."</div>
   </div>
 </div>
 
+<!-- USER FLOW -->
 <div class="section reveal">
   <div class="section-label">Existing Feature Analysis</div>
   <h2 class="section-title">The current rental search <em>user flow</em></h2>
   <div class="flow-steps">
     <div class="flow-step"><div class="flow-num">01</div><div><div class="flow-title">Sign In</div><div class="flow-desc">User authenticates via Google, Apple, or email.</div></div></div>
-    <div class="flow-step"><div class="flow-num">02</div><div><div class="flow-title">Location Search</div><div class="flow-desc">User searches by city, neighbourhood, or ZIP — autocomplete and map integration.</div></div></div>
+    <div class="flow-step"><div class="flow-num">02</div><div><div class="flow-title">Location Search</div><div class="flow-desc">User searches by city, neighbourhood, or ZIP with autocomplete and map integration.</div></div></div>
     <div class="flow-step"><div class="flow-num">03</div><div><div class="flow-title">Results — List View</div><div class="flow-desc">Relevant listings returned with price, bedrooms, distance, and preview photos.</div></div></div>
-    <div class="flow-step"><div class="flow-num">04</div><div><div class="flow-title">Results — Map View</div><div class="flow-desc">Optional toggle showing listings as pins, useful for neighbourhood-based decisions.</div></div></div>
+    <div class="flow-step"><div class="flow-num">04</div><div><div class="flow-title">Results — Map View</div><div class="flow-desc">Optional toggle showing listings as pins for neighbourhood-based decision making.</div></div></div>
     <div class="flow-step"><div class="flow-num">05</div><div><div class="flow-title">Listing Selection</div><div class="flow-desc">Full listing details — photos, floor plans, virtual tours, amenities, and contact information.</div></div></div>
-    <div class="flow-step flow-gap"><div class="flow-num">06</div><div><div class="flow-title">Filter Application — the gap begins here</div><div class="flow-desc">Users can filter by price, bedrooms, and amenities, but there is no pathway for users seeking a co-tenant. They are forced off the platform to Craigslist or Facebook to complete the other half of their search.</div></div></div>
+    <div class="flow-step flow-gap"><div class="flow-num">06</div><div><div class="flow-title">Filter Application — the gap begins here</div><div class="flow-desc">Users can filter by price and bedrooms but there is no pathway for users seeking a co-tenant. They are forced off the platform to Craigslist or Facebook to complete their search.</div></div></div>
   </div>
 </div>
 
+<!-- SWOT -->
 <div class="section reveal">
   <div class="section-label">SWOT Analysis</div>
   <h2 class="section-title">Where Zillow leads — and <em>where the opportunity lies</em></h2>
   <div class="swot-grid">
     <div class="swot-card s"><div class="swot-badge">Strengths</div>
       <div class="swot-item">Extensive, frequently updated property database with national coverage</div>
-      <div class="swot-item">Powerful, precise search filters returning personalised results</div>
-      <div class="swot-item">Detailed listings with photos, virtual tours, and full feature descriptions</div>
+      <div class="swot-item">Powerful filters returning personalised results</div>
+      <div class="swot-item">Detailed listings with photos, virtual tours, and full descriptions</div>
       <div class="swot-item">Interactive map-based browsing with neighbourhood context</div>
       <div class="swot-item">Strong brand recognition and trust in the US real estate market</div>
     </div>
@@ -407,503 +401,283 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
   </div>
 </div>
 
+<!-- PERSONAS -->
 <div class="section reveal">
   <div class="section-label">User Personas</div>
   <h2 class="section-title">Who RoomMatch is <em>built for</em></h2>
-  <p class="body-text">San Francisco is the ideal launch market for RoomMatch. With median one-bedroom rents above $2,800 and a large student and tech workforce population, shared living is the norm — not the exception. Both personas below are archetypal SF renters who use Zillow for listings but have no platform solution for the roommate problem.</p>
+  <p class="body-text">Both personas are archetypal SF renters who use Zillow for listings but have no platform solution for the roommate problem.</p>
   <div class="persona-grid">
     <div class="persona-card">
       <div class="persona-name">Avery</div>
       <div class="persona-role">Graduate Student · USF · Age 21</div>
-      <div class="persona-row"><div class="persona-row-label">Needs</div><div class="persona-row-val">Affordable rent near USF or the Marina, safe living conditions, reliable company in an unfamiliar city</div></div>
-      <div class="persona-row"><div class="persona-row-label">Pain points</div><div class="persona-row-val">SF rents are 2–3x her budget alone; limited contacts in the city; no way to vet roommates remotely before arriving</div></div>
-      <div class="persona-row"><div class="persona-row-label">Goal</div><div class="persona-row-val">Find a trustworthy roommate to split a 2-bed in the Marina or Nob Hill before the semester starts</div></div>
+      <div class="persona-row"><div class="persona-row-label">Needs</div><div class="persona-row-val">Affordable rent near USF or Marina, safe living, reliable company in an unfamiliar city</div></div>
+      <div class="persona-row"><div class="persona-row-label">Pain points</div><div class="persona-row-val">SF rents are 2–3x her solo budget; limited contacts; no way to vet roommates remotely</div></div>
+      <div class="persona-row"><div class="persona-row-label">Goal</div><div class="persona-row-val">Find a trustworthy roommate to split a 2-bed in Marina or Nob Hill before the semester starts</div></div>
     </div>
     <div class="persona-card">
       <div class="persona-name">John</div>
       <div class="persona-role">Software Engineer · SOMA · Age 26</div>
-      <div class="persona-row"><div class="persona-row-label">Needs</div><div class="persona-row-val">Budget-friendly rent with a reasonable Caltrain or BART commute, compatible roommate, smooth move-in</div></div>
-      <div class="persona-row"><div class="persona-row-label">Pain points</div><div class="persona-row-val">Entry-level SF salary barely covers solo rent; too busy to run two separate searches; has tried Craigslist with poor results</div></div>
-      <div class="persona-row"><div class="persona-row-label">Goal</div><div class="persona-row-val">Match with a compatible roommate quickly — ideally someone with similar work hours and no pets</div></div>
+      <div class="persona-row"><div class="persona-row-label">Needs</div><div class="persona-row-val">Budget-friendly rent with a Caltrain or BART commute, compatible roommate, smooth move-in</div></div>
+      <div class="persona-row"><div class="persona-row-label">Pain points</div><div class="persona-row-val">Entry-level SF salary barely covers solo rent; too busy to manage two separate searches</div></div>
+      <div class="persona-row"><div class="persona-row-label">Goal</div><div class="persona-row-val">Match with a compatible roommate quickly — similar work hours, no pets</div></div>
     </div>
   </div>
 </div>
 
-</div>
-
-<!-- PROTOTYPE EMBED -->
-<div class="content">
+<!-- PROTOTYPE -->
 <div class="section reveal">
-  <div class="section-label">Interactive MVP Prototype · San Francisco</div>
+  <div class="section-label">Interactive MVP Prototype</div>
   <h2 class="section-title">RoomMatch — <em>try it live</em></h2>
-  <p class="body-text">The prototype below is fully interactive — navigate all six screens, toggle lifestyle preferences, edit the split rent calculator in real time, and send messages in the live chat. Click any element on the phone screen to progress through the user journey.</p>
-  <div style="margin-top:32px;border-radius:16px;overflow:hidden;border:1px solid #1E2535;background:#0A0D14;box-shadow:0 24px 48px rgba(0,0,0,0.2);">
-    <div class="proto-root">
-<div class="bg"></div>
+  <p class="body-text">Six screens covering the complete RoomMatch user journey — real SF neighbourhoods, realistic rent prices, BART and Caltrain commute tags, and a working split rent calculator. Click any element on the phone to navigate.</p>
 
-<div class="proto-label">
-  <div class="proto-live-dot"></div>
-  <span class="proto-label-text">RoomMatch · Zillow SF · Interactive Prototype</span>
-</div>
+  <div class="proto-island">
+    <div class="proto-island-eyebrow">RoomMatch · Zillow SF · Interactive Prototype</div>
+    <div class="proto-island-title">Full user journey — <em>6 screens</em></div>
+    <div class="proto-island-sub">Navigate by clicking the phone screen elements directly, or use the step tracker on the right. The calculator and messaging are fully live.</div>
 
-<div class="page">
-  <div class="device-wrap">
+    <div class="proto-layout">
+      <!-- PHONE SHELL -->
+      <div class="phone">
+        <div class="phone-pill"></div>
+        <div class="phone-screen">
 
-    <!-- ── PHONE ─────────────────────────────── -->
-    <div class="device">
-      <div class="device-pill"></div>
-      <div class="device-screen" id="deviceScreen">
+          <!-- S0: HOME -->
+          <div class="sc on" id="ps0">
+            <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
+            <div class="ptop"><div class="plogo">Z<b>illow</b></div><div class="pava">AM</div></div>
+            <div class="psearch">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="psearch-txt">San Francisco, CA</span>
+              <div class="psearch-chip">Filters</div>
+            </div>
+            <div class="prmbanner" onclick="pgo(1)">
+              <div class="prmicon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div><div class="prmtitle">New: RoomMatch</div><div class="prmsub">Find your SF roommate here</div></div>
+              <div class="prmarr">›</div>
+            </div>
+            <div class="pcard">
+              <div class="pcard-img" style="background:linear-gradient(135deg,#0D2240,#1A3D6E)">
+                <div class="pcard-grad"></div><div class="pcard-badge">FOR RENT</div>
+              </div>
+              <div class="pcard-body">
+                <div class="pcard-price">$2,800<span>/mo</span></div>
+                <div class="pcard-addr">1842 Fillmore St, Marina District SF</div>
+                <div class="pcard-chips"><span class="pchip-sm">2 bed</span><span class="pchip-sm">1 bath</span><span class="pchip-sm">BART 0.4mi</span></div>
+              </div>
+            </div>
+            <div class="pcard">
+              <div class="pcard-body">
+                <div class="pcard-price">$3,650<span>/mo</span></div>
+                <div class="pcard-addr">490 Post St, Nob Hill SF</div>
+                <div class="pcard-chips"><span class="pchip-sm">3 bed</span><span class="pchip-sm">2 bath</span><span class="pchip-sm">Caltrain 0.6mi</span></div>
+              </div>
+            </div>
+            <div class="pnav">
+              <div class="pni on"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#006AFF" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="pnl" style="color:#006AFF">Search</span></div>
+              <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="pnl">Saved</span></div>
+              <div class="pni" onclick="pgo(1)" style="position:relative"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="pndot"></div><span class="pnl" style="color:#7AB0FF">RoomMatch</span></div>
+              <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="pnl">Profile</span></div>
+            </div>
+          </div>
 
-        <!-- SCREEN 0: ZILLOW HOME ──────────────── -->
-        <div class="screen active" id="s0">
-          <div class="status">
-            <span class="status-time">9:41</span>
-            <span class="status-icons">LTE ▮▮▮ 100%</span>
-          </div>
-          <div class="topbar">
-            <div class="logo">Z<span>illow</span></div>
-            <div class="ava">AM</div>
-          </div>
-          <div class="search-wrap">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <span class="search-text">San Francisco, CA</span>
-            <div class="search-chip">Filters</div>
-          </div>
-          <div class="rm-banner" onclick="go(1)">
-            <div class="rm-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <!-- S1: ENABLE -->
+          <div class="sc" id="ps1">
+            <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
+            <div class="ptop"><div class="pbk" onclick="pgo(0)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><span style="font-size:13px;font-weight:700;color:#E8EDF5">RoomMatch</span><div style="width:26px"></div></div>
+            <div class="p-ehero"><div class="p-eicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="p-etitle">Find Your SF Roommate</div><div class="p-edesc">Budget-first, commute-aware, lifestyle-matched — built for SF's real rental market.</div></div>
+            <div class="p-perks">
+              <div class="p-perk"><div class="p-picon" style="background:rgba(0,196,140,.15)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00C48C" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="p-ptitle">Budget-first matching</div><div class="p-psub">Split rent, neighbourhood, commute</div></div></div>
+              <div class="p-perk"><div class="p-picon" style="background:rgba(0,106,255,.15)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="p-ptitle">In-app messaging</div><div class="p-psub">Connect without sharing personal details</div></div></div>
+              <div class="p-perk"><div class="p-picon" style="background:rgba(0,196,140,.15)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00C48C" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div><div class="p-ptitle">Split rent calculator</div><div class="p-psub">See your real share before you commit</div></div></div>
             </div>
-            <div>
-              <div class="rm-title">New: RoomMatch</div>
-              <div class="rm-sub">Find your SF roommate — right here</div>
-            </div>
-            <div class="rm-arr">&#8250;</div>
-          </div>
-          <div class="listing">
-            <div class="listing-img">
-              <div class="listing-img-bg" style="background:linear-gradient(135deg,#0D2240,#1A3D6E)"></div>
-              <div class="listing-grad"></div>
-              <div class="listing-badge">FOR RENT</div>
-              <div class="listing-save"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-            </div>
-            <div class="listing-body">
-              <div class="listing-price">$2,800<span>/mo</span></div>
-              <div class="listing-addr">1842 Fillmore St, Marina District, SF</div>
-              <div class="listing-chips">
-                <span class="lchip">2 bed</span><span class="lchip">1 bath</span><span class="lchip">850 sqft</span><span class="lchip">BART 0.4mi</span>
-              </div>
+            <button class="pbtn" onclick="pgo(2)">Enable RoomMatch</button>
+            <div class="pnav" style="margin-top:auto">
+              <div class="pni" onclick="pgo(0)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="pnl">Search</span></div>
+              <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="pnl">Saved</span></div>
+              <div class="pni on"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="pnl" style="color:#7AB0FF">RoomMatch</span></div>
+              <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="pnl">Profile</span></div>
             </div>
           </div>
-          <div class="listing">
-            <div class="listing-body">
-              <div class="listing-price">$3,650<span>/mo</span></div>
-              <div class="listing-addr">490 Post St, Nob Hill, SF</div>
-              <div class="listing-chips">
-                <span class="lchip">3 bed</span><span class="lchip">2 bath</span><span class="lchip">Caltrain 0.6mi</span>
-              </div>
-            </div>
-          </div>
-          <div class="bottom-nav">
-            <div class="nav-item active" onclick="go(0)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#006AFF" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <span class="nav-label" style="color:#006AFF">Search</span>
-            </div>
-            <div class="nav-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              <span class="nav-label">Saved</span>
-            </div>
-            <div class="nav-item" onclick="go(1)" style="position:relative">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              <div class="nav-dot"></div>
-              <span class="nav-label" style="color:#7AB0FF">RoomMatch</span>
-            </div>
-            <div class="nav-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span class="nav-label">Profile</span>
-            </div>
-          </div>
-        </div>
 
-        <!-- SCREEN 1: ENABLE ───────────────────── -->
-        <div class="screen" id="s1">
-          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
-          <div class="topbar">
-            <div class="back-btn" onclick="go(0)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
-            <span style="font-size:15px;font-weight:700;color:#E8EDF5">RoomMatch</span>
-            <div style="width:32px"></div>
-          </div>
-          <div style="flex:1;overflow-y:auto">
-            <div class="enable-hero">
-              <div class="enable-big-icon">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              </div>
-              <div class="enable-title">Find Your SF Roommate</div>
-              <div class="enable-desc">Match with compatible renters searching in the same SF neighbourhoods. Budget-first, commute-aware, lifestyle-matched.</div>
+          <!-- S2: PROFILE SETUP -->
+          <div class="sc" id="ps2">
+            <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
+            <div class="p-prog"><div class="pbk" onclick="pgo(1)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="p-pbars"><div class="p-pbar d"></div><div class="p-pbar d"></div><div class="p-pbar c"></div></div><span class="p-ppct">2/3</span></div>
+            <div class="p-body">
+              <div class="p-slbl">Set up</div><div class="p-sh">Your SF Preferences</div>
+              <div class="p-field"><div class="p-flbl">Monthly Budget (my share)</div><div class="p-fval"><input type="number" id="budgetInp" value="1400" min="500" max="5000" step="50" oninput="calcUpdate()"><span class="p-fhint">/month</span></div></div>
+              <div class="p-field"><div class="p-flbl">Move-in Date</div><div class="p-fval"><span style="color:#7AB0FF;font-weight:600">August 2025</span><span class="p-fhint">flexible</span></div></div>
+              <div class="p-field"><div class="p-flbl">SF Neighbourhood</div><div class="p-chips"><div class="p-chip on" onclick="this.classList.toggle('on')">Marina</div><div class="p-chip on" onclick="this.classList.toggle('on')">Nob Hill</div><div class="p-chip" onclick="this.classList.toggle('on')">Mission</div><div class="p-chip" onclick="this.classList.toggle('on')">SOMA</div><div class="p-chip" onclick="this.classList.toggle('on')">Hayes Valley</div></div></div>
+              <div class="p-field"><div class="p-flbl">Commute</div><div class="p-chips"><div class="p-chip on" onclick="this.classList.toggle('on')">Near BART</div><div class="p-chip" onclick="this.classList.toggle('on')">Near Caltrain</div><div class="p-chip" onclick="this.classList.toggle('on')">WFH</div><div class="p-chip" onclick="this.classList.toggle('on')">Bike-friendly</div></div></div>
+              <div class="p-field"><div class="p-flbl">Lifestyle</div><div class="p-chips"><div class="p-chip on" onclick="this.classList.toggle('on')">Early riser</div><div class="p-chip on" onclick="this.classList.toggle('on')">Non-smoker</div><div class="p-chip" onclick="this.classList.toggle('on')">Night owl</div><div class="p-chip on" onclick="this.classList.toggle('on')">Quiet hours</div><div class="p-chip" onclick="this.classList.toggle('on')">Social</div></div></div>
             </div>
-            <div class="perk-list">
-              <div class="perk">
-                <div class="perk-icon" style="background:rgba(0,196,140,0.15)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C48C" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <div><div class="perk-title">Budget-first matching</div><div class="perk-sub">Matched on split rent, neighbourhood, commute</div></div>
-              </div>
-              <div class="perk">
-                <div class="perk-icon" style="background:rgba(0,106,255,0.15)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-                <div><div class="perk-title">In-app messaging</div><div class="perk-sub">Connect without sharing personal details</div></div>
-              </div>
-              <div class="perk">
-                <div class="perk-icon" style="background:rgba(0,196,140,0.15)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C48C" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-                <div><div class="perk-title">Split rent calculator</div><div class="perk-sub">See your real share before you commit</div></div>
-              </div>
-            </div>
+            <div class="p-cta"><button class="pbtn" style="margin:0;width:100%" onclick="pgo(3)">Find My Matches</button></div>
           </div>
-          <div style="padding:0 0 16px"><button class="btn-primary" onclick="go(2)">Enable RoomMatch</button></div>
-          <div class="bottom-nav">
-            <div class="nav-item" onclick="go(0)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="nav-label">Search</span></div>
-            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="nav-label">Saved</span></div>
-            <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-label" style="color:#7AB0FF">RoomMatch</span></div>
-            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Profile</span></div>
-          </div>
-        </div>
 
-        <!-- SCREEN 2: PROFILE SETUP ────────────── -->
-        <div class="screen" id="s2">
-          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
-          <div class="prog-bar-wrap">
-            <div class="back-btn" onclick="go(1)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
-            <div class="prog-bars"><div class="pbar done"></div><div class="pbar done"></div><div class="pbar cur"></div></div>
-            <span class="prog-pct">Step 2/3</span>
-          </div>
-          <div class="setup-body">
-            <div class="setup-subtitle">Set up your profile</div>
-            <div class="setup-title">Your SF Preferences</div>
-            <div class="field">
-              <div class="field-label">Monthly Budget (my share)</div>
-              <div class="field-val">
-                <input type="number" id="budgetInput" value="1400" min="500" max="5000" step="50" oninput="updateCalc()">
-                <span class="field-hint">/month</span>
+          <!-- S3: MATCHES -->
+          <div class="sc" id="ps3">
+            <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
+            <div class="p-mtop"><div class="p-mtitle">Your Matches</div><div class="p-mfilter">Marina · Nob Hill</div></div>
+            <div class="p-ctx">3 matches near your SF search areas</div>
+            <div class="p-mscroll">
+              <div class="p-mc" onclick="pgo(4)">
+                <div class="p-mct"><div class="p-mava" style="background:linear-gradient(135deg,#667EEA,#764BA2)">AC</div><div><div class="p-mname">Avery Chen</div><div class="p-mrole">Grad Student · USF · Marina</div></div><div><div class="p-mpct">94%</div><div class="p-mpctlbl">match</div></div></div>
+                <div class="p-mdiv"></div>
+                <div class="p-mbot"><div class="p-mtags"><span class="p-mtag">Early riser</span><span class="p-mtag">$1,400/mo</span><span class="p-mtag">BART</span></div><div style="display:flex;gap:4px"><button class="p-pass" onclick="event.stopPropagation()">Pass</button><button class="p-conn" onclick="event.stopPropagation();pgo(4)">Connect</button></div></div>
+              </div>
+              <div class="p-mc">
+                <div class="p-mct"><div class="p-mava" style="background:linear-gradient(135deg,#11998e,#38ef7d)">JL</div><div><div class="p-mname">Jordan Lee</div><div class="p-mrole">Engineer · Salesforce · SOMA</div></div><div><div class="p-mpct">87%</div><div class="p-mpctlbl">match</div></div></div>
+                <div class="p-mdiv"></div>
+                <div class="p-mbot"><div class="p-mtags"><span class="p-mtag">WFH</span><span class="p-mtag">$1,500/mo</span><span class="p-mtag">Caltrain</span></div><div style="display:flex;gap:4px"><button class="p-pass">Pass</button><button class="p-conn">Connect</button></div></div>
+              </div>
+              <div class="p-mc">
+                <div class="p-mct"><div class="p-mava" style="background:linear-gradient(135deg,#f7971e,#ffd200)">MK</div><div><div class="p-mname">Maya Krishnan</div><div class="p-mrole">Designer · Airbnb · Mission</div></div><div><div class="p-mpct">82%</div><div class="p-mpctlbl">match</div></div></div>
+                <div class="p-mdiv"></div>
+                <div class="p-mbot"><div class="p-mtags"><span class="p-mtag">Non-smoker</span><span class="p-mtag">$1,300/mo</span><span class="p-mtag">BART 0.2mi</span></div><div style="display:flex;gap:4px"><button class="p-pass">Pass</button><button class="p-conn">Connect</button></div></div>
               </div>
             </div>
-            <div class="field">
-              <div class="field-label">Move-in Date</div>
-              <div class="field-val">
-                <input type="month" id="moveInInput" value="2025-08" style="font-size:14px;font-weight:600;color:#7AB0FF;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;width:100%">
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label">SF Neighbourhood</div>
-              <div class="chips-wrap">
-                <div class="chip on" onclick="this.classList.toggle('on')">Marina</div>
-                <div class="chip on" onclick="this.classList.toggle('on')">Nob Hill</div>
-                <div class="chip" onclick="this.classList.toggle('on')">Mission</div>
-                <div class="chip" onclick="this.classList.toggle('on')">SOMA</div>
-                <div class="chip" onclick="this.classList.toggle('on')">Hayes Valley</div>
-                <div class="chip" onclick="this.classList.toggle('on')">Richmond</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label">Commute</div>
-              <div class="chips-wrap">
-                <div class="chip on" onclick="this.classList.toggle('on')">Near BART</div>
-                <div class="chip" onclick="this.classList.toggle('on')">Near Caltrain</div>
-                <div class="chip" onclick="this.classList.toggle('on')">WFH friendly</div>
-                <div class="chip" onclick="this.classList.toggle('on')">Bike-friendly</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="field-label">Lifestyle</div>
-              <div class="chips-wrap">
-                <div class="chip on" onclick="this.classList.toggle('on')">Early riser</div>
-                <div class="chip on" onclick="this.classList.toggle('on')">Non-smoker</div>
-                <div class="chip" onclick="this.classList.toggle('on')">Night owl</div>
-                <div class="chip on" onclick="this.classList.toggle('on')">Quiet hours</div>
-                <div class="chip" onclick="this.classList.toggle('on')">Social</div>
-                <div class="chip" onclick="this.classList.toggle('on')">Pet friendly</div>
-              </div>
+            <div class="pnav" style="position:absolute;bottom:0;left:0;right:0">
+              <div class="pni" onclick="pgo(0)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="pnl">Search</span></div>
+              <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="pnl">Saved</span></div>
+              <div class="pni on"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="pnl" style="color:#7AB0FF">RoomMatch</span></div>
+              <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="pnl">Profile</span></div>
             </div>
           </div>
-          <div class="setup-cta"><button class="btn-primary" onclick="go(3)">Find My Matches</button></div>
-        </div>
 
-        <!-- SCREEN 3: MATCHES ──────────────────── -->
-        <div class="screen" id="s3">
-          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
-          <div class="matches-top">
-            <div class="matches-title">Your Matches</div>
-            <div class="matches-filter">Marina · Nob Hill</div>
-          </div>
-          <div class="ctx-pill">3 matches near your SF search areas</div>
-          <div class="matches-scroll">
-            <div class="match-card" onclick="go(4)">
-              <div class="match-card-top">
-                <div class="match-ava" style="background:linear-gradient(135deg,#667EEA,#764BA2)">AC</div>
-                <div>
-                  <div class="match-name">Avery Chen</div>
-                  <div class="match-role">Grad Student · USF · Marina</div>
+          <!-- S4: MATCH DETAIL + CALCULATOR -->
+          <div class="sc" id="ps4">
+            <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
+            <div class="ptop"><div class="pbk" onclick="pgo(3)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><span style="font-size:13px;font-weight:700;color:#E8EDF5">Roommate Profile</span><div style="width:26px"></div></div>
+            <div class="p-dscroll">
+              <div class="p-daw"><div class="p-da" style="background:linear-gradient(135deg,#667EEA,#764BA2)">AC</div></div>
+              <div class="p-dn">Avery Chen</div>
+              <div class="p-dr">Graduate Student · USF — Incoming Fall 2025</div>
+              <div class="p-dscores">
+                <div class="p-dscore"><div class="p-dsv" style="color:#00C48C">94%</div><div class="p-dsl">Match</div></div>
+                <div class="p-dscore"><div class="p-dsv" style="color:#7AB0FF" id="avBudget">$1,400</div><div class="p-dsl">Budget/mo</div></div>
+                <div class="p-dscore"><div class="p-dsv" style="color:#F5A623">Aug</div><div class="p-dsl">Move-in</div></div>
+              </div>
+              <div class="p-dsec"><div class="p-dsecl">Lifestyle</div><div class="p-dtags"><span class="p-dtag">Early riser</span><span class="p-dtag">Non-smoker</span><span class="p-dtag">Near BART</span><span class="p-dtag">No pets</span></div></div>
+              <div class="p-dsec"><div class="p-dsecl">About</div><div class="p-dabout">Moving from Seattle for USF grad programme. Looking for a quiet, reliable housemate in Marina or Nob Hill.</div></div>
+              <div class="p-dsec"><div class="p-dsecl">Also Saved</div></div>
+              <div class="p-dlisting"><div class="p-dlicon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="p-dladdr">1842 Fillmore St, Marina SF</div><div class="p-dlsub">$2,800/mo · 2 bed · 1 bath</div></div></div>
+              <div class="p-calc">
+                <div class="p-calch"><div class="p-calctitle">Split Rent Calculator</div><div class="p-calcbadge">Live</div></div>
+                <div class="p-calcrow">
+                  <div class="p-calcwrap"><div class="p-calclbl">Total Rent</div><input class="p-calcinput" type="number" id="rentInp" value="2800" oninput="calcUpdate()"></div>
+                  <div class="p-calcwrap"><div class="p-calclbl">Utilities</div><input class="p-calcinput" type="number" id="utilInp" value="120" oninput="calcUpdate()"></div>
                 </div>
-                <div class="match-score"><div class="match-pct">94%</div><div class="match-pct-label">match</div></div>
-              </div>
-              <div class="match-divider"></div>
-              <div class="match-bottom">
-                <div class="match-tags"><span class="mtag">Early riser</span><span class="mtag">$1,400/mo</span><span class="mtag">BART</span></div>
-                <div class="match-actions"><button class="btn-pass" onclick="event.stopPropagation()">Pass</button><button class="btn-connect" onclick="event.stopPropagation();go(4)">Connect</button></div>
-              </div>
-            </div>
-            <div class="match-card">
-              <div class="match-card-top">
-                <div class="match-ava" style="background:linear-gradient(135deg,#11998e,#38ef7d)">JL</div>
-                <div><div class="match-name">Jordan Lee</div><div class="match-role">Engineer · Salesforce · SOMA</div></div>
-                <div class="match-score"><div class="match-pct">87%</div><div class="match-pct-label">match</div></div>
-              </div>
-              <div class="match-divider"></div>
-              <div class="match-bottom">
-                <div class="match-tags"><span class="mtag">WFH</span><span class="mtag">$1,500/mo</span><span class="mtag">Caltrain</span></div>
-                <div class="match-actions"><button class="btn-pass">Pass</button><button class="btn-connect">Connect</button></div>
-              </div>
-            </div>
-            <div class="match-card">
-              <div class="match-card-top">
-                <div class="match-ava" style="background:linear-gradient(135deg,#f7971e,#ffd200)">MK</div>
-                <div><div class="match-name">Maya Krishnan</div><div class="match-role">Designer · Airbnb · Mission</div></div>
-                <div class="match-score"><div class="match-pct">82%</div><div class="match-pct-label">match</div></div>
-              </div>
-              <div class="match-divider"></div>
-              <div class="match-bottom">
-                <div class="match-tags"><span class="mtag">Non-smoker</span><span class="mtag">$1,300/mo</span><span class="mtag">BART 0.2mi</span></div>
-                <div class="match-actions"><button class="btn-pass">Pass</button><button class="btn-connect">Connect</button></div>
-              </div>
-            </div>
-          </div>
-          <div class="bottom-nav">
-            <div class="nav-item" onclick="go(0)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="nav-label">Search</span></div>
-            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="nav-label">Saved</span></div>
-            <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-label" style="color:#7AB0FF">RoomMatch</span></div>
-            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Profile</span></div>
-          </div>
-        </div>
-
-        <!-- SCREEN 4: MATCH DETAIL + CALCULATOR ── -->
-        <div class="screen" id="s4">
-          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
-          <div class="topbar">
-            <div class="back-btn" onclick="go(3)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
-            <span style="font-size:15px;font-weight:700;color:#E8EDF5">Roommate Profile</span>
-            <div style="width:32px"></div>
-          </div>
-          <div class="detail-scroll">
-            <div class="detail-ava-wrap"><div class="detail-ava" style="background:linear-gradient(135deg,#667EEA,#764BA2)">AC</div></div>
-            <div class="detail-name">Avery Chen</div>
-            <div class="detail-role">Graduate Student · USF — Incoming Fall 2025 · Marina</div>
-            <div class="scores-row">
-              <div class="score-card"><div class="score-val" style="color:#00C48C">94%</div><div class="score-lbl">Match</div></div>
-              <div class="score-card"><div class="score-val" style="color:#7AB0FF" id="avery-budget-display">$1,400</div><div class="score-lbl">Budget/mo</div></div>
-              <div class="score-card"><div class="score-val" style="color:#F5A623">Aug</div><div class="score-lbl">Move-in</div></div>
-            </div>
-            <div class="detail-section">
-              <div class="detail-sec-label">Lifestyle & Commute</div>
-              <div class="detail-tags"><span class="dtag">Early riser</span><span class="dtag">Non-smoker</span><span class="dtag">Near BART</span><span class="dtag">No pets</span><span class="dtag">Quiet hours</span></div>
-            </div>
-            <div class="detail-section">
-              <div class="detail-sec-label">About Avery</div>
-              <div class="detail-about">Moving from Seattle for my graduate programme at USF. Looking for a quiet, reliable housemate in the Marina or Nob Hill. Happy to split groceries and household chores.</div>
-            </div>
-            <div class="detail-section">
-              <div class="detail-sec-label">Also Saved in Marina</div>
-            </div>
-            <div class="saved-listing">
-              <div class="saved-listing-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-              <div><div class="saved-addr">1842 Fillmore St, Marina SF</div><div class="saved-sub">$2,800/mo · 2 bed · 1 bath</div></div>
-            </div>
-
-            <!-- LIVE SPLIT RENT CALCULATOR -->
-            <div class="calc-card">
-              <div class="calc-header">
-                <div class="calc-title">Split Rent Calculator</div>
-                <div class="calc-badge">Live</div>
-              </div>
-              <div class="calc-input-row">
-                <div class="calc-input-wrap">
-                  <div class="calc-input-label">Total Rent</div>
-                  <input class="calc-input" type="number" id="totalRent" value="2800" oninput="updateCalc()" placeholder="2800">
+                <div class="p-splitbtns">
+                  <button class="p-sbtn on" id="sb50" onclick="setSplit(50)">50/50</button>
+                  <button class="p-sbtn" id="sb60" onclick="setSplit(60)">60/40</button>
+                  <button class="p-sbtn" id="sb70" onclick="setSplit(70)">70/30</button>
                 </div>
-                <div class="calc-input-wrap">
-                  <div class="calc-input-label">Utilities</div>
-                  <input class="calc-input" type="number" id="utilities" value="120" oninput="updateCalc()" placeholder="120">
-                </div>
+                <div class="p-calcdiv"></div>
+                <div class="p-calcres"><div class="p-calcres-lbl">Your share</div><div class="p-calcres-val" id="shareDisp">$1,460<span>/mo</span></div></div>
+                <div class="p-calcnote" id="calcNote">Avery's budget is $1,400/mo — $60 below. Within negotiation range.</div>
               </div>
-              <div class="calc-input-label" style="margin-bottom:6px">Split</div>
-              <div class="calc-split-btns">
-                <button class="split-btn active" id="split50" onclick="setSplit(50,50)">50 / 50</button>
-                <button class="split-btn" id="split6040" onclick="setSplit(60,40)">60 / 40</button>
-                <button class="split-btn" id="split7030" onclick="setSplit(70,30)">70 / 30</button>
-              </div>
-              <div class="calc-divider"></div>
-              <div class="calc-result-row">
-                <div class="calc-result-lbl">Your share</div>
-                <div class="calc-result-val" id="myShare">$1,460<span>/mo</span></div>
-              </div>
-              <div class="calc-note" id="calcNote">Avery's budget is $1,400/mo — $60 below this split. Within negotiation range.</div>
+              <div class="p-dctas"><button class="p-dmsg" onclick="pgo(5)">Send Message</button><button class="p-dsave">Save</button></div>
             </div>
+            <div class="pnav" style="position:absolute;bottom:0;left:0;right:0">
+              <div class="pni" onclick="pgo(0)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="pnl">Search</span></div>
+              <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="pnl">Saved</span></div>
+              <div class="pni on"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="pnl" style="color:#7AB0FF">RoomMatch</span></div>
+              <div class="pni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="pnl">Profile</span></div>
+            </div>
+          </div>
 
-            <div class="detail-ctas">
-              <button class="btn-msg" onclick="go(5)">Send Message</button>
-              <button class="btn-save">Save</button>
+          <!-- S5: MESSAGING -->
+          <div class="sc" id="ps5">
+            <div class="sbar"><span>9:41</span><span>LTE 100%</span></div>
+            <div class="p-msgtb"><div class="pbk" onclick="pgo(4)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="p-msgav">AC</div><div><div class="p-msgn">Avery Chen</div><div class="p-msgs">Active now</div></div></div>
+            <div class="p-msga" id="msgArea">
+              <div class="p-msgtm">Today 9:30 AM</div>
+              <div class="p-bu t">Hi! I saw we matched. Have you seen anything near Fillmore?</div>
+              <div class="p-bu m">Yes — I saved this 2-bed on Fillmore. Right in the Marina, BART is close.</div>
+              <div class="p-msgls"><div class="p-mslth"></div><div><div class="p-mslla">1842 Fillmore St, Marina SF</div><div class="p-msllp">$2,800/mo · 2 bed · 1 bath</div></div></div>
+              <div class="p-bu t">That looks great. What does the split come to?</div>
+              <div class="p-cbubble">
+                <div class="p-cbt">Split Rent — 1842 Fillmore</div>
+                <div class="p-cbr"><span class="p-cbl">Total rent</span><span class="p-cbv" id="cbTotal">$2,800/mo</span></div>
+                <div class="p-cbr"><span class="p-cbl">Utilities</span><span class="p-cbv" id="cbUtils">$120/mo</span></div>
+                <div class="p-cbtot"><span class="p-cbtl">Your share (50/50)</span><span class="p-cbtv" id="cbShare">$1,460/mo</span></div>
+              </div>
+              <div class="p-bu m">$1,460 each — let us request a joint viewing. I will message the agent now.</div>
+              <div class="p-msgtmr">Delivered</div>
+            </div>
+            <div class="p-msgibar">
+              <input class="p-msginput" id="msgInp" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()">
+              <button class="p-msgsend" onclick="sendMsg()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
             </div>
           </div>
-          <div class="bottom-nav" style="position:relative">
-            <div class="nav-item" onclick="go(0)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="nav-label">Search</span></div>
-            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="nav-label">Saved</span></div>
-            <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-label" style="color:#7AB0FF">RoomMatch</span></div>
-            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Profile</span></div>
-          </div>
+
+        </div><!-- /phone-screen -->
+      </div><!-- /phone -->
+
+      <!-- ANNOTATION SIDEBAR -->
+      <div class="proto-ann">
+        <div class="proto-steplist" id="stepList">
+          <div class="proto-step on" onclick="pgo(0)"><div class="proto-step-dot">1</div><div class="proto-step-name">Discovery</div></div>
+          <div class="proto-step" onclick="pgo(1)"><div class="proto-step-dot">2</div><div class="proto-step-name">Enable</div></div>
+          <div class="proto-step" onclick="pgo(2)"><div class="proto-step-dot">3</div><div class="proto-step-name">Profile Setup</div></div>
+          <div class="proto-step" onclick="pgo(3)"><div class="proto-step-dot">4</div><div class="proto-step-name">Matches</div></div>
+          <div class="proto-step" onclick="pgo(4)"><div class="proto-step-dot">5</div><div class="proto-step-name">Detail + Calc</div></div>
+          <div class="proto-step" onclick="pgo(5)"><div class="proto-step-dot">6</div><div class="proto-step-name">Messaging</div></div>
         </div>
-
-        <!-- SCREEN 5: MESSAGING ─────────────────── -->
-        <div class="screen" id="s5">
-          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
-          <div class="msg-topbar">
-            <div class="back-btn" onclick="go(4)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
-            <div class="msg-ava">AC</div>
-            <div><div class="msg-name">Avery Chen</div><div class="msg-status">Active now</div></div>
-          </div>
-          <div class="msg-area" id="msgArea">
-            <div class="msg-time">Today 9:30 AM</div>
-            <div class="bubble them">Hi! I saw we matched. I am looking at places in the Marina. Have you seen anything near Fillmore?</div>
-            <div class="bubble me">Hey Avery! Yes — I saved this 2-bed on Fillmore. Right in the Marina and BART is close.</div>
-            <div class="msg-listing-card">
-              <div class="msg-listing-thumb"></div>
-              <div><div class="msg-listing-addr">1842 Fillmore St, Marina SF</div><div class="msg-listing-price">$2,800/mo · 2 bed · 1 bath</div></div>
-            </div>
-            <div class="bubble them">That looks great. I checked the split — comes to about $1,460 each. I can stretch a little on my budget.</div>
-            <div class="calc-bubble" id="calcBubble">
-              <div class="calc-bubble-title">Split Rent — 1842 Fillmore St</div>
-              <div class="calc-bubble-row"><span class="calc-bubble-lbl">Total rent</span><span class="calc-bubble-val" id="cbTotal">$2,800/mo</span></div>
-              <div class="calc-bubble-row"><span class="calc-bubble-lbl">Utilities</span><span class="calc-bubble-val" id="cbUtils">$120/mo</span></div>
-              <div class="calc-bubble-total"><span class="calc-bubble-total-lbl">Your share (50/50)</span><span class="calc-bubble-total-val" id="cbShare">$1,460/mo</span></div>
-            </div>
-            <div class="bubble me">Let us request a joint viewing. I will message the agent now.</div>
-            <div class="msg-time" style="align-self:flex-end">Delivered</div>
-          </div>
-          <div class="msg-input-bar">
-            <input class="msg-input" id="msgInput" placeholder="Type a message..." onkeydown="sendMsg(event)">
-            <button class="msg-send" onclick="sendMsgBtn()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ── SIDEBAR ───────────────────────────── -->
-    <div class="sidebar">
-      <div class="sidebar-title">User Journey</div>
-      <div class="flow-card">
-        <div class="flow-steps-list" id="flowList">
-          <div class="flow-step-item active" onclick="go(0)">
-            <div class="step-circle">1</div>
-            <div class="step-info">
-              <div class="step-name">Discovery</div>
-              <div class="step-desc">RoomMatch banner appears contextually inside Zillow's SF rental search — no new app needed.</div>
-            </div>
-          </div>
-          <div class="flow-step-item" onclick="go(1)">
-            <div class="step-circle">2</div>
-            <div class="step-info">
-              <div class="step-name">Enable</div>
-              <div class="step-desc">Clear opt-in with three specific benefits. Users know exactly what they are signing up for.</div>
-            </div>
-          </div>
-          <div class="flow-step-item" onclick="go(2)">
-            <div class="step-circle">3</div>
-            <div class="step-info">
-              <div class="step-name">Profile Setup</div>
-              <div class="step-desc">Budget input, SF neighbourhoods, BART/Caltrain commute tags, lifestyle chips. Under 90 seconds.</div>
-            </div>
-          </div>
-          <div class="flow-step-item" onclick="go(3)">
-            <div class="step-circle">4</div>
-            <div class="step-info">
-              <div class="step-name">Matches Feed</div>
-              <div class="step-desc">Ranked by compatibility. Budget, commute, and lifestyle visible at a glance.</div>
-            </div>
-          </div>
-          <div class="flow-step-item" onclick="go(4)">
-            <div class="step-circle">5</div>
-            <div class="step-info">
-              <div class="step-name">Detail + Calculator</div>
-              <div class="step-desc">Full profile + live split rent calculator. Change rent, utilities, and split ratio in real time.</div>
-            </div>
-          </div>
-          <div class="flow-step-item" onclick="go(5)">
-            <div class="step-circle">6</div>
-            <div class="step-info">
-              <div class="step-name">Messaging</div>
-              <div class="step-desc">In-app chat with listing cards and split rent summary shareable. Type and send your own messages.</div>
-            </div>
-          </div>
+        <div class="proto-anncard hl" id="annCard">
+          <div class="proto-annnum" id="annNum">1</div>
+          <div class="proto-anntitle" id="annTitle">Contextual Discovery</div>
+          <div class="proto-anndesc" id="annDesc">RoomMatch appears as a banner inside Zillow's existing SF search — no new app needed. The nav dot signals new activity without disrupting the existing user flow.</div>
         </div>
       </div>
 
-      <!-- DYNAMIC ANNOTATION -->
-      <div class="ann-card hl" id="annotation">
-        <div class="ann-num" id="annNum">1</div>
-        <div class="ann-title" id="annTitle">Contextual Discovery</div>
-        <div class="ann-desc" id="annDesc">RoomMatch is introduced as a banner inside Zillow's existing SF search flow — not a separate app. The feature appears naturally when a user is already browsing rentals, dramatically lowering the activation barrier.</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-    </div>
-    <div style="background:#0D1117;padding:10px 20px;border-top:1px solid #2D3A52;font-family:'DM Mono',monospace;font-size:11px;color:#8892A4;display:flex;align-items:center;justify-content:space-between;">
-      <span>Interactive prototype — all inputs, calculator, and messaging are live</span>
-      <a href="prototype.html" target="_blank" style="color:#7AB0FF;text-decoration:none;font-weight:500;">Open full screen</a>
-    </div>
-  </div>
-</div>
-</div>
-</div>
+    </div><!-- /proto-layout -->
+    <div class="proto-footer">Click any screen element or step tracker to navigate all 6 screens.</div>
+  </div><!-- /proto-island -->
 </div>
 
-<div class="content">
-
+<!-- VALUE -->
 <div class="section reveal">
   <div class="section-label">Why Build This?</div>
   <h2 class="section-title">Value for <em>both sides</em></h2>
-  <p class="body-text">RoomMatch is particularly compelling in San Francisco because the problem is especially acute — median rents are among the highest in the country, shared living is the dominant rental pattern for the under-35 cohort, and the current tools for finding a roommate (Craigslist, Facebook groups) are fragmented and high-friction.</p>
   <div class="value-grid">
     <div class="value-card u"><div class="value-badge">For Users</div>
-      <div class="value-item">Eliminates the need to manage two separate searches — Zillow for listings, Craigslist or Facebook for roommates</div>
-      <div class="value-item">Reduces effective rent by 40–55% through cost-sharing — critical in a city where solo rents exceed $2,800/mo for a one-bedroom</div>
-      <div class="value-item">Split rent calculator shows the real cost before any conversation begins — removing a common source of miscommunication</div>
-      <div class="value-item">SF-specific commute tags (BART, Caltrain) surface the proximity trade-offs that matter most to this market</div>
-      <div class="value-item">In-app messaging removes the risk of sharing personal contact details before trust is established</div>
+      <div class="value-item">Eliminates two separate searches — Zillow for listings, Craigslist for roommates</div>
+      <div class="value-item">Reduces effective rent by 40–55% — critical where solo rents exceed $2,800/mo</div>
+      <div class="value-item">Split rent calculator shows the real cost before any conversation begins</div>
+      <div class="value-item">SF commute tags (BART, Caltrain) surface proximity trade-offs that matter most</div>
+      <div class="value-item">In-app messaging removes the risk of sharing personal details upfront</div>
     </div>
     <div class="value-card z"><div class="value-badge">For Zillow</div>
-      <div class="value-item">Increases session depth and time-in-app by adding a social engagement layer to a search-only product</div>
-      <div class="value-item">Creates new monetisation pathways — premium verified profiles, background check integrations, move-in concierge</div>
-      <div class="value-item">Improves retention by making Zillow the complete rental platform rather than just a discovery tool</div>
-      <div class="value-item">SF as a launch market provides a concentrated, high-intent user base — ideal for testing before national rollout</div>
-      <div class="value-item">Clear competitive differentiation — no equivalent integrated feature on Apartments.com, Trulia, or Craigslist</div>
+      <div class="value-item">Increases session depth by adding a social engagement layer to a search-only product</div>
+      <div class="value-item">New monetisation: premium verified profiles, background checks, move-in concierge</div>
+      <div class="value-item">Improves retention — Zillow becomes the complete rental platform, not just discovery</div>
+      <div class="value-item">SF as a high-intent launch market before national rollout</div>
+      <div class="value-item">No equivalent feature on Apartments.com, Trulia, or Craigslist</div>
     </div>
   </div>
 </div>
 
+<!-- METRICS -->
 <div class="section reveal">
   <div class="section-label">Success Metrics</div>
   <h2 class="section-title">How we would measure <em>success</em></h2>
   <div class="metrics-grid">
-    <div class="metric-card"><div class="metric-num">Metric 01 — Activation</div><div class="metric-title">% of SF rental searches with RoomMatch enabled</div><div class="metric-desc">Feature adoption rate among the SF target cohort — tracks how many users activate RoomMatch during an active SF rental search session.</div></div>
-    <div class="metric-card"><div class="metric-num">Metric 02 — Outcome</div><div class="metric-title">Number of successful roommate matches per month</div><div class="metric-desc">A match is defined as a mutual connection request followed by at least one in-app message exchange. SF launch target: 500 matches in Month 1.</div></div>
-    <div class="metric-card"><div class="metric-num">Metric 03 — Feature Adoption</div><div class="metric-title">% of match detail views with split rent calculator used</div><div class="metric-desc">Specific to the SF MVP — tracks whether users are engaging with the calculator as a decision-making tool, not just scrolling past it.</div></div>
-    <div class="metric-card"><div class="metric-num">Metric 04 — Retention</div><div class="metric-title">User retention rate among RoomMatch users vs. non-users</div><div class="metric-desc">Measures whether RoomMatch creates platform stickiness — do users who engage with it continue using Zillow after finding a roommate?</div></div>
-    <div class="metric-card"><div class="metric-num">Metric 05 — Growth</div><div class="metric-title">% increase in new SF users attributable to RoomMatch</div><div class="metric-desc">Tracks whether RoomMatch attracts net-new users who were previously using Craigslist or Facebook for their SF roommate search.</div></div>
-    <div class="metric-card ns"><div class="metric-num">North Star Metric</div><div class="metric-title">Users who save a San Francisco listing and achieve a RoomMatch connection in the same session</div><div class="metric-desc">The single metric that captures RoomMatch's core value — a user who finds both a property and a potential roommate in one session, without leaving Zillow. This is the behaviour that proves the feature is delivering on its premise in the SF market.</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 01 — Activation</div><div class="metric-title">% of SF rental searches with RoomMatch enabled</div><div class="metric-desc">Feature adoption rate among the SF target cohort during active rental search sessions.</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 02 — Outcome</div><div class="metric-title">Successful roommate matches per month</div><div class="metric-desc">A match is mutual connection plus at least one in-app message exchange. SF launch target: 500 in Month 1.</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 03 — Feature Adoption</div><div class="metric-title">% of match detail views with calculator used</div><div class="metric-desc">Tracks whether the split rent calculator is a genuine decision-making tool, not a passive feature.</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 04 — Retention</div><div class="metric-title">Retention rate: RoomMatch users vs. non-users</div><div class="metric-desc">Do users who engage with RoomMatch continue using Zillow after finding a roommate?</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 05 — Growth</div><div class="metric-title">% increase in new SF users via RoomMatch</div><div class="metric-desc">Tracks net-new users who were previously using Craigslist or Facebook for SF roommate search.</div></div>
+    <div class="metric-card ns"><div class="metric-num">North Star Metric</div><div class="metric-title">Users who save a listing and achieve a RoomMatch connection in the same session</div><div class="metric-desc">The single metric proving the feature delivers its core value — property and roommate found in one session, without leaving Zillow.</div></div>
   </div>
 </div>
 
+<!-- REFLECTION -->
 <div class="section reveal">
   <div class="section-label">Reflection</div>
   <h2 class="section-title">What the analysis <em>reveals</em></h2>
-  <p class="body-text">Framing this proposal specifically around San Francisco changes the nature of the argument. In a generic US rental market, shared living is a preference. In San Francisco, it is a financial necessity for most renters under 30. That distinction makes the split rent calculator not a nice-to-have feature but a core part of the decision workflow — and it makes the BART and Caltrain commute tags directly relevant rather than decorative.</p>
-  <p class="body-text">San Francisco also makes sense as a launch market for a different reason: the user density is high, the problem is acute, and the cohort is tech-literate — meaning adoption friction is lower than it would be in a mid-tier market. A successful SF launch would generate the data needed to refine the matching algorithm before a national rollout.</p>
+  <p class="body-text">Framing this proposal around San Francisco changes the nature of the argument. In a generic US rental market, shared living is a preference. In San Francisco, it is a financial necessity for most renters under 30. That distinction makes the split rent calculator a core part of the decision workflow, and the BART and Caltrain commute tags directly relevant rather than decorative.</p>
+  <p class="body-text">San Francisco also makes sense as a launch market because the user density is high, the problem is acute, and the cohort is tech-literate — meaning adoption friction is lower than it would be in a mid-tier market. A successful SF launch would generate the data needed to refine the matching algorithm before national rollout.</p>
   <div class="reflection-block">
     <div class="reflection-quote">"In San Francisco, the question is never whether you need a roommate. The question is how you find one you can trust, at a rent you can both afford, near the train you both need. That is a product problem — and Zillow is the right platform to solve it."</div>
     <div class="reflection-attr">Ann Mary Kurian · Product Strategy</div>
@@ -914,148 +688,114 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
   <a href="https://ann-kurian.github.io" class="btn-primary">Back to Portfolio</a>
 </div>
 
-</div>
+</div><!-- /content -->
 
 <script>
-const ANNOTATIONS = [
-  { title: "Contextual Discovery", desc: "RoomMatch is introduced as a banner inside Zillow's existing SF search flow — not a separate app. The feature appears naturally when a user is already browsing rentals, dramatically lowering the activation barrier." },
-  { title: "SF-first Value Framing", desc: "The enable screen leads with 'San Francisco' and references real neighbourhoods. The split rent calculator is foregrounded because in SF's market, cost-splitting is the primary driver — not a secondary feature." },
-  { title: "Real SF Context", desc: "Profile setup uses actual SF neighbourhoods (Marina, Nob Hill, Mission, SOMA, Hayes Valley) and commute tags (Near BART, Near Caltrain). These reflect how SF renters think about location trade-offs. All inputs are live and interactive." },
-  { title: "Budget + Commute Visible", desc: "Each match card shows monthly budget share and a commute tag prominently. In SF's market these two factors dominate the decision — a $1,300/mo share near BART in the Mission looks very different from $1,800/mo in the Marina." },
-  { title: "Live Split Rent Calculator", desc: "Edit total rent, utilities, and split ratio in real time. The calculator flags when a match's stated budget is close but misaligned — giving users the information to decide whether the gap is negotiable before messaging." },
-  { title: "Working Messenger", desc: "Type and send your own messages. The chat thread includes a shareable listing card and a split rent summary — so both parties are looking at the same numbers when coordinating a joint viewing." }
+/* ── SCROLL REVEAL ─────────────────────────── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ── PROTOTYPE ─────────────────────────────── */
+const ANNS = [
+  { title: 'Contextual Discovery', desc: 'RoomMatch appears as a banner inside Zillow\'s existing SF search — no new app needed. The nav dot signals activity without disrupting the existing user flow.' },
+  { title: 'SF-first Value Framing', desc: 'The enable screen leads with San Francisco context. The split rent calculator is highlighted upfront because in SF\'s market, cost-splitting is the primary driver.' },
+  { title: 'SF Neighbourhood + Commute Tags', desc: 'Real SF areas (Marina, Nob Hill, Mission, SOMA) and commute tags (Near BART, Near Caltrain). All chips are interactive — tap to toggle on or off.' },
+  { title: 'Budget + Commute on Match Cards', desc: 'Each card shows monthly budget share and a commute tag prominently. In SF these two factors dominate the decision before lifestyle even comes into it.' },
+  { title: 'Live Split Rent Calculator', desc: 'Edit total rent and utilities — the share recalculates instantly. Toggle 50/50, 60/40 and 70/30. The note flags when a match\'s budget is close but misaligned.' },
+  { title: 'Working Messenger', desc: 'Type and send real messages. The chat includes a shareable listing card and a split rent summary — so both users reference the same numbers when coordinating.' }
 ];
 
-let cur = 0;
-let splitA = 50, splitB = 50;
+let pCur = 0, splitPct = 50;
 
-function go(idx) {
-  const screens = document.querySelectorAll('.screen');
-  const prev = document.getElementById('s' + cur);
-  const next = document.getElementById('s' + idx);
-  if (!next || idx === cur) return;
+function pgo(idx) {
+  if (idx === pCur) return;
+  document.getElementById('ps' + pCur).classList.remove('on');
+  document.getElementById('ps' + idx).classList.add('on');
 
-  prev.classList.add('slide-out');
-  next.classList.add('active');
-
-  setTimeout(() => {
-    prev.classList.remove('active', 'slide-out');
-  }, 320);
-
-  // Update flow list
-  const steps = document.querySelectorAll('.flow-step-item');
-  steps.forEach((s, i) => {
-    s.classList.remove('active', 'done');
+  document.querySelectorAll('.proto-step').forEach((s, i) => {
+    s.classList.remove('on', 'done');
     if (i < idx) s.classList.add('done');
-    else if (i === idx) s.classList.add('active');
-    const circle = s.querySelector('.step-circle');
-    if (i < idx) circle.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-    else circle.textContent = i + 1;
+    if (i === idx) s.classList.add('on');
+    const dot = s.querySelector('.proto-step-dot');
+    dot.textContent = i < idx
+      ? '' : i + 1;
+    if (i < idx) dot.innerHTML = '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
   });
 
-  // Update annotation
-  const ann = ANNOTATIONS[idx];
+  const a = ANNS[idx];
   document.getElementById('annNum').textContent = idx + 1;
-  document.getElementById('annTitle').textContent = ann.title;
-  document.getElementById('annDesc').textContent = ann.desc;
+  document.getElementById('annTitle').textContent = a.title;
+  document.getElementById('annDesc').textContent = a.desc;
 
-  cur = idx;
-
-  // Scroll msg area to bottom on screen 5
-  if (idx === 5) {
-    setTimeout(() => {
-      const area = document.getElementById('msgArea');
-      if (area) area.scrollTop = area.scrollHeight;
-    }, 350);
-  }
+  pCur = idx;
+  if (idx === 5) setTimeout(() => {
+    const ma = document.getElementById('msgArea');
+    if (ma) ma.scrollTop = ma.scrollHeight;
+  }, 80);
 }
 
-// ── SPLIT RENT CALCULATOR ──────────────────────
-function setSplit(a, b) {
-  splitA = a; splitB = b;
-  document.querySelectorAll('.split-btn').forEach(btn => btn.classList.remove('active'));
-  if (a === 50) document.getElementById('split50').classList.add('active');
-  else if (a === 60) document.getElementById('split6040').classList.add('active');
-  else if (a === 70) document.getElementById('split7030').classList.add('active');
-  updateCalc();
+/* ── CALCULATOR ────────────────────────────── */
+function setSplit(pct) {
+  splitPct = pct;
+  ['50','60','70'].forEach(p => document.getElementById('sb'+p).classList.remove('on'));
+  document.getElementById('sb' + pct).classList.add('on');
+  calcUpdate();
 }
 
-function updateCalc() {
-  const rent = parseFloat(document.getElementById('totalRent')?.value) || 2800;
-  const utils = parseFloat(document.getElementById('utilities')?.value) || 120;
-    const userBudget = parseFloat(document.getElementById('budgetInput')?.value) || 1400;
-  const averyBudget = 1400;
-  const total = rent + utils;
-  const myShare = Math.round(total * (splitA / 100));
+function calcUpdate() {
+  const rent  = parseFloat(document.getElementById('rentInp')?.value)  || 2800;
+  const utils = parseFloat(document.getElementById('utilInp')?.value)  || 120;
+  const bgt   = parseFloat(document.getElementById('budgetInp')?.value) || 1400;
+  const share = Math.round((rent + utils) * (splitPct / 100));
 
-  // Update display
-  const shareEl = document.getElementById('myShare');
-  if (shareEl) shareEl.innerHTML = '$' + myShare.toLocaleString() + '<span>/mo</span>';
+  const sd = document.getElementById('shareDisp');
+  if (sd) sd.innerHTML = '$' + share.toLocaleString() + '<span>/mo</span>';
 
-  const noteEl = document.getElementById('calcNote');
-  if (noteEl) {
-    const diff = myShare - averyBudget;
-    if (diff <= 0) {
-      noteEl.textContent = "Avery's budget of $" + averyBudget.toLocaleString() + "/mo covers this split comfortably.";
-      noteEl.className = 'calc-note';
-    } else if (diff <= 150) {
-      noteEl.textContent = "Avery's budget is $" + averyBudget.toLocaleString() + "/mo — $" + diff + " below this split. Within negotiation range.";
-      noteEl.className = 'calc-note warn';
-    } else {
-      noteEl.textContent = "Avery's budget is $" + diff + " below this split. Consider a different ratio or listing.";
-      noteEl.className = 'calc-note warn';
-    }
+  const note = document.getElementById('calcNote');
+  if (note) {
+    const diff = share - bgt;
+    if (diff <= 0)       { note.textContent = 'Budget covers this split comfortably.'; note.className = 'p-calcnote'; }
+    else if (diff <= 150){ note.textContent = 'Budget is $' + diff + ' below this split. Within negotiation range.'; note.className = 'p-calcnote warn'; }
+    else                 { note.textContent = 'Budget gap is $' + diff + '. Try a different split or listing.'; note.className = 'p-calcnote warn'; }
   }
 
-  // Sync to message screen bubble
-  const cbTotal = document.getElementById('cbTotal');
-  const cbUtils = document.getElementById('cbUtils');
-  const cbShare = document.getElementById('cbShare');
-  if (cbTotal) cbTotal.textContent = '$' + rent.toLocaleString() + '/mo';
-  if (cbUtils) cbUtils.textContent = '$' + utils.toLocaleString() + '/mo';
-  if (cbShare) cbShare.textContent = '$' + myShare.toLocaleString() + '/mo';
+  if (document.getElementById('cbTotal')) document.getElementById('cbTotal').textContent = '$' + rent.toLocaleString() + '/mo';
+  if (document.getElementById('cbUtils')) document.getElementById('cbUtils').textContent = '$' + utils.toLocaleString() + '/mo';
+  if (document.getElementById('cbShare')) document.getElementById('cbShare').textContent = '$' + share.toLocaleString() + '/mo';
 }
 
-// ── MESSAGING ─────────────────────────────────
-function sendMsg(e) {
-  if (e.key === 'Enter') sendMsgBtn();
-}
+/* ── MESSAGING ─────────────────────────────── */
+const REPLIES = [
+  'That sounds great — when are you free for a viewing?',
+  'I can do Saturday morning. Shall we message the agent together?',
+  'The split looks good to me. Let us go for it.',
+  'Have you seen any other listings in the Marina you liked?',
+  'Perfect — I will share my number when we are ready to meet.'
+];
 
-function sendMsgBtn() {
-  const input = document.getElementById('msgInput');
-  const text = input.value.trim();
-  if (!text) return;
+function sendMsg() {
+  const inp = document.getElementById('msgInp');
+  const txt = inp.value.trim();
+  if (!txt) return;
   const area = document.getElementById('msgArea');
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble me';
-  bubble.textContent = text;
-  area.appendChild(bubble);
-  input.value = '';
+  const b = document.createElement('div');
+  b.className = 'p-bu m';
+  b.textContent = txt;
+  area.appendChild(b);
+  inp.value = '';
   area.scrollTop = area.scrollHeight;
-
-  // Auto-reply after short delay
   setTimeout(() => {
-    const replies = [
-      "That sounds great — when are you free for a viewing?",
-      "I can do Saturday morning. Shall we message the agent together?",
-      "Perfect, let us lock it in. I will share my number when we are ready.",
-      "Have you seen any other listings in the Marina you liked?",
-    ];
-    const reply = document.createElement('div');
-    reply.className = 'bubble them';
-    reply.textContent = replies[Math.floor(Math.random() * replies.length)];
-    area.appendChild(reply);
+    const r = document.createElement('div');
+    r.className = 'p-bu t';
+    r.textContent = REPLIES[Math.floor(Math.random() * REPLIES.length)];
+    area.appendChild(r);
     area.scrollTop = area.scrollHeight;
-  }, 1200);
+  }, 1100);
 }
 
-// Init
-updateCalc();
-</script>
-
-<script>
-const obs = new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.07});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+calcUpdate();
 </script>
 </body>
 </html>
