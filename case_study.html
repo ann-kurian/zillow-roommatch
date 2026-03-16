@@ -6,35 +6,28 @@
 <title>Zillow RoomMatch · Product Teardown · Ann Mary Kurian</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ── PORTFOLIO PALETTE ───────────────────────────────────────────────────── */
-:root {
+:root{
   --cream:#F5F0E8;--cream-dark:#EDE6D6;--navy:#1C2B4A;--navy-mid:#2D4470;
   --teal:#1A7A6E;--teal-light:#E8F5F3;--amber:#C4873A;--amber-light:#FDF3E7;
   --green:#1A7A3C;--green-light:#F0FDF4;--red:#C0392B;--red-light:#FEF2F2;
   --text:#1C2B4A;--muted:#7A8499;--border:#DDD6C8;
-  --serif:'Playfair Display',Georgia,serif;
-  --sans:'DM Sans',sans-serif;
-  --mono:'DM Mono',monospace;
-  /* Zillow brand for prototype */
-  --z-blue:#006AFF;--z-dark:#1B1F27;--z-mid:#2D3748;
-  --z-surface:#1E2535;--z-card:#252D3D;--z-border:#334155;
-  --z-muted:#8892A4;--z-green:#00C48C;--z-red:#FF6B6B;--z-amber:#FFB547;
+  --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --z-bg:#0D1117;--z-surface:#161B26;--z-card:#1C2333;--z-card2:#222840;
+  --z-border:#2D3A52;--z-border2:#3A4A68;--z-blue:#006AFF;
+  --z-muted:#8892A4;--z-green:#00C48C;--z-amber:#F5A623;--z-red:#FF6B6B;
+  --z-text:#E8EDF5;--z-text2:#C8D0DC;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:var(--sans);background:var(--cream);color:var(--text);font-size:16px;line-height:1.6;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.4;}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,240,232,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,240,232,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
 .nav-back{font-family:var(--mono);font-size:12px;letter-spacing:0.08em;color:var(--muted);text-decoration:none;transition:color 0.2s;}
 .nav-back:hover{color:var(--navy);}
 .nav-name{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--navy);text-decoration:none;}
-
-/* HERO */
 .hero{padding:140px 60px 80px;max-width:900px;margin:0 auto;}
 .hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal);margin-bottom:20px;opacity:0;animation:fadeUp 0.7s ease forwards 0.2s;}
-.hero-title{font-family:var(--serif);font-size:clamp(36px,5vw,62px);font-weight:700;line-height:1.05;color:var(--navy);margin-bottom:12px;opacity:0;animation:fadeUp 0.7s ease forwards 0.35s;}
+.hero-title{font-family:var(--serif);font-size:clamp(36px,5vw,60px);font-weight:700;line-height:1.05;color:var(--navy);margin-bottom:12px;opacity:0;animation:fadeUp 0.7s ease forwards 0.35s;}
 .hero-title em{font-style:italic;color:var(--amber);}
 .hero-subtitle{font-family:var(--serif);font-size:19px;font-style:italic;color:var(--muted);margin-bottom:40px;max-width:680px;line-height:1.5;opacity:0;animation:fadeUp 0.7s ease forwards 0.45s;}
 .hero-meta{display:flex;flex-wrap:wrap;gap:32px;margin-bottom:40px;opacity:0;animation:fadeUp 0.7s ease forwards 0.55s;}
@@ -43,8 +36,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
 .meta-value{font-size:14px;font-weight:500;color:var(--navy);}
 .hero-tags{display:flex;flex-wrap:wrap;gap:8px;opacity:0;animation:fadeUp 0.7s ease forwards 0.65s;}
 .tag{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;padding:5px 12px;border:1px solid var(--border);color:var(--muted);border-radius:2px;background:white;}
-
-/* LAYOUT */
 .divider{height:1px;background:var(--border);margin:0 60px;}
 .content{max-width:900px;margin:0 auto;padding:0 60px;}
 .section{padding:72px 0;border-bottom:1px solid var(--border);}
@@ -53,768 +44,597 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
 .section-title{font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:700;color:var(--navy);line-height:1.15;margin-bottom:24px;}
 .section-title em{font-style:italic;color:var(--amber);}
 .body-text{font-size:16px;line-height:1.85;color:var(--text);margin-bottom:20px;}
-
-/* PROBLEM BOX */
 .problem-box{background:var(--navy);padding:40px 48px;margin:32px 0;}
 .problem-label{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.4);margin-bottom:10px;}
 .problem-text{font-family:var(--serif);font-size:clamp(17px,2.2vw,23px);font-style:italic;color:var(--cream);line-height:1.55;}
-
-/* USER FLOW */
 .flow-steps{display:flex;flex-direction:column;gap:2px;margin-top:32px;}
 .flow-step{background:white;border:1px solid var(--border);border-left:4px solid var(--teal);padding:20px 24px;display:grid;grid-template-columns:36px 1fr;gap:16px;align-items:start;}
+.flow-gap{border-left-color:var(--red);}
 .flow-num{font-family:var(--mono);font-size:18px;font-weight:500;color:var(--teal);opacity:0.5;line-height:1;margin-top:2px;}
+.flow-gap .flow-num{color:var(--red);}
 .flow-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;}
 .flow-desc{font-size:13px;color:var(--muted);line-height:1.6;}
-
-/* SWOT */
 .swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:32px;}
 .swot-card{background:white;border:1px solid var(--border);padding:28px;}
 .swot-card.s{border-top:3px solid var(--teal);}
 .swot-card.w{border-top:3px solid var(--amber);}
 .swot-card.o{border-top:3px solid var(--green);}
 .swot-card.t{border-top:3px solid var(--red);}
-.swot-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:14px;}
+.swot-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;padding:3px 10px;border-radius:2px;display:inline-block;margin-bottom:14px;}
 .swot-card.s .swot-badge{background:var(--teal-light);color:var(--teal);}
 .swot-card.w .swot-badge{background:var(--amber-light);color:var(--amber);}
 .swot-card.o .swot-badge{background:var(--green-light);color:var(--green);}
 .swot-card.t .swot-badge{background:var(--red-light);color:var(--red);}
 .swot-item{font-size:13px;color:var(--muted);padding-left:14px;position:relative;margin-bottom:8px;line-height:1.6;}
-.swot-item::before{content:'—';position:absolute;left:0;font-size:11px;}
+.swot-item::before{content:'--';position:absolute;left:0;font-size:11px;}
 .swot-card.s .swot-item::before{color:var(--teal);}
 .swot-card.w .swot-item::before{color:var(--amber);}
 .swot-card.o .swot-item::before{color:var(--green);}
 .swot-card.t .swot-item::before{color:var(--red);}
-
-/* PERSONAS */
 .persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:32px;}
 .persona-card{background:white;border:1px solid var(--border);border-top:3px solid var(--amber);padding:28px;}
-.persona-name{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:4px;}
-.persona-role{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:var(--amber);margin-bottom:16px;text-transform:uppercase;}
-.persona-age{font-size:13px;color:var(--muted);margin-bottom:16px;}
-.persona-section{margin-bottom:14px;}
-.persona-section-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.persona-section-text{font-size:13px;color:var(--text);line-height:1.6;}
-
-/* VALUE PROP */
+.persona-name{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.persona-role{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:var(--amber);margin-bottom:14px;text-transform:uppercase;}
+.persona-row{display:grid;grid-template-columns:90px 1fr;gap:8px;margin-bottom:10px;font-size:13px;}
+.persona-row-label{font-weight:600;color:var(--navy);}
+.persona-row-val{color:var(--muted);line-height:1.6;}
 .value-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:32px;}
 .value-card{background:white;border:1px solid var(--border);padding:28px;}
 .value-card.users{border-top:3px solid var(--teal);}
 .value-card.zillow{border-top:3px solid var(--navy);}
-.value-label{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;}
-.value-card.users .value-label{color:var(--teal);}
-.value-card.zillow .value-label{color:var(--navy);}
-.value-item{font-size:14px;color:var(--text);padding-left:14px;position:relative;margin-bottom:8px;line-height:1.6;}
-.value-item::before{content:'→';position:absolute;left:0;font-size:11px;color:var(--muted);}
-
-/* METRICS */
+.value-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;display:inline-block;padding:3px 10px;border-radius:2px;}
+.value-card.users .value-badge{background:var(--teal-light);color:var(--teal);}
+.value-card.zillow .value-badge{background:var(--cream-dark);color:var(--navy);}
+.value-item{font-size:13px;color:var(--muted);padding-left:14px;position:relative;margin-bottom:8px;line-height:1.6;}
+.value-item::before{content:'>';position:absolute;left:0;font-size:11px;color:var(--muted);}
 .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:32px;}
 .metric-card{background:white;border:1px solid var(--border);padding:24px;}
-.metric-icon{font-size:22px;margin-bottom:10px;}
-.metric-label{font-size:13px;font-weight:500;color:var(--navy);line-height:1.4;}
-.metric-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5;}
-
-/* ── MVP PROTOTYPE ──────────────────────────────────────────────────────── */
-.prototype-section{background:var(--z-dark);border-radius:0;padding:60px;margin:0 -60px;}
-.prototype-label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--z-muted);margin-bottom:12px;}
-.prototype-title{font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:700;color:white;line-height:1.15;margin-bottom:12px;}
-.prototype-title em{font-style:italic;color:var(--z-amber);}
-.prototype-sub{font-size:15px;color:var(--z-muted);margin-bottom:40px;line-height:1.6;max-width:600px;}
-.prototype-note{font-family:var(--mono);font-size:11px;color:var(--z-muted);margin-top:20px;letter-spacing:0.04em;}
-
-/* PHONE SHELL */
-.phone-container{display:flex;justify-content:center;align-items:flex-start;gap:40px;flex-wrap:wrap;}
-.phone-shell{width:320px;background:#0A0E17;border-radius:44px;border:2px solid #2D3748;padding:12px;box-shadow:0 40px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.04);position:relative;flex-shrink:0;}
-.phone-notch{width:100px;height:28px;background:#0A0E17;border-radius:0 0 18px 18px;margin:0 auto 8px;position:relative;z-index:2;}
-.phone-notch::after{content:'';width:60px;height:4px;background:#1E2535;border-radius:4px;position:absolute;bottom:6px;left:50%;transform:translateX(-50%);}
-.phone-screen{background:var(--z-dark);border-radius:32px;overflow:hidden;height:620px;position:relative;}
-
-/* SCREENS */
-.screen{position:absolute;inset:0;background:var(--z-dark);transition:opacity 0.3s ease,transform 0.3s ease;opacity:0;pointer-events:none;transform:translateX(20px);}
-.screen.active{opacity:1;pointer-events:all;transform:translateX(0);}
-
-/* STATUS BAR */
-.status-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 20px 6px;font-size:11px;color:white;font-weight:600;}
-.status-icons{display:flex;gap:4px;align-items:center;font-size:10px;}
-
-/* ZILLOW TOP BAR */
-.z-topbar{padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;}
-.z-logo{font-size:22px;font-weight:800;color:white;letter-spacing:-0.5px;}
-.z-logo span{color:var(--z-blue);}
-.z-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--z-blue),#0044CC);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;}
-
-/* SEARCH BAR */
-.z-search{margin:0 16px 14px;background:var(--z-surface);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;border:1px solid var(--z-border);}
-.z-search-icon{color:var(--z-muted);font-size:14px;}
-.z-search-text{font-size:13px;color:var(--z-muted);}
-
-/* LISTING CARD */
-.listing-card{margin:0 16px 12px;background:var(--z-card);border-radius:16px;overflow:hidden;border:1px solid var(--z-border);}
-.listing-img{height:140px;background:linear-gradient(135deg,#1E3A5F,#2D4A7A);position:relative;display:flex;align-items:flex-end;padding:12px;}
-.listing-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.6));}
-.listing-badge{background:var(--z-blue);color:white;font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;position:relative;z-index:1;letter-spacing:0.04em;}
-.listing-heart{position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;}
-.listing-body{padding:14px;}
-.listing-price{font-size:18px;font-weight:700;color:white;margin-bottom:2px;}
-.listing-price span{font-size:12px;font-weight:400;color:var(--z-muted);}
-.listing-addr{font-size:12px;color:var(--z-muted);margin-bottom:8px;}
-.listing-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.listing-tag{background:rgba(255,255,255,0.06);border:1px solid var(--z-border);font-size:10px;color:var(--z-muted);padding:2px 8px;border-radius:6px;}
-
-/* BOTTOM NAV */
-.z-bottomnav{position:absolute;bottom:0;left:0;right:0;background:var(--z-surface);border-top:1px solid var(--z-border);display:flex;justify-content:space-around;padding:10px 0 16px;}
-.z-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--z-muted);cursor:pointer;transition:color 0.2s;padding:2px 8px;}
-.z-nav-item.active{color:var(--z-blue);}
-.z-nav-icon{font-size:18px;line-height:1;}
-.z-nav-dot{width:6px;height:6px;background:var(--z-blue);border-radius:50%;position:absolute;top:-2px;right:-2px;}
-
-/* ROOMMATCH SCREEN */
-.rm-header{padding:16px 16px 8px;}
-.rm-title{font-size:20px;font-weight:700;color:white;margin-bottom:4px;}
-.rm-sub{font-size:12px;color:var(--z-muted);}
-.rm-card{margin:0 16px 10px;background:var(--z-card);border-radius:16px;padding:16px;border:1px solid var(--z-border);cursor:pointer;transition:border-color 0.2s;}
-.rm-card:hover{border-color:var(--z-blue);}
-.rm-card-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
-.rm-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0;}
-.rm-name{font-size:15px;font-weight:600;color:white;margin-bottom:2px;}
-.rm-role{font-size:11px;color:var(--z-muted);}
-.rm-match{margin-left:auto;text-align:right;}
-.rm-match-pct{font-size:20px;font-weight:800;color:var(--z-green);}
-.rm-match-label{font-size:9px;color:var(--z-muted);text-transform:uppercase;letter-spacing:0.08em;}
-.rm-tags{display:flex;gap:5px;flex-wrap:wrap;}
-.rm-tag{background:rgba(0,106,255,0.12);border:1px solid rgba(0,106,255,0.25);font-size:10px;color:#6BA3FF;padding:2px 8px;border-radius:6px;}
-.rm-actions{display:flex;gap:8px;margin-top:10px;}
-.rm-btn{flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.2s;}
-.rm-btn.pass{background:rgba(255,255,255,0.08);color:white;}
-.rm-btn.connect{background:var(--z-blue);color:white;}
-
-/* PROFILE SETUP SCREEN */
-.setup-header{padding:16px 16px 8px;display:flex;align-items:center;gap:10px;}
-.setup-back{font-size:20px;color:white;cursor:pointer;line-height:1;}
-.setup-title{font-size:18px;font-weight:700;color:white;}
-.setup-progress{margin:0 16px 16px;}
-.progress-bar{background:var(--z-border);border-radius:4px;height:3px;margin-bottom:6px;}
-.progress-fill{background:var(--z-blue);border-radius:4px;height:100%;transition:width 0.5s ease;}
-.progress-text{font-size:10px;color:var(--z-muted);font-family:var(--mono);}
-.setup-field{margin:0 16px 10px;}
-.field-label{font-size:11px;color:var(--z-muted);margin-bottom:6px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;font-family:var(--mono);}
-.field-input{background:var(--z-surface);border:1px solid var(--z-border);border-radius:10px;padding:11px 14px;font-size:13px;color:white;width:100%;}
-.field-chips{display:flex;gap:6px;flex-wrap:wrap;}
-.chip{background:var(--z-surface);border:1px solid var(--z-border);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--z-muted);cursor:pointer;transition:all 0.2s;}
-.chip.selected{background:rgba(0,106,255,0.15);border-color:var(--z-blue);color:#6BA3FF;}
-.setup-cta{margin:12px 16px 0;}
-.setup-cta-btn{width:100%;background:var(--z-blue);color:white;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;}
-
-/* MATCH DETAIL SCREEN */
-.match-header{padding:12px 16px;display:flex;align-items:center;gap:10px;}
-.match-back{font-size:20px;color:white;cursor:pointer;}
-.match-big-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:white;margin:8px auto 8px;}
-.match-big-name{font-size:20px;font-weight:700;color:white;text-align:center;margin-bottom:2px;}
-.match-big-role{font-size:12px;color:var(--z-muted);text-align:center;margin-bottom:16px;}
-.match-score-row{display:flex;gap:8px;padding:0 16px;margin-bottom:14px;}
-.match-score-card{flex:1;background:var(--z-card);border-radius:12px;padding:12px;text-align:center;border:1px solid var(--z-border);}
-.match-score-val{font-size:20px;font-weight:800;margin-bottom:2px;}
-.match-score-lbl{font-size:10px;color:var(--z-muted);text-transform:uppercase;letter-spacing:0.06em;}
-.match-section{margin:0 16px 12px;}
-.match-section-title{font-size:11px;color:var(--z-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;font-family:var(--mono);}
-.match-pref-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.match-pref-tag{background:var(--z-surface);border:1px solid var(--z-border);font-size:11px;color:white;padding:4px 10px;border-radius:8px;}
-.match-msg-btn{margin:8px 16px 0;background:var(--z-blue);color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;width:calc(100% - 32px);}
-
-/* SCREEN SELECTOR */
-.screen-tabs{display:flex;gap:2px;margin-bottom:24px;border:1px solid var(--z-border);border-radius:10px;overflow:hidden;background:var(--z-surface);}
-.screen-tab{flex:1;padding:10px 6px;font-size:11px;font-family:var(--mono);letter-spacing:0.04em;text-align:center;cursor:pointer;color:var(--z-muted);border:none;background:transparent;transition:all 0.2s;}
-.screen-tab.active{background:var(--z-blue);color:white;}
-
-/* ANNOTATION PANEL */
-.annotation-panel{width:260px;display:flex;flex-direction:column;gap:12px;padding-top:48px;}
-.annotation{background:var(--z-card);border:1px solid var(--z-border);border-radius:12px;padding:16px;position:relative;}
-.annotation.highlight{border-color:var(--z-blue);background:rgba(0,106,255,0.06);}
-.annotation-num{width:22px;height:22px;background:var(--z-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;margin-bottom:8px;}
-.annotation-title{font-size:13px;font-weight:600;color:white;margin-bottom:4px;}
-.annotation-desc{font-size:12px;color:var(--z-muted);line-height:1.6;}
-
-/* REFLECTION */
+.metric-card.ns{grid-column:1/-1;background:var(--amber-light);border-color:var(--amber);}
+.metric-num{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.metric-card.ns .metric-num{color:var(--amber);}
+.metric-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;line-height:1.4;}
+.metric-desc{font-size:12px;color:var(--muted);line-height:1.6;}
 .reflection-block{background:var(--navy);padding:48px;margin-top:32px;}
 .reflection-quote{font-family:var(--serif);font-size:clamp(17px,2.2vw,23px);font-style:italic;color:var(--cream);line-height:1.6;margin-bottom:20px;}
 .reflection-attr{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,240,232,0.4);}
-
 .cta-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:48px;padding-bottom:80px;}
 .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:var(--cream);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.06em;padding:14px 28px;border-radius:2px;transition:background 0.2s,transform 0.2s;}
 .btn-primary:hover{background:var(--navy-mid);transform:translateY(-1px);}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--navy);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.06em;padding:14px 28px;border-radius:2px;border:1.5px solid var(--border);transition:border-color 0.2s,transform 0.2s;}
-.btn-secondary:hover{border-color:var(--navy);transform:translateY(-1px);}
-
 .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 
+/* PROTOTYPE */
+.proto-wrap{background:var(--z-bg);padding:60px;margin:0 -60px;}
+.proto-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--z-muted);margin-bottom:10px;}
+.proto-title{font-family:var(--serif);font-size:clamp(24px,3vw,34px);font-weight:700;color:var(--z-text);line-height:1.15;margin-bottom:10px;}
+.proto-title em{font-style:italic;color:var(--z-amber);}
+.proto-sub{font-size:14px;color:var(--z-muted);margin-bottom:32px;line-height:1.7;max-width:580px;}
+.step-row{display:flex;align-items:center;gap:0;margin-bottom:32px;overflow-x:auto;padding-bottom:4px;}
+.step-row::-webkit-scrollbar{display:none;}
+.step-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 12px;background:none;border:none;cursor:pointer;flex-shrink:0;}
+.step-dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--z-border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--z-muted);transition:all 0.25s;background:var(--z-surface);}
+.step-btn.active .step-dot{background:var(--z-blue);border-color:var(--z-blue);color:white;}
+.step-btn.done .step-dot{background:var(--z-green);border-color:var(--z-green);color:white;}
+.step-lbl{font-size:10px;font-family:var(--mono);color:var(--z-muted);white-space:nowrap;letter-spacing:0.04em;}
+.step-btn.active .step-lbl{color:var(--z-text);}
+.step-btn.done .step-lbl{color:var(--z-green);}
+.step-line{width:28px;height:2px;background:var(--z-border);margin-top:-12px;flex-shrink:0;transition:background 0.3s;}
+.step-line.done{background:var(--z-green);}
+.proto-body{display:flex;gap:36px;align-items:flex-start;justify-content:center;flex-wrap:wrap;}
+.phone{width:295px;flex-shrink:0;background:#080C14;border-radius:44px;border:1.5px solid #2A3347;padding:10px;box-shadow:0 32px 64px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.03);}
+.phone-pill{width:84px;height:22px;background:#0D1117;border-radius:0 0 14px 14px;margin:0 auto 6px;position:relative;}
+.phone-pill::after{content:'';width:46px;height:3px;background:#1C2333;border-radius:3px;position:absolute;bottom:4px;left:50%;transform:translateX(-50%);}
+.pscreen{background:var(--z-bg);border-radius:34px;overflow:hidden;height:582px;position:relative;}
+.sc{position:absolute;inset:0;overflow:hidden;opacity:0;pointer-events:none;transform:translateX(20px);transition:opacity 0.28s ease,transform 0.28s ease;}
+.sc.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 5px;font-size:10px;font-weight:700;color:var(--z-text2);font-family:var(--mono);}
+.zlogo{font-size:19px;font-weight:900;color:var(--z-text);letter-spacing:-0.5px;}
+.zlogo b{color:var(--z-blue);}
+.zava{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--z-blue),#0055DD);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;}
+.toprow{display:flex;align-items:center;justify-content:space-between;padding:2px 14px 8px;}
+.zsearch{margin:0 12px 10px;background:var(--z-surface);border:1px solid var(--z-border2);border-radius:11px;padding:9px 12px;display:flex;align-items:center;gap:7px;}
+.zsb-text{font-size:11px;color:var(--z-muted);}
+.zsb-chip{margin-left:auto;background:rgba(0,106,255,0.12);border:1px solid rgba(0,106,255,0.3);border-radius:7px;padding:2px 7px;font-size:9px;font-weight:600;color:#7AB0FF;font-family:var(--mono);}
+.rmbanner{margin:0 12px 10px;background:linear-gradient(135deg,rgba(0,106,255,0.14),rgba(0,106,255,0.04));border:1px solid rgba(0,106,255,0.28);border-radius:11px;padding:10px 12px;display:flex;align-items:center;gap:9px;cursor:pointer;}
+.rmb-icon{width:30px;height:30px;background:var(--z-blue);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rmb-title{font-size:11px;font-weight:700;color:var(--z-text);margin-bottom:1px;}
+.rmb-sub{font-size:10px;color:#7AB0FF;}
+.rmb-arr{margin-left:auto;color:#7AB0FF;font-size:15px;}
+.listing{margin:0 12px 8px;background:var(--z-card);border-radius:13px;overflow:hidden;border:1px solid var(--z-border);}
+.limg{height:98px;position:relative;}
+.limg-bg{position:absolute;inset:0;}
+.limg-grad{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,0.65));}
+.lbadge{position:absolute;top:7px;left:7px;background:var(--z-blue);color:white;font-size:8px;font-weight:700;padding:2px 6px;border-radius:5px;letter-spacing:0.06em;}
+.lsave{position:absolute;top:7px;right:7px;width:24px;height:24px;background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.lbody{padding:8px 10px;}
+.lprice{font-size:14px;font-weight:700;color:var(--z-text);margin-bottom:2px;}
+.lprice span{font-size:10px;font-weight:400;color:var(--z-muted);}
+.laddr{font-size:10px;color:var(--z-muted);margin-bottom:5px;}
+.lchips{display:flex;gap:4px;}
+.lchip{background:rgba(255,255,255,0.05);border:1px solid var(--z-border);font-size:8px;color:var(--z-muted);padding:1px 6px;border-radius:5px;}
+.znav{position:absolute;bottom:0;left:0;right:0;background:var(--z-surface);border-top:1px solid var(--z-border);display:flex;justify-content:space-around;padding:7px 0 13px;}
+.zni{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;}
+.zni-label{font-size:8px;font-family:var(--mono);letter-spacing:0.04em;color:var(--z-muted);}
+.zni.active .zni-label{color:var(--z-blue);}
+.zni-dot{width:6px;height:6px;background:var(--z-blue);border-radius:50%;position:absolute;top:-1px;right:-1px;border:1.5px solid var(--z-surface);}
+.setup-topbar{padding:7px 14px 3px;display:flex;align-items:center;gap:9px;}
+.back-btn{width:26px;height:26px;background:var(--z-surface);border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--z-border);}
+.screen-ttl{font-size:14px;font-weight:700;color:var(--z-text);}
+.enable-hero{margin:8px 14px 12px;background:linear-gradient(135deg,#0A1628,#142240);border-radius:14px;padding:18px;border:1px solid var(--z-border2);text-align:center;}
+.enable-icon{width:48px;height:48px;background:var(--z-blue);border-radius:14px;margin:0 auto 9px;display:flex;align-items:center;justify-content:center;}
+.enable-title{font-size:16px;font-weight:700;color:var(--z-text);margin-bottom:5px;}
+.enable-desc{font-size:11px;color:var(--z-muted);line-height:1.6;}
+.perm-list{margin:0 14px 10px;display:flex;flex-direction:column;gap:7px;}
+.perm-item{background:var(--z-surface);border:1px solid var(--z-border);border-radius:9px;padding:9px 11px;display:flex;align-items:center;gap:9px;}
+.perm-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.perm-title{font-size:11px;font-weight:600;color:var(--z-text);}
+.perm-sub{font-size:9px;color:var(--z-muted);}
+.enable-cta{margin:0 14px;}
+.enable-btn{width:100%;background:var(--z-blue);color:white;border:none;border-radius:11px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;}
+.prog-header{padding:7px 14px 0;display:flex;align-items:center;gap:9px;}
+.prog-steps{display:flex;gap:3px;flex:1;}
+.pstep{flex:1;height:3px;border-radius:3px;background:var(--z-border2);}
+.pstep.done{background:var(--z-blue);}
+.pstep.cur{background:var(--z-blue);opacity:0.45;}
+.prog-pct{font-family:var(--mono);font-size:9px;color:var(--z-muted);}
+.psection{margin:8px 14px 0;}
+.psec-label{font-family:var(--mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--z-muted);margin-bottom:5px;}
+.psec-title{font-size:13px;font-weight:700;color:var(--z-text);margin-bottom:8px;}
+.field{margin-bottom:8px;}
+.field-label{font-size:9px;font-family:var(--mono);letter-spacing:0.1em;text-transform:uppercase;color:var(--z-muted);margin-bottom:4px;}
+.field-val{background:var(--z-surface);border:1px solid var(--z-border2);border-radius:9px;padding:8px 11px;font-size:11px;color:#7AB0FF;font-weight:600;display:flex;align-items:center;justify-content:space-between;}
+.field-hint{font-size:9px;color:var(--z-muted);font-weight:400;}
+.chips{display:flex;gap:4px;flex-wrap:wrap;}
+.chip{background:var(--z-surface);border:1px solid var(--z-border2);border-radius:18px;padding:4px 10px;font-size:10px;color:var(--z-muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.chip.on{background:rgba(0,106,255,0.13);border-color:var(--z-blue);color:#7AB0FF;font-weight:500;}
+.pcta{margin:10px 14px 0;}
+.pcta-btn{width:100%;background:var(--z-blue);color:white;border:none;border-radius:11px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;}
+.matches-topbar{padding:7px 14px 3px;display:flex;align-items:center;justify-content:space-between;}
+.matches-title{font-size:15px;font-weight:700;color:var(--z-text);}
+.matches-filter{background:var(--z-surface);border:1px solid var(--z-border2);border-radius:7px;padding:3px 9px;font-size:9px;font-family:var(--mono);color:var(--z-muted);}
+.ctx-strip{margin:0 12px 7px;background:rgba(0,196,140,0.08);border:1px solid rgba(0,196,140,0.18);border-radius:9px;padding:6px 10px;font-size:10px;color:var(--z-green);}
+.mcard{margin:0 12px 7px;background:var(--z-card);border-radius:12px;border:1px solid var(--z-border);overflow:hidden;cursor:pointer;transition:border-color 0.2s;}
+.mcard:hover{border-color:var(--z-border2);}
+.mcard-top{padding:10px 10px 7px;display:flex;align-items:center;gap:9px;}
+.mcard-ava{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;flex-shrink:0;}
+.mcard-name{font-size:13px;font-weight:700;color:var(--z-text);margin-bottom:1px;}
+.mcard-role{font-size:10px;color:var(--z-muted);}
+.mcard-pct{font-size:20px;font-weight:800;color:var(--z-green);line-height:1;margin-left:auto;}
+.mcard-pct-lbl{font-size:8px;font-family:var(--mono);color:var(--z-muted);letter-spacing:0.06em;text-align:right;}
+.mcard-div{height:1px;background:var(--z-border);margin:0 10px;}
+.mcard-bot{padding:7px 10px;display:flex;align-items:center;gap:5px;justify-content:space-between;}
+.mtags{display:flex;gap:4px;flex-wrap:wrap;}
+.mtag{background:rgba(0,106,255,0.09);border:1px solid rgba(0,106,255,0.18);font-size:8px;color:#7AB0FF;padding:2px 6px;border-radius:5px;}
+.mact-p{background:var(--z-surface);border:1px solid var(--z-border2);color:var(--z-muted);font-size:10px;font-weight:600;padding:4px 9px;border-radius:7px;cursor:pointer;}
+.mact-c{background:var(--z-blue);color:white;font-size:10px;font-weight:600;padding:4px 9px;border-radius:7px;border:none;cursor:pointer;}
+.det-topbar{padding:7px 12px 3px;display:flex;align-items:center;gap:7px;}
+.det-back{width:26px;height:26px;background:var(--z-surface);border:1px solid var(--z-border);border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:var(--z-text);}
+.det-tname{font-size:13px;font-weight:700;color:var(--z-text);}
+.det-ava-wrap{display:flex;justify-content:center;padding:8px 0 3px;}
+.det-ava{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:white;border:2.5px solid var(--z-border2);}
+.det-name{font-size:17px;font-weight:700;color:var(--z-text);text-align:center;margin-bottom:2px;}
+.det-role{font-size:11px;color:var(--z-muted);text-align:center;margin-bottom:8px;}
+.det-scores{display:flex;gap:5px;padding:0 12px;margin-bottom:8px;}
+.dscore{flex:1;background:var(--z-card);border:1px solid var(--z-border);border-radius:9px;padding:7px;text-align:center;}
+.dscore-val{font-size:16px;font-weight:800;margin-bottom:1px;line-height:1;}
+.dscore-lbl{font-size:8px;font-family:var(--mono);color:var(--z-muted);letter-spacing:0.06em;}
+.det-section{margin:0 12px 7px;}
+.det-sec-lbl{font-size:8px;font-family:var(--mono);letter-spacing:0.1em;text-transform:uppercase;color:var(--z-muted);margin-bottom:5px;}
+.det-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.dtag{background:var(--z-surface);border:1px solid var(--z-border);font-size:9px;color:var(--z-text2);padding:3px 8px;border-radius:6px;}
+.det-about{background:var(--z-surface);border:1px solid var(--z-border);border-radius:9px;padding:9px 11px;font-size:10px;color:var(--z-muted);line-height:1.6;}
+.det-listing{margin:0 12px 7px;background:linear-gradient(135deg,rgba(0,106,255,0.07),rgba(0,106,255,0.02));border:1px solid rgba(0,106,255,0.18);border-radius:9px;padding:9px 11px;display:flex;align-items:center;gap:9px;}
+.dl-icon{width:28px;height:28px;background:rgba(0,106,255,0.14);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dl-addr{font-size:11px;font-weight:600;color:var(--z-text);}
+.dl-sub{font-size:9px;color:var(--z-muted);}
+.det-cta{padding:7px 12px 0;display:flex;gap:6px;}
+.det-msg{flex:1;background:var(--z-blue);color:white;border:none;border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;}
+.det-save{background:var(--z-surface);border:1px solid var(--z-border2);color:var(--z-text);border-radius:10px;padding:10px 12px;font-size:12px;font-weight:600;cursor:pointer;}
+.msg-topbar{padding:7px 12px 5px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--z-border);}
+.msg-back{background:var(--z-surface);border:1px solid var(--z-border);border-radius:7px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.msg-ava{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#667EEA,#764BA2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;}
+.msg-name{font-size:12px;font-weight:700;color:var(--z-text);}
+.msg-status{font-size:9px;color:var(--z-green);}
+.msg-area{padding:10px 12px 48px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;height:490px;}
+.bubble{max-width:80%;padding:8px 11px;border-radius:12px;font-size:11px;line-height:1.5;}
+.bubble.them{background:var(--z-card);border:1px solid var(--z-border);color:var(--z-text2);border-bottom-left-radius:3px;align-self:flex-start;}
+.bubble.me{background:var(--z-blue);color:white;border-bottom-right-radius:3px;align-self:flex-end;}
+.msg-time{font-size:8px;color:var(--z-muted);font-family:var(--mono);}
+.msg-time.r{align-self:flex-end;}
+.msg-listing-share{background:var(--z-surface);border:1px solid var(--z-border2);border-radius:9px;padding:7px 9px;display:flex;align-items:center;gap:7px;align-self:flex-start;max-width:82%;}
+.msg-lthumb{width:34px;height:34px;background:linear-gradient(135deg,#1a3a5c,#2d5a8e);border-radius:5px;flex-shrink:0;}
+.msg-laddr{font-size:10px;font-weight:600;color:var(--z-text);}
+.msg-lprice{font-size:9px;color:var(--z-muted);}
+.msg-input-bar{position:absolute;bottom:44px;left:0;right:0;padding:7px 10px;background:var(--z-surface);border-top:1px solid var(--z-border);display:flex;gap:6px;align-items:center;}
+.msg-input{flex:1;background:var(--z-card);border:1px solid var(--z-border2);border-radius:18px;padding:6px 11px;font-size:11px;color:var(--z-muted);}
+.msg-send{background:var(--z-blue);border:none;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.ann-panel{width:230px;flex-shrink:0;}
+.ann-card{background:var(--z-card);border:1px solid var(--z-border);border-radius:11px;padding:14px;margin-bottom:9px;}
+.ann-card.hl{border-color:var(--z-blue);background:rgba(0,106,255,0.06);}
+.ann-n{width:18px;height:18px;background:var(--z-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:white;margin-bottom:7px;font-family:var(--mono);}
+.ann-title{font-size:12px;font-weight:700;color:var(--z-text);margin-bottom:3px;}
+.ann-desc{font-size:11px;color:var(--z-muted);line-height:1.65;}
+.proto-nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
+.pnav-btn{background:var(--z-surface);border:1px solid var(--z-border2);color:var(--z-text2);font-size:11px;font-family:var(--mono);letter-spacing:0.06em;padding:8px 18px;border-radius:7px;cursor:pointer;transition:all 0.2s;}
+.pnav-btn:hover{border-color:var(--z-blue);color:var(--z-text);}
+.pnav-btn:disabled{opacity:0.3;cursor:not-allowed;}
+.screen-count{font-family:var(--mono);font-size:11px;color:var(--z-muted);}
+.proto-note{font-family:var(--mono);font-size:11px;color:var(--z-muted);margin-top:14px;letter-spacing:0.03em;text-align:center;}
 @media(max-width:768px){
   nav{padding:16px 24px;}.hero{padding:100px 24px 60px;}.content{padding:0 24px;}
   .swot-grid,.persona-grid,.value-grid{grid-template-columns:1fr;}
   .metrics-grid{grid-template-columns:1fr 1fr;}
-  .prototype-section{padding:40px 24px;margin:0 -24px;}
-  .phone-container{gap:24px;}
-  .annotation-panel{width:100%;padding-top:0;}
+  .proto-wrap{padding:32px 20px;margin:0 -24px;}
+  .ann-panel{width:100%;}
   .problem-box,.reflection-block{padding:28px 24px;}.divider{margin:0 24px;}
 }
 </style>
 </head>
 <body>
-
 <nav>
-  <a href="https://ann-kurian.github.io" class="nav-back">← Back to Portfolio</a>
+  <a href="https://ann-kurian.github.io" class="nav-back">Back to Portfolio</a>
   <a href="https://ann-kurian.github.io" class="nav-name">Ann Mary Kurian</a>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-eyebrow">Product Strategy · Personal Project · Feature Design</div>
   <h1 class="hero-title">Zillow Rental Search<br><em>Product Teardown</em></h1>
-  <p class="hero-subtitle">A self-initiated product analysis of Zillow's rental search feature — uncovering a critical gap in the shared-living experience and proposing RoomMatch, a roommate-finding feature for students and early-career professionals.</p>
+  <p class="hero-subtitle">A self-initiated product analysis identifying a critical gap in Zillow's rental experience — and proposing RoomMatch, a roommate-matching feature for students and early-career professionals.</p>
   <div class="hero-meta">
     <div class="meta-item"><span class="meta-label">Product</span><span class="meta-value">Zillow Rental Search</span></div>
-    <div class="meta-item"><span class="meta-label">Framework</span><span class="meta-value">Product Teardown · SWOT · User Personas</span></div>
-    <div class="meta-item"><span class="meta-label">Output</span><span class="meta-value">Feature Proposal — RoomMatch MVP</span></div>
+    <div class="meta-item"><span class="meta-label">Framework</span><span class="meta-value">Teardown · SWOT · Personas · Metrics</span></div>
+    <div class="meta-item"><span class="meta-label">Output</span><span class="meta-value">RoomMatch — 6-screen interactive MVP</span></div>
     <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value">Personal Project</span></div>
   </div>
   <div class="hero-tags">
-    <span class="tag">Product Thinking</span>
-    <span class="tag">SWOT Analysis</span>
-    <span class="tag">User Personas</span>
-    <span class="tag">Feature Design</span>
-    <span class="tag">MVP Prototype</span>
-    <span class="tag">UX Research</span>
-    <span class="tag">Success Metrics</span>
+    <span class="tag">Product Thinking</span><span class="tag">SWOT Analysis</span><span class="tag">User Personas</span>
+    <span class="tag">Feature Design</span><span class="tag">Interactive MVP</span><span class="tag">UX Research</span><span class="tag">Success Metrics</span>
   </div>
 </div>
 
 <div class="divider"></div>
 <div class="content">
 
-  <!-- PRODUCT OVERVIEW -->
-  <div class="section reveal">
-    <div class="section-label">Product Overview</div>
-    <h2 class="section-title">What Zillow does — and <em>why it matters</em></h2>
-    <p class="body-text">Zillow is the United States' leading integrated housing marketplace — allowing users to buy, sell, and rent homes, with access to property listings, price estimates, neighbourhood data, and market trends. For renters specifically, the platform's rental search feature offers map-based browsing, detailed filters, virtual tours, and comprehensive listing information that makes it the dominant starting point for apartment hunting in the US.</p>
-    <p class="body-text">The rental search feature is built around a core user journey: search by location, browse results in list or map view, apply filters for price and preferences, and click through to detailed listings. For most renters, this workflow is smooth and well-executed. But for a specific and growing segment — those looking to share a rental with a roommate — Zillow's current product has a meaningful gap.</p>
-    <div class="problem-box">
-      <div class="problem-label">Problem Statement</div>
-      <div class="problem-text">"Zillow does not provide a one-stop solution for users seeking rentals with an intention to share with roommates — forcing them to manage two separate searches across two different platforms."</div>
-    </div>
+<div class="section reveal">
+  <div class="section-label">Product Overview</div>
+  <h2 class="section-title">What Zillow does — and <em>where it falls short</em></h2>
+  <p class="body-text">Zillow is the United States' leading housing marketplace — used by renters, buyers, and sellers to browse listings, access price estimates, and explore neighbourhood data. Its rental search feature offers map-based browsing, detailed filters, virtual tours, and comprehensive listing information, making it the dominant starting point for apartment hunting across the country.</p>
+  <p class="body-text">For most renters the experience is well-designed and intuitive. But for one specific and growing cohort — students and early-career professionals seeking to share a rental — Zillow's product stops short of solving the full problem. It helps users find a place to live. It does not help them find someone to live with.</p>
+  <div class="problem-box">
+    <div class="problem-label">Problem Statement</div>
+    <div class="problem-text">"Zillow does not provide a one-stop solution for users seeking rentals with an intention to share with roommates — forcing them to manage two separate searches across two different platforms."</div>
   </div>
-
-  <!-- USER FLOW -->
-  <div class="section reveal">
-    <div class="section-label">Existing Feature Analysis</div>
-    <h2 class="section-title">How the rental search <em>currently works</em></h2>
-    <p class="body-text">Mapping the existing user flow reveals a well-designed core experience — but one that terminates at the listing level. Once a user finds a property they're interested in sharing, there is no pathway to find or connect with potential roommates without leaving the platform entirely.</p>
-    <div class="flow-steps">
-      <div class="flow-step">
-        <div class="flow-num">01</div>
-        <div><div class="flow-title">Sign In</div><div class="flow-desc">User authenticates via multiple login options — Google, Apple, email. Simple and familiar onboarding.</div></div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">02</div>
-        <div><div class="flow-title">Location Search</div><div class="flow-desc">User searches by area or neighbourhood of interest. Autocomplete and map integration make this fast and intuitive.</div></div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">03</div>
-        <div><div class="flow-title">Results — List View</div><div class="flow-desc">Relevant listings returned in a scrollable list with key details — price, bedrooms, distance, photos.</div></div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">04</div>
-        <div><div class="flow-title">Results — Map View</div><div class="flow-desc">Toggle to map view shows listings as pins on a neighbourhood map — useful for proximity-based decision making.</div></div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">05</div>
-        <div><div class="flow-title">Listing Selection</div><div class="flow-desc">User selects a listing to view full details — photos, floor plans, virtual tours, amenities, agent contact.</div></div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">06</div>
-        <div><div class="flow-title">Filter Application</div><div class="flow-desc">User refines results by price range, bedroom count, pet policy, and other preferences. Well-designed but doesn't include a co-tenant or roommate filter. ← The gap begins here.</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SWOT -->
-  <div class="section reveal">
-    <div class="section-label">SWOT Analysis</div>
-    <h2 class="section-title">Where Zillow is strong — and <em>where it isn't</em></h2>
-    <div class="swot-grid">
-      <div class="swot-card s">
-        <div class="swot-badge">Strengths</div>
-        <div class="swot-item">Extensive, up-to-date property database with national coverage</div>
-        <div class="swot-item">Powerful search filters returning precise, personalised results</div>
-        <div class="swot-item">Detailed listings with photos, virtual tours, and feature descriptions</div>
-        <div class="swot-item">Interactive map-based browsing</div>
-        <div class="swot-item">Strong brand recognition and trust in the real estate market</div>
-      </div>
-      <div class="swot-card w">
-        <div class="swot-badge">Weaknesses</div>
-        <div class="swot-item">No roommate finder or matching feature — users must leave the platform</div>
-        <div class="swot-item">Recommendation engine does not account for past search behaviour</div>
-        <div class="swot-item">No commute-time or nearby amenity search from a specific listing</div>
-      </div>
-      <div class="swot-card o">
-        <div class="swot-badge">Opportunities</div>
-        <div class="swot-item">Launch a roommate matching feature targeting students and young professionals</div>
-        <div class="swot-item">Transition into an end-to-end platform: applications, digital lease signing, rent payments, maintenance requests</div>
-      </div>
-      <div class="swot-card t">
-        <div class="swot-badge">Threats</div>
-        <div class="swot-item">Competition from Apartments.com, Trulia, Craigslist, and Facebook Marketplace</div>
-        <div class="swot-item">Housing market instability affecting user behaviour patterns</div>
-        <div class="swot-item">Uncertainty in rental regulations and policies across US states</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PERSONAS -->
-  <div class="section reveal">
-    <div class="section-label">User Personas</div>
-    <h2 class="section-title">Who the feature is <em>built for</em></h2>
-    <p class="body-text">The roommate-finding gap matters most for two cohorts: students relocating for study and early-career professionals in new cities. Both are cost-sensitive, time-constrained, and — crucially — lack established social networks in the places they're moving to. Zillow already serves both groups for property discovery; RoomMatch closes the loop.</p>
-    <div class="persona-grid">
-      <div class="persona-card">
-        <div class="persona-name">Avery</div>
-        <div class="persona-role">Budget-Conscious Student</div>
-        <div class="persona-age">Age 21 · Relocating for university</div>
-        <div class="persona-section">
-          <div class="persona-section-label">Needs</div>
-          <div class="persona-section-text">Affordable rent, safe living conditions, reliable company in an unfamiliar city.</div>
-        </div>
-        <div class="persona-section">
-          <div class="persona-section-label">Pain Points</div>
-          <div class="persona-section-text">Tight budget, limited contacts in the new city, no reliable way to vet potential roommates from a distance.</div>
-        </div>
-        <div class="persona-section">
-          <div class="persona-section-label">Goal</div>
-          <div class="persona-section-text">Find a trustworthy roommate to split rent and living expenses before arriving in the city.</div>
-        </div>
-      </div>
-      <div class="persona-card">
-        <div class="persona-name">John</div>
-        <div class="persona-role">Early-Career Professional</div>
-        <div class="persona-age">Age 26 · New to the city for work</div>
-        <div class="persona-section">
-          <div class="persona-section-label">Needs</div>
-          <div class="persona-section-text">Budget-friendly rent close to the workplace, a compatible roommate, and a smooth move-in process.</div>
-        </div>
-        <div class="persona-section">
-          <div class="persona-section-label">Pain Points</div>
-          <div class="persona-section-text">Limited time due to work commitments, difficulty finding like-minded roommates, rent that scales with an early-career salary.</div>
-        </div>
-        <div class="persona-section">
-          <div class="persona-section-label">Goal</div>
-          <div class="persona-section-text">Match with a compatible roommate quickly — ideally someone with similar work hours and lifestyle — without a lengthy search process.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<!-- ── MVP PROTOTYPE ──────────────────────────────────────────────────────── -->
-<div class="content">
-  <div class="section reveal">
-    <div class="prototype-section">
-      <div class="prototype-label">Interactive MVP Prototype</div>
-      <h2 class="prototype-title">RoomMatch — <em>clickable prototype</em></h2>
-      <p class="prototype-sub">An interactive mobile prototype demonstrating the RoomMatch feature as it would live inside the Zillow app. Click through the four screens to explore the full user journey.</p>
+<div class="section reveal">
+  <div class="section-label">Existing Feature Analysis</div>
+  <h2 class="section-title">The current rental search <em>user flow</em></h2>
+  <p class="body-text">The existing Zillow rental search flow is well-structured up to the point of listing selection. The gap becomes apparent at the filter stage — where preferences can be refined by price, bedrooms, and amenities, but not by whether a co-tenant is being sought.</p>
+  <div class="flow-steps">
+    <div class="flow-step"><div class="flow-num">01</div><div><div class="flow-title">Sign In</div><div class="flow-desc">User authenticates via Google, Apple, or email. Standard onboarding with low friction.</div></div></div>
+    <div class="flow-step"><div class="flow-num">02</div><div><div class="flow-title">Location Search</div><div class="flow-desc">User searches by city, neighbourhood, or ZIP. Autocomplete and map integration make this fast and accurate.</div></div></div>
+    <div class="flow-step"><div class="flow-num">03</div><div><div class="flow-title">Results — List View</div><div class="flow-desc">Relevant listings returned in a scrollable list with price, bedrooms, distance, and preview photos.</div></div></div>
+    <div class="flow-step"><div class="flow-num">04</div><div><div class="flow-title">Results — Map View</div><div class="flow-desc">Optional toggle to map view showing listings as pins, useful for proximity and neighbourhood-based decision making.</div></div></div>
+    <div class="flow-step"><div class="flow-num">05</div><div><div class="flow-title">Listing Selection</div><div class="flow-desc">User opens a listing to view full details — photos, floor plans, virtual tours, amenities, and contact information.</div></div></div>
+    <div class="flow-step flow-gap"><div class="flow-num">06</div><div><div class="flow-title">Filter Application — the gap begins here</div><div class="flow-desc">Users can refine by price, bedrooms, and amenities, but there is no filter or pathway for users who want to find a co-tenant. They are forced off the platform to Craigslist or Facebook to complete their search.</div></div></div>
+  </div>
+</div>
 
-      <div style="margin-bottom:20px;">
-        <div class="screen-tabs" id="screenTabs">
-          <button class="screen-tab active" onclick="showProtoScreen('home',0)">Search</button>
-          <button class="screen-tab" onclick="showProtoScreen('matches',1)">RoomMatch</button>
-          <button class="screen-tab" onclick="showProtoScreen('setup',2)">Profile Setup</button>
-          <button class="screen-tab" onclick="showProtoScreen('detail',3)">Match Detail</button>
-        </div>
-      </div>
-
-      <div class="phone-container">
-        <!-- PHONE -->
-        <div class="phone-shell">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-
-            <!-- SCREEN 1: HOME (Zillow with RoomMatch icon) -->
-            <div class="screen active" id="proto-home">
-              <div class="status-bar">
-                <span>9:41</span>
-                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span></span></div>
-              </div>
-              <div class="z-topbar">
-                <div class="z-logo">Z<span>illow</span></div>
-                <div class="z-avatar">AM</div>
-              </div>
-              <div class="z-search">
-                <span class="z-search-icon"></span>
-                <span class="z-search-text">Search by city, neighbourhood, ZIP…</span>
-              </div>
-              <!-- Listing card 1 -->
-              <div class="listing-card" style="cursor:pointer;">
-                <div class="listing-img" style="background:linear-gradient(135deg,#1a3a5c,#2d5a8e);">
-                  <div class="listing-img-overlay"></div>
-                  <div class="listing-badge">FOR RENT</div>
-                  <div class="listing-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-                </div>
-                <div class="listing-body">
-                  <div class="listing-price">$2,400<span>/mo</span></div>
-                  <div class="listing-addr"> 1842 Fillmore St, San Francisco, CA</div>
-                  <div class="listing-tags">
-                    <span class="listing-tag">2 bed</span>
-                    <span class="listing-tag">1 bath</span>
-                    <span class="listing-tag">850 sqft</span>
-                    <span class="listing-tag">Pet OK</span>
-                  </div>
-                </div>
-              </div>
-              <!-- Listing card 2 -->
-              <div class="listing-card" style="cursor:pointer;">
-                <div class="listing-body" style="padding:14px;">
-                  <div class="listing-price">$3,100<span>/mo</span></div>
-                  <div class="listing-addr"> 490 Post St, San Francisco, CA</div>
-                  <div class="listing-tags">
-                    <span class="listing-tag">3 bed</span>
-                    <span class="listing-tag">2 bath</span>
-                    <span class="listing-tag">Laundry</span>
-                  </div>
-                </div>
-              </div>
-              <!-- Bottom nav with RoomMatch -->
-              <div class="z-bottomnav">
-                <div class="z-nav-item active">
-                  <div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-                  <span>Search</span>
-                </div>
-                <div class="z-nav-item">
-                  <div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-                  <span>Saved</span>
-                </div>
-                <div class="z-nav-item" onclick="showProtoScreen('matches',1)" style="cursor:pointer;position:relative;">
-                  <div class="z-nav-icon" style="position:relative;display:inline-block;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    <div class="z-nav-dot"></div>
-                  </div>
-                  <span style="color:#6BA3FF;font-weight:600;">RoomMatch</span>
-                </div>
-                <div class="z-nav-item">
-                  <div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-                  <span>Profile</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- SCREEN 2: ROOMMATCH MATCHES -->
-            <div class="screen" id="proto-matches">
-              <div class="status-bar">
-                <span>9:41</span>
-                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span></span></div>
-              </div>
-              <div class="rm-header">
-                <div class="rm-title">RoomMatch</div>
-                <div class="rm-sub">3 new matches near your saved listings</div>
-              </div>
-              <!-- Match 1 -->
-              <div class="rm-card" onclick="showProtoScreen('detail',3)">
-                <div class="rm-card-top">
-                  <div class="rm-avatar" style="background:linear-gradient(135deg,#667EEA,#764BA2);">A</div>
-                  <div>
-                    <div class="rm-name">Avery Chen</div>
-                    <div class="rm-role">Graduate Student · USF</div>
-                  </div>
-                  <div class="rm-match">
-                    <div class="rm-match-pct">94%</div>
-                    <div class="rm-match-label">match</div>
-                  </div>
-                </div>
-                <div class="rm-tags">
-                  <span class="rm-tag">Early riser</span>
-                  <span class="rm-tag">Non-smoker</span>
-                  <span class="rm-tag">Budget $1,200</span>
-                  <span class="rm-tag">Quiet hours</span>
-                </div>
-                <div class="rm-actions">
-                  <button class="rm-btn pass">Pass</button>
-                  <button class="rm-btn connect" onclick="event.stopPropagation();showProtoScreen('detail',3)">Connect →</button>
-                </div>
-              </div>
-              <!-- Match 2 -->
-              <div class="rm-card">
-                <div class="rm-card-top">
-                  <div class="rm-avatar" style="background:linear-gradient(135deg,#F093FB,#F5576C);">J</div>
-                  <div>
-                    <div class="rm-name">Jordan Lee</div>
-                    <div class="rm-role">Software Engineer · Salesforce</div>
-                  </div>
-                  <div class="rm-match">
-                    <div class="rm-match-pct">87%</div>
-                    <div class="rm-match-label">match</div>
-                  </div>
-                </div>
-                <div class="rm-tags">
-                  <span class="rm-tag">Works from home</span>
-                  <span class="rm-tag">Budget $1,500</span>
-                  <span class="rm-tag">Pet friendly</span>
-                </div>
-                <div class="rm-actions">
-                  <button class="rm-btn pass">Pass</button>
-                  <button class="rm-btn connect">Connect →</button>
-                </div>
-              </div>
-              <div class="z-bottomnav">
-                <div class="z-nav-item" onclick="showProtoScreen('home',0)"><div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><span>Search</span></div>
-                <div class="z-nav-item"><div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span>Saved</span></div>
-                <div class="z-nav-item active"><div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span style="color:#6BA3FF;">RoomMatch</span></div>
-                <div class="z-nav-item" onclick="showProtoScreen('setup',2)"><div class="z-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span>Profile</span></div>
-              </div>
-            </div>
-
-            <!-- SCREEN 3: PROFILE SETUP -->
-            <div class="screen" id="proto-setup">
-              <div class="status-bar">
-                <span>9:41</span>
-                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span></span></div>
-              </div>
-              <div class="setup-header">
-                <div class="setup-back" onclick="showProtoScreen('home',0)">←</div>
-                <div class="setup-title">Set up RoomMatch</div>
-              </div>
-              <div class="setup-progress">
-                <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
-                <div class="progress-text">Step 2 of 3 — Preferences</div>
-              </div>
-              <div class="setup-field">
-                <div class="field-label">Monthly Budget</div>
-                <div class="field-input" style="color:#6BA3FF;">$1,200 / month</div>
-              </div>
-              <div class="setup-field">
-                <div class="field-label">Lifestyle</div>
-                <div class="field-chips">
-                  <div class="chip selected">Early riser</div>
-                  <div class="chip" onclick="this.classList.toggle('selected')">Night owl</div>
-                  <div class="chip selected">Non-smoker</div>
-                  <div class="chip" onclick="this.classList.toggle('selected')">Pet owner</div>
-                  <div class="chip selected">Quiet hours</div>
-                  <div class="chip" onclick="this.classList.toggle('selected')">Social</div>
-                </div>
-              </div>
-              <div class="setup-field">
-                <div class="field-label">Move-in Date</div>
-                <div class="field-input" style="color:#6BA3FF;">August 2025</div>
-              </div>
-              <div class="setup-cta">
-                <button class="setup-cta-btn" onclick="showProtoScreen('matches',1)">Find My Matches →</button>
-              </div>
-            </div>
-
-            <!-- SCREEN 4: MATCH DETAIL -->
-            <div class="screen" id="proto-detail">
-              <div class="status-bar">
-                <span>9:41</span>
-                <div class="status-icons"><span>●●●●</span><span>WiFi</span><span></span></div>
-              </div>
-              <div class="match-header">
-                <div class="match-back" onclick="showProtoScreen('matches',1)">←</div>
-                <div style="font-size:15px;font-weight:600;color:white;">Roommate Profile</div>
-              </div>
-              <div class="match-big-avatar" style="background:linear-gradient(135deg,#667EEA,#764BA2);">A</div>
-              <div class="match-big-name">Avery Chen</div>
-              <div class="match-big-role">Graduate Student · USF — Incoming Fall 2025</div>
-              <div class="match-score-row">
-                <div class="match-score-card">
-                  <div class="match-score-val" style="color:var(--z-green);">94%</div>
-                  <div class="match-score-lbl">Match</div>
-                </div>
-                <div class="match-score-card">
-                  <div class="match-score-val" style="color:var(--z-amber);">$1,200</div>
-                  <div class="match-score-lbl">Budget/mo</div>
-                </div>
-                <div class="match-score-card">
-                  <div class="match-score-val" style="color:#6BA3FF;">Aug</div>
-                  <div class="match-score-lbl">Move-in</div>
-                </div>
-              </div>
-              <div class="match-section">
-                <div class="match-section-title">Lifestyle Preferences</div>
-                <div class="match-pref-tags">
-                  <span class="match-pref-tag"> Early riser</span>
-                  <span class="match-pref-tag"> Non-smoker</span>
-                  <span class="match-pref-tag"> Quiet hours</span>
-                  <span class="match-pref-tag"> No pets</span>
-                </div>
-              </div>
-              <div class="match-section">
-                <div class="match-section-title">Searching In</div>
-                <div class="match-pref-tags">
-                  <span class="match-pref-tag"> Marina, SF</span>
-                  <span class="match-pref-tag"> Nob Hill, SF</span>
-                  <span class="match-pref-tag"> Mission, SF</span>
-                </div>
-              </div>
-              <button class="match-msg-btn">Send Message</button>
-            </div>
-
-          </div><!-- /phone-screen -->
-        </div><!-- /phone-shell -->
-
-        <!-- ANNOTATIONS -->
-        <div class="annotation-panel" id="annotationPanel">
-          <div class="annotation highlight" id="ann-0">
-            <div class="annotation-num">1</div>
-            <div class="annotation-title">RoomMatch Entry Point</div>
-            <div class="annotation-desc">A new icon in Zillow's bottom navigation bar, accessible from any screen. A notification dot indicates new matches — familiar pattern from Hinge, Bumble BFF.</div>
-          </div>
-          <div class="annotation" id="ann-1" style="display:none">
-            <div class="annotation-num">2</div>
-            <div class="annotation-title">Compatibility Matching</div>
-            <div class="annotation-desc">A percentage match score calculated from budget range, lifestyle preferences, move-in date, and target neighbourhoods. Users only see matches relevant to their saved listings.</div>
-          </div>
-          <div class="annotation" id="ann-2" style="display:none">
-            <div class="annotation-num">3</div>
-            <div class="annotation-title">Profile & Preference Setup</div>
-            <div class="annotation-desc">A 3-step onboarding flow collecting budget, lifestyle tags, and move-in date. Chip-based selection reduces friction — the whole setup takes under 2 minutes.</div>
-          </div>
-          <div class="annotation" id="ann-3" style="display:none">
-            <div class="annotation-num">4</div>
-            <div class="annotation-title">Roommate Profile Detail</div>
-            <div class="annotation-desc">Full profile view with match score, budget, move-in date, lifestyle tags, and target areas. In-app messaging removes the need to share personal contact details upfront.</div>
-          </div>
-        </div>
-      </div>
-
-      <p class="prototype-note">MVP prototype — built to demonstrate the RoomMatch user journey. Click the screen tabs or nav items to move between screens.</p>
+<div class="section reveal">
+  <div class="section-label">SWOT Analysis</div>
+  <h2 class="section-title">Where Zillow leads — and <em>where the opportunity lies</em></h2>
+  <div class="swot-grid">
+    <div class="swot-card s">
+      <div class="swot-badge">Strengths</div>
+      <div class="swot-item">Extensive, frequently updated property database with national coverage</div>
+      <div class="swot-item">Powerful, precise search filters returning personalised results</div>
+      <div class="swot-item">Detailed listings with photos, virtual tours, and full feature descriptions</div>
+      <div class="swot-item">Interactive map-based browsing with neighbourhood context</div>
+      <div class="swot-item">Strong brand recognition and trust in the US real estate market</div>
+    </div>
+    <div class="swot-card w">
+      <div class="swot-badge">Weaknesses</div>
+      <div class="swot-item">No roommate finder — users seeking a co-tenant must go to Craigslist or Facebook</div>
+      <div class="swot-item">Recommendation engine does not account for past search behaviour</div>
+      <div class="swot-item">No commute time or nearby amenity proximity search from a specific listing</div>
+    </div>
+    <div class="swot-card o">
+      <div class="swot-badge">Opportunities</div>
+      <div class="swot-item">Launch a roommate matching feature targeting students and young professionals in high-cost cities</div>
+      <div class="swot-item">Expand into an end-to-end platform covering applications, digital lease signing, rent payments, and maintenance</div>
+    </div>
+    <div class="swot-card t">
+      <div class="swot-badge">Threats</div>
+      <div class="swot-item">Competition from Apartments.com, Trulia, Craigslist, and Facebook Marketplace</div>
+      <div class="swot-item">Housing market instability creating unpredictable shifts in user behaviour</div>
+      <div class="swot-item">Varying rental regulations and policies across US states</div>
     </div>
   </div>
 </div>
 
+<div class="section reveal">
+  <div class="section-label">User Personas</div>
+  <h2 class="section-title">Who RoomMatch is <em>built for</em></h2>
+  <p class="body-text">RoomMatch addresses a specific demographic — cost-sensitive users relocating to unfamiliar cities who lack existing social networks. Zillow already serves them for property discovery. The feature closes the loop on the roommate half of the problem.</p>
+  <div class="persona-grid">
+    <div class="persona-card">
+      <div class="persona-name">Avery</div>
+      <div class="persona-role">Budget-Conscious Student · Age 21</div>
+      <div class="persona-row"><div class="persona-row-label">Needs</div><div class="persona-row-val">Affordable rent, safe living conditions, reliable company in an unfamiliar city</div></div>
+      <div class="persona-row"><div class="persona-row-label">Pain points</div><div class="persona-row-val">Tight budget, limited contacts, no reliable way to vet roommates remotely</div></div>
+      <div class="persona-row"><div class="persona-row-label">Goal</div><div class="persona-row-val">Find a trustworthy roommate to split rent before arriving in the city</div></div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-name">John</div>
+      <div class="persona-role">Early-Career Professional · Age 26</div>
+      <div class="persona-row"><div class="persona-row-label">Needs</div><div class="persona-row-val">Budget-friendly rent near the workplace, a compatible roommate, smooth move-in</div></div>
+      <div class="persona-row"><div class="persona-row-label">Pain points</div><div class="persona-row-val">Limited time, difficulty finding like-minded people, salary-constrained budget</div></div>
+      <div class="persona-row"><div class="persona-row-label">Goal</div><div class="persona-row-val">Match with a compatible roommate quickly — ideally someone with similar work hours</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- PROTOTYPE -->
+<div class="content">
+<div class="section reveal">
+<div class="proto-wrap">
+  <div class="proto-eyebrow">Interactive MVP Prototype</div>
+  <h2 class="proto-title">RoomMatch — <em>complete user journey</em></h2>
+  <p class="proto-sub">Six screens demonstrating the full RoomMatch workflow — from contextual discovery inside Zillow, through profile setup and matching, to listing coordination and in-app messaging. Navigate using the step indicators, on-screen elements, or the Previous / Next buttons.</p>
+
+  <div class="step-row" id="stepRow">
+    <button class="step-btn active" onclick="goTo(0)"><div class="step-dot">1</div><div class="step-lbl">Discovery</div></button>
+    <div class="step-line" id="l01"></div>
+    <button class="step-btn" onclick="goTo(1)"><div class="step-dot">2</div><div class="step-lbl">Enable</div></button>
+    <div class="step-line" id="l12"></div>
+    <button class="step-btn" onclick="goTo(2)"><div class="step-dot">3</div><div class="step-lbl">Profile</div></button>
+    <div class="step-line" id="l23"></div>
+    <button class="step-btn" onclick="goTo(3)"><div class="step-dot">4</div><div class="step-lbl">Matches</div></button>
+    <div class="step-line" id="l34"></div>
+    <button class="step-btn" onclick="goTo(4)"><div class="step-dot">5</div><div class="step-lbl">Detail</div></button>
+    <div class="step-line" id="l45"></div>
+    <button class="step-btn" onclick="goTo(5)"><div class="step-dot">6</div><div class="step-lbl">Message</div></button>
+  </div>
+
+  <div class="proto-body">
+    <div class="phone">
+      <div class="phone-pill"></div>
+      <div class="pscreen">
+
+        <!-- S0: HOME -->
+        <div class="sc active" id="s0">
+          <div class="sbar"><span>9:41</span><span style="font-size:9px;font-family:var(--mono);">LTE 100%</span></div>
+          <div class="toprow"><div class="zlogo">Z<b>illow</b></div><div class="zava">AM</div></div>
+          <div class="zsearch">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--z-muted)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="zsb-text">San Francisco, CA</span>
+            <div class="zsb-chip">Filters</div>
+          </div>
+          <div class="rmbanner" onclick="goTo(1)">
+            <div class="rmb-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div><div class="rmb-title">New: RoomMatch</div><div class="rmb-sub">Find a roommate for your search</div></div>
+            <div class="rmb-arr">&#8250;</div>
+          </div>
+          <div class="listing">
+            <div class="limg"><div class="limg-bg" style="background:linear-gradient(135deg,#0D2240,#1A3D6E);"></div><div class="limg-grad"></div><div class="lbadge">FOR RENT</div><div class="lsave"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div></div>
+            <div class="lbody"><div class="lprice">$2,400<span>/mo</span></div><div class="laddr">1842 Fillmore St, San Francisco CA</div><div class="lchips"><span class="lchip">2 bed</span><span class="lchip">1 bath</span><span class="lchip">850 sqft</span></div></div>
+          </div>
+          <div class="listing">
+            <div class="lbody"><div class="lprice">$3,100<span>/mo</span></div><div class="laddr">490 Post St, San Francisco CA</div><div class="lchips"><span class="lchip">3 bed</span><span class="lchip">2 bath</span><span class="lchip">Laundry</span></div></div>
+          </div>
+          <div class="znav">
+            <div class="zni active" onclick="goTo(0)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="zni-label" style="color:var(--z-blue);">Search</span></div>
+            <div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="zni-label">Saved</span></div>
+            <div class="zni" onclick="goTo(1)" style="position:relative;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="zni-dot"></div><span class="zni-label" style="color:#7AB0FF;">RoomMatch</span></div>
+            <div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="zni-label">Profile</span></div>
+          </div>
+        </div>
+
+        <!-- S1: ENABLE -->
+        <div class="sc" id="s1">
+          <div class="sbar"><span>9:41</span><span style="font-size:9px;font-family:var(--mono);">LTE 100%</span></div>
+          <div class="setup-topbar"><div class="back-btn" onclick="goTo(0)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="screen-ttl">RoomMatch</div></div>
+          <div class="enable-hero">
+            <div class="enable-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div class="enable-title">Find Your Perfect Roommate</div>
+            <div class="enable-desc">Match with compatible renters searching in the same areas. Set your preferences and let RoomMatch do the work.</div>
+          </div>
+          <div class="perm-list">
+            <div class="perm-item"><div class="perm-icon" style="background:rgba(0,196,140,0.15);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00C48C" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="perm-title">Preference-based matching</div><div class="perm-sub">Budget, lifestyle and move-in date</div></div></div>
+            <div class="perm-item"><div class="perm-icon" style="background:rgba(0,106,255,0.15);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="perm-title">In-app messaging</div><div class="perm-sub">Connect without sharing personal details</div></div></div>
+            <div class="perm-item"><div class="perm-icon" style="background:rgba(245,166,35,0.15);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="perm-title">Shared listing search</div><div class="perm-sub">Browse and save listings together</div></div></div>
+          </div>
+          <div class="enable-cta"><button class="enable-btn" onclick="goTo(2)">Enable RoomMatch</button></div>
+          <div class="znav"><div class="zni" onclick="goTo(0)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="zni-label">Search</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="zni-label">Saved</span></div><div class="zni active"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="zni-label" style="color:#7AB0FF;">RoomMatch</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="zni-label">Profile</span></div></div>
+        </div>
+
+        <!-- S2: PROFILE SETUP -->
+        <div class="sc" id="s2">
+          <div class="sbar"><span>9:41</span><span style="font-size:9px;font-family:var(--mono);">LTE 100%</span></div>
+          <div class="prog-header"><div class="back-btn" onclick="goTo(1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="prog-steps"><div class="pstep done"></div><div class="pstep cur"></div><div class="pstep"></div></div><div class="prog-pct">2 / 3</div></div>
+          <div class="psection">
+            <div class="psec-label">Set up your profile</div>
+            <div class="psec-title">Preferences</div>
+            <div class="field"><div class="field-label">Monthly Budget</div><div class="field-val"><span>$1,200 / month</span><span class="field-hint">my share</span></div></div>
+            <div class="field"><div class="field-label">Move-in Date</div><div class="field-val"><span>August 2025</span><span class="field-hint">flexible</span></div></div>
+            <div class="field"><div class="field-label">Lifestyle</div><div class="chips"><div class="chip on">Early riser</div><div class="chip on">Non-smoker</div><div class="chip" onclick="this.classList.toggle('on')">Night owl</div><div class="chip on">Quiet hours</div><div class="chip" onclick="this.classList.toggle('on')">Social</div><div class="chip" onclick="this.classList.toggle('on')">Pet friendly</div></div></div>
+            <div class="field"><div class="field-label">Searching In</div><div class="chips"><div class="chip on">Marina, SF</div><div class="chip on">Nob Hill, SF</div><div class="chip" onclick="this.classList.toggle('on')">Mission, SF</div><div class="chip" onclick="this.classList.toggle('on')">SOMA, SF</div></div></div>
+            <div class="pcta"><button class="pcta-btn" onclick="goTo(3)">Find My Matches</button></div>
+          </div>
+          <div class="znav" style="position:absolute;bottom:0;left:0;right:0;"><div class="zni" onclick="goTo(0)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="zni-label">Search</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="zni-label">Saved</span></div><div class="zni active"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="zni-label" style="color:#7AB0FF;">RoomMatch</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="zni-label">Profile</span></div></div>
+        </div>
+
+        <!-- S3: MATCHES -->
+        <div class="sc" id="s3">
+          <div class="sbar"><span>9:41</span><span style="font-size:9px;font-family:var(--mono);">LTE 100%</span></div>
+          <div class="matches-topbar"><div class="matches-title">Your Matches</div><div class="matches-filter">Budget · Lifestyle</div></div>
+          <div class="ctx-strip">3 new matches near Marina and Nob Hill</div>
+          <div class="mcard" onclick="goTo(4)">
+            <div class="mcard-top"><div class="mcard-ava" style="background:linear-gradient(135deg,#667EEA,#764BA2);">AC</div><div class="mcard-info"><div class="mcard-name">Avery Chen</div><div class="mcard-role">Graduate Student · USF</div></div><div><div class="mcard-pct">94%</div><div class="mcard-pct-lbl">match</div></div></div>
+            <div class="mcard-div"></div>
+            <div class="mcard-bot"><div class="mtags"><span class="mtag">Early riser</span><span class="mtag">$1,200/mo</span><span class="mtag">Aug</span></div><div style="display:flex;gap:5px;"><button class="mact-p">Pass</button><button class="mact-c" onclick="event.stopPropagation();goTo(4)">Connect</button></div></div>
+          </div>
+          <div class="mcard">
+            <div class="mcard-top"><div class="mcard-ava" style="background:linear-gradient(135deg,#11998e,#38ef7d);">JL</div><div class="mcard-info"><div class="mcard-name">Jordan Lee</div><div class="mcard-role">Software Engineer · Salesforce</div></div><div><div class="mcard-pct">87%</div><div class="mcard-pct-lbl">match</div></div></div>
+            <div class="mcard-div"></div>
+            <div class="mcard-bot"><div class="mtags"><span class="mtag">WFH</span><span class="mtag">$1,500/mo</span><span class="mtag">Pet OK</span></div><div style="display:flex;gap:5px;"><button class="mact-p">Pass</button><button class="mact-c">Connect</button></div></div>
+          </div>
+          <div class="mcard">
+            <div class="mcard-top"><div class="mcard-ava" style="background:linear-gradient(135deg,#f7971e,#ffd200);">MK</div><div class="mcard-info"><div class="mcard-name">Maya Krishnan</div><div class="mcard-role">UX Designer · Airbnb</div></div><div><div class="mcard-pct">82%</div><div class="mcard-pct-lbl">match</div></div></div>
+            <div class="mcard-div"></div>
+            <div class="mcard-bot"><div class="mtags"><span class="mtag">Non-smoker</span><span class="mtag">$1,300/mo</span><span class="mtag">Quiet</span></div><div style="display:flex;gap:5px;"><button class="mact-p">Pass</button><button class="mact-c">Connect</button></div></div>
+          </div>
+          <div class="znav" style="position:absolute;bottom:0;left:0;right:0;"><div class="zni" onclick="goTo(0)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="zni-label">Search</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="zni-label">Saved</span></div><div class="zni active"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="zni-label" style="color:#7AB0FF;">RoomMatch</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="zni-label">Profile</span></div></div>
+        </div>
+
+        <!-- S4: MATCH DETAIL -->
+        <div class="sc" id="s4">
+          <div class="sbar"><span>9:41</span><span style="font-size:9px;font-family:var(--mono);">LTE 100%</span></div>
+          <div class="det-topbar"><div class="det-back" onclick="goTo(3)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="det-tname">Roommate Profile</div></div>
+          <div class="det-ava-wrap"><div class="det-ava" style="background:linear-gradient(135deg,#667EEA,#764BA2);">AC</div></div>
+          <div class="det-name">Avery Chen</div>
+          <div class="det-role">Graduate Student · USF — Incoming Fall 2025</div>
+          <div class="det-scores"><div class="dscore"><div class="dscore-val" style="color:var(--z-green);">94%</div><div class="dscore-lbl">Match</div></div><div class="dscore"><div class="dscore-val" style="color:#7AB0FF;">$1,200</div><div class="dscore-lbl">Budget/mo</div></div><div class="dscore"><div class="dscore-val" style="color:var(--z-amber);">Aug</div><div class="dscore-lbl">Move-in</div></div></div>
+          <div class="det-section"><div class="det-sec-lbl">About</div><div class="det-about">Moving from Seattle for my graduate programme at USF. Looking for a quiet, reliable housemate. Happy to split groceries and household chores equally.</div></div>
+          <div class="det-section"><div class="det-sec-lbl">Lifestyle</div><div class="det-tags"><span class="dtag">Early riser</span><span class="dtag">Non-smoker</span><span class="dtag">Quiet hours</span><span class="dtag">No pets</span></div></div>
+          <div class="det-listing"><div class="dl-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="dl-addr">Also saved: 1842 Fillmore St</div><div class="dl-sub">$2,400/mo · 2 bed · Marina</div></div></div>
+          <div class="det-cta"><button class="det-msg" onclick="goTo(5)">Send Message</button><button class="det-save">Save</button></div>
+          <div class="znav" style="position:absolute;bottom:0;left:0;right:0;"><div class="zni" onclick="goTo(0)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="zni-label">Search</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="zni-label">Saved</span></div><div class="zni active"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="zni-label" style="color:#7AB0FF;">RoomMatch</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="zni-label">Profile</span></div></div>
+        </div>
+
+        <!-- S5: MESSAGING -->
+        <div class="sc" id="s5">
+          <div class="sbar"><span>9:41</span><span style="font-size:9px;font-family:var(--mono);">LTE 100%</span></div>
+          <div class="msg-topbar"><div class="msg-back" onclick="goTo(4)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div><div class="msg-ava">AC</div><div><div class="msg-name">Avery Chen</div><div class="msg-status">Active now</div></div></div>
+          <div class="msg-area">
+            <div class="msg-time">Today 9:30 AM</div>
+            <div class="bubble them">Hi! I saw we matched. I am looking at places in the Marina and Nob Hill area. Have you seen anything you liked?</div>
+            <div class="bubble me">Hey Avery! Yes I saved a couple. This one on Fillmore looks great — 2 bed, would work out to $1,200 each.</div>
+            <div class="msg-listing-share"><div class="msg-lthumb"></div><div><div class="msg-laddr">1842 Fillmore St, SF</div><div class="msg-lprice">$2,400/mo · 2 bed · 1 bath</div></div></div>
+            <div class="bubble them">That is right in my budget. I love that neighbourhood. Should we request a viewing together?</div>
+            <div class="bubble me">Yes, let us do it. I will message the agent and copy you in.</div>
+            <div class="msg-time r">Delivered</div>
+          </div>
+          <div class="msg-input-bar"><div class="msg-input">Type a message...</div><div class="msg-send"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div></div>
+          <div class="znav" style="position:absolute;bottom:0;left:0;right:0;"><div class="zni" onclick="goTo(0)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="zni-label">Search</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="zni-label">Saved</span></div><div class="zni active"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="zni-label" style="color:#7AB0FF;">RoomMatch</span></div><div class="zni"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="zni-label">Profile</span></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ANNOTATIONS -->
+    <div class="ann-panel" id="annPanel">
+      <div class="ann-card hl" id="a0"><div class="ann-n">1</div><div class="ann-title">Contextual Discovery</div><div class="ann-desc">RoomMatch is introduced as a banner within Zillow's existing search flow — not a separate app. The feature appears naturally when a user is already browsing rentals, dramatically reducing the barrier to activation.</div></div>
+      <div class="ann-card" id="a1" style="display:none"><div class="ann-n">2</div><div class="ann-title">Clear Value Before Opt-in</div><div class="ann-desc">The enable screen communicates three specific benefits upfront: preference matching, in-app messaging, and shared search. Users understand exactly what they are opting into before sharing any data — building trust from the start.</div></div>
+      <div class="ann-card" id="a2" style="display:none"><div class="ann-n">3</div><div class="ann-title">Low-friction Profile Setup</div><div class="ann-desc">Chip-based selection with sensible defaults. Budget and move-in date are structured inputs; lifestyle tags are tap-to-toggle. No text entry required. The complete setup takes under 90 seconds — critical for a student or time-poor professional audience.</div></div>
+      <div class="ann-card" id="a3" style="display:none"><div class="ann-n">4</div><div class="ann-title">Relevance-ranked Matches</div><div class="ann-desc">Matches are ranked by a compatibility score calculated from overlapping budget, lifestyle preferences, move-in date, and target neighbourhoods. Only users searching in the same areas appear — keeping the feed highly relevant.</div></div>
+      <div class="ann-card" id="a4" style="display:none"><div class="ann-n">5</div><div class="ann-title">Shared Listing Visibility</div><div class="ann-desc">The match detail screen surfaces listings the other user has also saved — creating an immediate, concrete basis for a conversation. Users see overlapping intent before they message, reducing low-quality or mismatched connections.</div></div>
+      <div class="ann-card" id="a5" style="display:none"><div class="ann-n">6</div><div class="ann-title">End-to-end Within Zillow</div><div class="ann-desc">In-app messaging completes the loop. Users can coordinate viewings, share listings, and agree on terms without leaving Zillow. This is the north star: one platform for the full rental decision — where to live and who to live with.</div></div>
+    </div>
+  </div>
+
+  <div class="proto-nav-row">
+    <button class="pnav-btn" id="prevBtn" onclick="goTo(cur-1)" disabled>Previous</button>
+    <span class="screen-count" id="scCount">Screen 1 of 6</span>
+    <button class="pnav-btn" id="nextBtn" onclick="goTo(cur+1)">Next</button>
+  </div>
+  <p class="proto-note">Click step indicators, on-screen elements, or Previous / Next to navigate all 6 screens.</p>
+</div>
+</div>
+</div>
+
 <div class="content">
 
-  <!-- VALUE PROPOSITION -->
-  <div class="section reveal">
-    <div class="section-label">Why RoomMatch?</div>
-    <h2 class="section-title">Value for <em>both sides</em></h2>
-    <p class="body-text">A new feature is only worth building if it creates clear value for users and a defensible strategic advantage for the product. RoomMatch does both — it solves a real, unmet user need while simultaneously improving Zillow's engagement, retention, and monetisation metrics.</p>
-    <div class="value-grid">
-      <div class="value-card users">
-        <div class="value-label">For Users</div>
-        <div class="value-item">Reduces effective rent through cost-sharing — directly addresses the #1 pain point of Zillow's student and early-career cohort</div>
-        <div class="value-item">Eliminates the need to switch between Zillow (for listings) and Craigslist or Facebook (for roommates)</div>
-        <div class="value-item">Preference-based matching reduces time spent on incompatible conversations</div>
-        <div class="value-item">In-app messaging removes the friction and risk of sharing personal contact details with strangers</div>
-        <div class="value-item">Particularly valuable for users relocating from out of state or internationally, who have no existing local network</div>
-      </div>
-      <div class="value-card zillow">
-        <div class="value-label">For Zillow</div>
-        <div class="value-item">Increases session depth and time-in-app by adding a social engagement layer to a search-only product</div>
-        <div class="value-item">Creates a new monetisation pathway — premium matching tiers, background checks, verified profiles</div>
-        <div class="value-item">Improves user retention by making Zillow the complete end-to-end rental platform, not just a discovery tool</div>
-        <div class="value-item">Expands the addressable user base to include users who weren't previously searching for their own unit</div>
-        <div class="value-item">Differentiates from Apartments.com, Trulia, and other competitors — none of whom offer integrated roommate matching</div>
-      </div>
+<div class="section reveal">
+  <div class="section-label">Why Build This?</div>
+  <h2 class="section-title">Value for <em>both sides</em></h2>
+  <p class="body-text">A feature only makes strategic sense if it creates clear, measurable value for users and a defensible advantage for the product. RoomMatch does both — solving a genuine, unmet user need while simultaneously improving the engagement, retention, and monetisation metrics that matter most to Zillow.</p>
+  <div class="value-grid">
+    <div class="value-card users">
+      <div class="value-badge">For Users</div>
+      <div class="value-item">Eliminates the need to manage two separate searches — one on Zillow for listings, one on Craigslist or Facebook for roommates</div>
+      <div class="value-item">Reduces effective rent through cost-sharing — directly addresses the primary financial constraint of the target cohort</div>
+      <div class="value-item">Preference matching reduces time spent on incompatible conversations</div>
+      <div class="value-item">In-app messaging removes the risk of sharing personal contact details before trust is established</div>
+      <div class="value-item">Especially valuable for users relocating from out of state or internationally who have no existing local network</div>
+    </div>
+    <div class="value-card zillow">
+      <div class="value-badge">For Zillow</div>
+      <div class="value-item">Increases session depth and time-in-app by adding a social engagement layer to a search-only product</div>
+      <div class="value-item">Creates new monetisation pathways — premium matching tiers, verified profiles, background check integrations</div>
+      <div class="value-item">Improves retention by making Zillow the complete rental platform rather than just a discovery tool</div>
+      <div class="value-item">Expands the addressable user base to users who were not previously searching for their own unit</div>
+      <div class="value-item">Clear competitive differentiation — no equivalent integrated feature exists on Apartments.com, Trulia, or Craigslist</div>
     </div>
   </div>
+</div>
 
-  <!-- SUCCESS METRICS -->
-  <div class="section reveal">
-    <div class="section-label">Success Metrics</div>
-    <h2 class="section-title">How we'd know <em>it's working</em></h2>
-    <p class="body-text">Good PM thinking always ends with measurability. These five metrics would form the core of a RoomMatch launch dashboard — covering activation, engagement, outcome quality, and retention.</p>
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-icon"></div>
-        <div class="metric-label">% of rental searches with RoomMatch enabled</div>
-        <div class="metric-desc">Feature adoption rate — tracks how many users in the target cohort activate RoomMatch during their rental search.</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon"></div>
-        <div class="metric-label">Number of successful roommate matches per month</div>
-        <div class="metric-desc">Core outcome metric — a "match" defined as mutual connection request + in-app message exchange.</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon">⏱️</div>
-        <div class="metric-label">Average time to find a match</div>
-        <div class="metric-desc">Quality of the matching algorithm — shorter time-to-match indicates better preference alignment and UX efficiency.</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon"></div>
-        <div class="metric-label">User retention rate among RoomMatch users</div>
-        <div class="metric-desc">Retention lift — do users who engage with RoomMatch continue to use Zillow after finding a roommate?</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon"></div>
-        <div class="metric-label">% increase in new users via RoomMatch</div>
-        <div class="metric-desc">Growth metric — tracks whether RoomMatch attracts new users to Zillow who were previously using competing platforms for roommate discovery.</div>
-      </div>
-      <div class="metric-card" style="background:var(--amber-light);border:1px solid var(--amber);">
-        <div class="metric-icon"></div>
-        <div class="metric-label">North Star: Listings saved + RoomMatch match in same session</div>
-        <div class="metric-desc">The single metric that captures RoomMatch's core value — a user who finds both a property and a potential roommate without leaving Zillow.</div>
-      </div>
-    </div>
+<div class="section reveal">
+  <div class="section-label">Success Metrics</div>
+  <h2 class="section-title">How we would measure <em>success</em></h2>
+  <div class="metrics-grid">
+    <div class="metric-card"><div class="metric-num">Metric 01 — Activation</div><div class="metric-title">% of rental searches with RoomMatch enabled</div><div class="metric-desc">Feature adoption rate — tracks how many users in the target cohort activate RoomMatch during an active rental search session.</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 02 — Outcome</div><div class="metric-title">Number of successful roommate matches per month</div><div class="metric-desc">A match is defined as a mutual connection request followed by at least one in-app message exchange between the two users.</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 03 — Quality</div><div class="metric-title">Average time to find a match</div><div class="metric-desc">Tracks matching algorithm quality. Shorter time-to-match indicates better preference alignment and reduced search friction for users.</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 04 — Retention</div><div class="metric-title">User retention rate among RoomMatch users</div><div class="metric-desc">Measures whether users who engage with RoomMatch continue using Zillow after finding a roommate — the long-term platform stickiness signal.</div></div>
+    <div class="metric-card"><div class="metric-num">Metric 05 — Growth</div><div class="metric-title">% increase in new users via RoomMatch</div><div class="metric-desc">Tracks whether RoomMatch attracts net-new users to Zillow who were previously using competing platforms for roommate discovery.</div></div>
+    <div class="metric-card ns"><div class="metric-num">North Star Metric</div><div class="metric-title">Users who save a listing and achieve a RoomMatch connection in the same session</div><div class="metric-desc">The single metric that captures RoomMatch's core value proposition — a user who finds both a property and a potential roommate without leaving Zillow. This is the behaviour that proves the feature is working as intended.</div></div>
   </div>
+</div>
 
-  <!-- REFLECTION -->
-  <div class="section reveal">
-    <div class="section-label">Reflection</div>
-    <h2 class="section-title">What this project <em>demonstrates</em></h2>
-    <p class="body-text">This teardown started from a simple observation: Zillow is excellent at helping people find where to live, but it completely ignores the question of who to live with — even though those two decisions are often made simultaneously, especially for students and young professionals on a budget.</p>
-    <p class="body-text">The RoomMatch proposal emerged directly from the SWOT analysis rather than being a pre-formed idea. Identifying the absence of a roommate finder as the most structurally addressable weakness — and cross-referencing it with the opportunity space for an integrated platform — is where the feature idea came from. The personas then grounded the proposal in specific, realistic user behaviour rather than an abstract user need.</p>
-    <div class="reflection-block">
-      <div class="reflection-quote">"The best feature proposals don't solve hypothetical problems — they solve the friction that users are already working around. Zillow's users don't stop needing a roommate just because Zillow doesn't offer one. They just go to Craigslist."</div>
-      <div class="reflection-attr">Ann Mary Kurian · Product Strategy</div>
-    </div>
+<div class="section reveal">
+  <div class="section-label">Reflection</div>
+  <h2 class="section-title">What the analysis <em>reveals</em></h2>
+  <p class="body-text">This teardown started from a straightforward observation: Zillow is highly effective at helping people find where to live, but the platform stops short of the complete problem. For students and young professionals, the decision of where to live and who to live with are not separate — they are made simultaneously, constrained by the same budget. Zillow solves only half of it.</p>
+  <p class="body-text">The RoomMatch proposal emerged directly from the SWOT analysis rather than being a preconceived idea. Identifying the absence of a roommate finder as the most structurally significant and competitively addressable weakness — and cross-referencing it with the opportunity space for integrated platform features — is where the feature concept originated. The personas then grounded the proposal in specific, realistic user behaviour, ensuring the feature was designed around a real cohort rather than an abstract need.</p>
+  <div class="reflection-block">
+    <div class="reflection-quote">"The best feature proposals do not solve hypothetical problems — they solve the friction that users are already working around. Zillow's users do not stop needing a roommate just because Zillow does not offer one. They go to Craigslist instead."</div>
+    <div class="reflection-attr">Ann Mary Kurian · Product Strategy</div>
   </div>
+</div>
 
-  <div class="cta-row reveal">
-    <a href="https://ann-kurian.github.io" class="btn-primary">← Back to Portfolio</a>
-  </div>
+<div class="cta-row reveal">
+  <a href="https://ann-kurian.github.io" class="btn-primary">Back to Portfolio</a>
+</div>
 
 </div>
 
 <script>
-  // SCROLL REVEAL
-  const obs = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
-  },{threshold:0.07});
-  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+let cur = 0;
+const N = 6;
+const lines = ['l01','l12','l23','l34','l45'];
+const anns  = ['a0','a1','a2','a3','a4','a5'];
 
-  // PROTOTYPE NAVIGATION
-  const screens = ['home','matches','setup','detail'];
-  const annotations = [
-    document.getElementById('ann-0'),
-    document.getElementById('ann-1'),
-    document.getElementById('ann-2'),
-    document.getElementById('ann-3'),
-  ];
-
-  function showProtoScreen(id, idx) {
-    // Hide all screens
-    screens.forEach(s => {
-      const el = document.getElementById('proto-' + s);
-      if(el) { el.classList.remove('active'); }
-    });
-    // Show target
-    const target = document.getElementById('proto-' + id);
-    if(target) { target.classList.add('active'); }
-
-    // Update tabs
-    document.querySelectorAll('.screen-tab').forEach((tab, i) => {
-      tab.classList.toggle('active', i === idx);
-    });
-
-    // Update annotations
-    annotations.forEach((ann, i) => {
-      if(!ann) return;
-      ann.style.display = i === idx ? 'block' : 'none';
-      ann.classList.toggle('highlight', i === idx);
-    });
+function goTo(idx){
+  if(idx<0||idx>=N) return;
+  for(let i=0;i<N;i++){
+    const s=document.getElementById('s'+i);
+    if(s) s.classList.toggle('active',i===idx);
+    const ann=document.getElementById('a'+i);
+    if(ann){ ann.style.display=i===idx?'block':'none'; ann.classList.toggle('hl',i===idx); }
   }
-
-  // Chip toggle for setup screen
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => chip.classList.toggle('selected'));
+  const btns=document.querySelectorAll('.step-btn');
+  btns.forEach((b,i)=>{
+    b.classList.remove('active','done');
+    const dot=b.querySelector('.step-dot');
+    if(i<idx){ b.classList.add('done'); if(dot) dot.innerHTML='<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'; }
+    else{ if(dot) dot.textContent=i+1; }
+    if(i===idx) b.classList.add('active');
   });
+  lines.forEach((lid,i)=>{ const el=document.getElementById(lid); if(el) el.classList.toggle('done',i<idx); });
+  document.getElementById('prevBtn').disabled=idx===0;
+  document.getElementById('nextBtn').disabled=idx===N-1;
+  document.getElementById('scCount').textContent='Screen '+(idx+1)+' of '+N;
+  cur=idx;
+}
+
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('on')));
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+goTo(0);
 </script>
 </body>
 </html>
