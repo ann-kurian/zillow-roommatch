@@ -824,8 +824,7 @@ function renderMatches() {
 // ── SELECT CANDIDATE + RENDER DETAIL/MESSAGING ─
 function selectCandidate(id) {
   selectedCandidateId = id;
-  renderDetail();
-  pgo(4);
+  pgo(4); // pgo(4) calls renderDetail() automatically
 }
 
 function renderDetail() {
@@ -930,10 +929,12 @@ let pCur = 0, splitPct = 50;
 
 function pgo(idx) {
   if (idx === pCur) return;
-  // Re-render matches every time Screen 3 is visited, picking up latest profile chips
+  // Re-render matches every time Screen 3 is visited
   if (idx === 3) renderMatches();
-  // Re-render messaging when navigating to screen 5 directly from detail
-  if (idx === 5 && pCur === 4) renderMessaging();
+  // Re-render detail whenever Screen 4 is visited
+  if (idx === 4) renderDetail();
+  // Re-render messaging whenever Screen 5 is visited
+  if (idx === 5) { renderMessaging(); }
   document.getElementById('ps' + pCur).classList.remove('on');
   document.getElementById('ps' + idx).classList.add('on');
 
@@ -961,16 +962,27 @@ function pgo(idx) {
 /* ── CALCULATOR ─────────────────────────────── */
 function setSplit(pct) {
   splitPct = pct;
-  ['50','60','70'].forEach(p => document.getElementById('sb'+p).classList.remove('on'));
-  document.getElementById('sb' + pct).classList.add('on');
+  // Update whichever split buttons are currently in the DOM
+  ['50','60','70'].forEach(p => {
+    const el = document.getElementById('sb'+p);
+    if (el) el.classList.toggle('on', parseInt(p) === pct);
+  });
   calcUpdate();
 }
 
 function calcUpdate() {
-  const rent  = parseFloat(document.getElementById('rentInp')?.value)  || 2800;
-  const utils = parseFloat(document.getElementById('utilInp')?.value)  || 120;
-  const bgt   = parseFloat(document.getElementById('budgetInp')?.value) || 1400;
+  const rentEl  = document.getElementById('rentInp');
+  const utilEl  = document.getElementById('utilInp');
+  const bgtEl   = document.getElementById('budgetInp');
+  if (!rentEl) return; // detail screen not yet rendered
+
+  const rent  = parseFloat(rentEl.value)  || 2800;
+  const utils = parseFloat(utilEl.value)  || 120;
+  const bgt   = parseFloat(bgtEl?.value)  || 1400;
   const share = Math.round((rent + utils) * (splitPct / 100));
+
+  const c = CANDIDATES.find(x => x.id === selectedCandidateId);
+  const firstName = c ? c.name.split(' ')[0] : 'Their';
 
   const sd = document.getElementById('shareDisp');
   if (sd) sd.innerHTML = '$' + share.toLocaleString() + '<span>/mo</span>';
@@ -978,11 +990,12 @@ function calcUpdate() {
   const note = document.getElementById('calcNote');
   if (note) {
     const diff = share - bgt;
-    if (diff <= 0)        { note.textContent = 'Budget covers this split comfortably.'; note.className = 'p-calcnote'; }
-    else if (diff <= 150) { note.textContent = 'Budget is $' + diff + ' below this split. Within negotiation range.'; note.className = 'p-calcnote warn'; }
-    else                  { note.textContent = 'Budget gap is $' + diff + '. Try a different split or listing.'; note.className = 'p-calcnote warn'; }
+    if (diff <= 0)        { note.textContent = `${firstName}'s budget covers this split comfortably.`; note.className = 'p-calcnote'; }
+    else if (diff <= 150) { note.textContent = `${firstName}'s budget is $${diff} below this split. Within negotiation range.`; note.className = 'p-calcnote warn'; }
+    else                  { note.textContent = `Budget gap is $${diff}. Try a different split or listing.`; note.className = 'p-calcnote warn'; }
   }
 
+  // Sync to messaging bubble if already rendered
   if (document.getElementById('cbTotal')) document.getElementById('cbTotal').textContent = '$' + rent.toLocaleString() + '/mo';
   if (document.getElementById('cbUtils')) document.getElementById('cbUtils').textContent = '$' + utils.toLocaleString() + '/mo';
   if (document.getElementById('cbShare')) document.getElementById('cbShare').textContent = '$' + share.toLocaleString() + '/mo';
@@ -1017,10 +1030,11 @@ function sendMsg() {
   }, 1100);
 }
 
-// Initialise
-renderMatches();
-renderDetail();
-calcUpdate();
+// Initialise after DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  renderMatches();
+  calcUpdate();
+});
 </script>
 </body>
 </html>
