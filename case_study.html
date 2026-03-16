@@ -436,21 +436,429 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
 <div class="section reveal">
   <div class="section-label">Interactive MVP Prototype · San Francisco</div>
   <h2 class="section-title">RoomMatch — <em>try it live</em></h2>
-  <p class="body-text">The prototype below is fully interactive — navigate all six screens, toggle preferences, edit the split rent calculator in real time, and send messages in the chat. Click directly on the phone screen or use the sidebar flow tracker to explore the complete RoomMatch user journey.</p>
-  <div class="proto-embed-wrap">
-    <iframe
-      src="prototype.html"
-      class="proto-embed"
-      title="RoomMatch Interactive Prototype"
-      scrolling="no"
-      frameborder="0"
-      allowtransparency="true">
-    </iframe>
-    <div class="proto-embed-note">
-      Interactive prototype — all inputs, chips, calculator and messaging are live.
-      <a href="prototype.html" target="_blank" class="proto-fullscreen-link">Open full screen</a>
+  <p class="body-text">The prototype below is fully interactive — navigate all six screens, toggle lifestyle preferences, edit the split rent calculator in real time, and send messages in the live chat. Click any element on the phone screen to progress through the user journey.</p>
+  <div style="margin-top:32px;border-radius:16px;overflow:hidden;border:1px solid #1E2535;background:#0A0D14;box-shadow:0 24px 48px rgba(0,0,0,0.2);">
+    <div class="proto-root">
+<div class="bg"></div>
+
+<div class="proto-label">
+  <div class="proto-live-dot"></div>
+  <span class="proto-label-text">RoomMatch · Zillow SF · Interactive Prototype</span>
+</div>
+
+<div class="page">
+  <div class="device-wrap">
+
+    <!-- ── PHONE ─────────────────────────────── -->
+    <div class="device">
+      <div class="device-pill"></div>
+      <div class="device-screen" id="deviceScreen">
+
+        <!-- SCREEN 0: ZILLOW HOME ──────────────── -->
+        <div class="screen active" id="s0">
+          <div class="status">
+            <span class="status-time">9:41</span>
+            <span class="status-icons">LTE ▮▮▮ 100%</span>
+          </div>
+          <div class="topbar">
+            <div class="logo">Z<span>illow</span></div>
+            <div class="ava">AM</div>
+          </div>
+          <div class="search-wrap">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="search-text">San Francisco, CA</span>
+            <div class="search-chip">Filters</div>
+          </div>
+          <div class="rm-banner" onclick="go(1)">
+            <div class="rm-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <div class="rm-title">New: RoomMatch</div>
+              <div class="rm-sub">Find your SF roommate — right here</div>
+            </div>
+            <div class="rm-arr">&#8250;</div>
+          </div>
+          <div class="listing">
+            <div class="listing-img">
+              <div class="listing-img-bg" style="background:linear-gradient(135deg,#0D2240,#1A3D6E)"></div>
+              <div class="listing-grad"></div>
+              <div class="listing-badge">FOR RENT</div>
+              <div class="listing-save"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+            </div>
+            <div class="listing-body">
+              <div class="listing-price">$2,800<span>/mo</span></div>
+              <div class="listing-addr">1842 Fillmore St, Marina District, SF</div>
+              <div class="listing-chips">
+                <span class="lchip">2 bed</span><span class="lchip">1 bath</span><span class="lchip">850 sqft</span><span class="lchip">BART 0.4mi</span>
+              </div>
+            </div>
+          </div>
+          <div class="listing">
+            <div class="listing-body">
+              <div class="listing-price">$3,650<span>/mo</span></div>
+              <div class="listing-addr">490 Post St, Nob Hill, SF</div>
+              <div class="listing-chips">
+                <span class="lchip">3 bed</span><span class="lchip">2 bath</span><span class="lchip">Caltrain 0.6mi</span>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item active" onclick="go(0)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#006AFF" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="nav-label" style="color:#006AFF">Search</span>
+            </div>
+            <div class="nav-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span class="nav-label">Saved</span>
+            </div>
+            <div class="nav-item" onclick="go(1)" style="position:relative">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <div class="nav-dot"></div>
+              <span class="nav-label" style="color:#7AB0FF">RoomMatch</span>
+            </div>
+            <div class="nav-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span class="nav-label">Profile</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 1: ENABLE ───────────────────── -->
+        <div class="screen" id="s1">
+          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
+          <div class="topbar">
+            <div class="back-btn" onclick="go(0)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <span style="font-size:15px;font-weight:700;color:#E8EDF5">RoomMatch</span>
+            <div style="width:32px"></div>
+          </div>
+          <div style="flex:1;overflow-y:auto">
+            <div class="enable-hero">
+              <div class="enable-big-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="enable-title">Find Your SF Roommate</div>
+              <div class="enable-desc">Match with compatible renters searching in the same SF neighbourhoods. Budget-first, commute-aware, lifestyle-matched.</div>
+            </div>
+            <div class="perk-list">
+              <div class="perk">
+                <div class="perk-icon" style="background:rgba(0,196,140,0.15)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C48C" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div><div class="perk-title">Budget-first matching</div><div class="perk-sub">Matched on split rent, neighbourhood, commute</div></div>
+              </div>
+              <div class="perk">
+                <div class="perk-icon" style="background:rgba(0,106,255,0.15)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div><div class="perk-title">In-app messaging</div><div class="perk-sub">Connect without sharing personal details</div></div>
+              </div>
+              <div class="perk">
+                <div class="perk-icon" style="background:rgba(0,196,140,0.15)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C48C" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                <div><div class="perk-title">Split rent calculator</div><div class="perk-sub">See your real share before you commit</div></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:0 0 16px"><button class="btn-primary" onclick="go(2)">Enable RoomMatch</button></div>
+          <div class="bottom-nav">
+            <div class="nav-item" onclick="go(0)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="nav-label">Search</span></div>
+            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="nav-label">Saved</span></div>
+            <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-label" style="color:#7AB0FF">RoomMatch</span></div>
+            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Profile</span></div>
+          </div>
+        </div>
+
+        <!-- SCREEN 2: PROFILE SETUP ────────────── -->
+        <div class="screen" id="s2">
+          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
+          <div class="prog-bar-wrap">
+            <div class="back-btn" onclick="go(1)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <div class="prog-bars"><div class="pbar done"></div><div class="pbar done"></div><div class="pbar cur"></div></div>
+            <span class="prog-pct">Step 2/3</span>
+          </div>
+          <div class="setup-body">
+            <div class="setup-subtitle">Set up your profile</div>
+            <div class="setup-title">Your SF Preferences</div>
+            <div class="field">
+              <div class="field-label">Monthly Budget (my share)</div>
+              <div class="field-val">
+                <input type="number" id="budgetInput" value="1400" min="500" max="5000" step="50" oninput="updateCalc()">
+                <span class="field-hint">/month</span>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Move-in Date</div>
+              <div class="field-val">
+                <input type="month" id="moveInInput" value="2025-08" style="font-size:14px;font-weight:600;color:#7AB0FF;background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;width:100%">
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">SF Neighbourhood</div>
+              <div class="chips-wrap">
+                <div class="chip on" onclick="this.classList.toggle('on')">Marina</div>
+                <div class="chip on" onclick="this.classList.toggle('on')">Nob Hill</div>
+                <div class="chip" onclick="this.classList.toggle('on')">Mission</div>
+                <div class="chip" onclick="this.classList.toggle('on')">SOMA</div>
+                <div class="chip" onclick="this.classList.toggle('on')">Hayes Valley</div>
+                <div class="chip" onclick="this.classList.toggle('on')">Richmond</div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Commute</div>
+              <div class="chips-wrap">
+                <div class="chip on" onclick="this.classList.toggle('on')">Near BART</div>
+                <div class="chip" onclick="this.classList.toggle('on')">Near Caltrain</div>
+                <div class="chip" onclick="this.classList.toggle('on')">WFH friendly</div>
+                <div class="chip" onclick="this.classList.toggle('on')">Bike-friendly</div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">Lifestyle</div>
+              <div class="chips-wrap">
+                <div class="chip on" onclick="this.classList.toggle('on')">Early riser</div>
+                <div class="chip on" onclick="this.classList.toggle('on')">Non-smoker</div>
+                <div class="chip" onclick="this.classList.toggle('on')">Night owl</div>
+                <div class="chip on" onclick="this.classList.toggle('on')">Quiet hours</div>
+                <div class="chip" onclick="this.classList.toggle('on')">Social</div>
+                <div class="chip" onclick="this.classList.toggle('on')">Pet friendly</div>
+              </div>
+            </div>
+          </div>
+          <div class="setup-cta"><button class="btn-primary" onclick="go(3)">Find My Matches</button></div>
+        </div>
+
+        <!-- SCREEN 3: MATCHES ──────────────────── -->
+        <div class="screen" id="s3">
+          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
+          <div class="matches-top">
+            <div class="matches-title">Your Matches</div>
+            <div class="matches-filter">Marina · Nob Hill</div>
+          </div>
+          <div class="ctx-pill">3 matches near your SF search areas</div>
+          <div class="matches-scroll">
+            <div class="match-card" onclick="go(4)">
+              <div class="match-card-top">
+                <div class="match-ava" style="background:linear-gradient(135deg,#667EEA,#764BA2)">AC</div>
+                <div>
+                  <div class="match-name">Avery Chen</div>
+                  <div class="match-role">Grad Student · USF · Marina</div>
+                </div>
+                <div class="match-score"><div class="match-pct">94%</div><div class="match-pct-label">match</div></div>
+              </div>
+              <div class="match-divider"></div>
+              <div class="match-bottom">
+                <div class="match-tags"><span class="mtag">Early riser</span><span class="mtag">$1,400/mo</span><span class="mtag">BART</span></div>
+                <div class="match-actions"><button class="btn-pass" onclick="event.stopPropagation()">Pass</button><button class="btn-connect" onclick="event.stopPropagation();go(4)">Connect</button></div>
+              </div>
+            </div>
+            <div class="match-card">
+              <div class="match-card-top">
+                <div class="match-ava" style="background:linear-gradient(135deg,#11998e,#38ef7d)">JL</div>
+                <div><div class="match-name">Jordan Lee</div><div class="match-role">Engineer · Salesforce · SOMA</div></div>
+                <div class="match-score"><div class="match-pct">87%</div><div class="match-pct-label">match</div></div>
+              </div>
+              <div class="match-divider"></div>
+              <div class="match-bottom">
+                <div class="match-tags"><span class="mtag">WFH</span><span class="mtag">$1,500/mo</span><span class="mtag">Caltrain</span></div>
+                <div class="match-actions"><button class="btn-pass">Pass</button><button class="btn-connect">Connect</button></div>
+              </div>
+            </div>
+            <div class="match-card">
+              <div class="match-card-top">
+                <div class="match-ava" style="background:linear-gradient(135deg,#f7971e,#ffd200)">MK</div>
+                <div><div class="match-name">Maya Krishnan</div><div class="match-role">Designer · Airbnb · Mission</div></div>
+                <div class="match-score"><div class="match-pct">82%</div><div class="match-pct-label">match</div></div>
+              </div>
+              <div class="match-divider"></div>
+              <div class="match-bottom">
+                <div class="match-tags"><span class="mtag">Non-smoker</span><span class="mtag">$1,300/mo</span><span class="mtag">BART 0.2mi</span></div>
+                <div class="match-actions"><button class="btn-pass">Pass</button><button class="btn-connect">Connect</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item" onclick="go(0)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="nav-label">Search</span></div>
+            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="nav-label">Saved</span></div>
+            <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-label" style="color:#7AB0FF">RoomMatch</span></div>
+            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Profile</span></div>
+          </div>
+        </div>
+
+        <!-- SCREEN 4: MATCH DETAIL + CALCULATOR ── -->
+        <div class="screen" id="s4">
+          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
+          <div class="topbar">
+            <div class="back-btn" onclick="go(3)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <span style="font-size:15px;font-weight:700;color:#E8EDF5">Roommate Profile</span>
+            <div style="width:32px"></div>
+          </div>
+          <div class="detail-scroll">
+            <div class="detail-ava-wrap"><div class="detail-ava" style="background:linear-gradient(135deg,#667EEA,#764BA2)">AC</div></div>
+            <div class="detail-name">Avery Chen</div>
+            <div class="detail-role">Graduate Student · USF — Incoming Fall 2025 · Marina</div>
+            <div class="scores-row">
+              <div class="score-card"><div class="score-val" style="color:#00C48C">94%</div><div class="score-lbl">Match</div></div>
+              <div class="score-card"><div class="score-val" style="color:#7AB0FF" id="avery-budget-display">$1,400</div><div class="score-lbl">Budget/mo</div></div>
+              <div class="score-card"><div class="score-val" style="color:#F5A623">Aug</div><div class="score-lbl">Move-in</div></div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-sec-label">Lifestyle & Commute</div>
+              <div class="detail-tags"><span class="dtag">Early riser</span><span class="dtag">Non-smoker</span><span class="dtag">Near BART</span><span class="dtag">No pets</span><span class="dtag">Quiet hours</span></div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-sec-label">About Avery</div>
+              <div class="detail-about">Moving from Seattle for my graduate programme at USF. Looking for a quiet, reliable housemate in the Marina or Nob Hill. Happy to split groceries and household chores.</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-sec-label">Also Saved in Marina</div>
+            </div>
+            <div class="saved-listing">
+              <div class="saved-listing-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+              <div><div class="saved-addr">1842 Fillmore St, Marina SF</div><div class="saved-sub">$2,800/mo · 2 bed · 1 bath</div></div>
+            </div>
+
+            <!-- LIVE SPLIT RENT CALCULATOR -->
+            <div class="calc-card">
+              <div class="calc-header">
+                <div class="calc-title">Split Rent Calculator</div>
+                <div class="calc-badge">Live</div>
+              </div>
+              <div class="calc-input-row">
+                <div class="calc-input-wrap">
+                  <div class="calc-input-label">Total Rent</div>
+                  <input class="calc-input" type="number" id="totalRent" value="2800" oninput="updateCalc()" placeholder="2800">
+                </div>
+                <div class="calc-input-wrap">
+                  <div class="calc-input-label">Utilities</div>
+                  <input class="calc-input" type="number" id="utilities" value="120" oninput="updateCalc()" placeholder="120">
+                </div>
+              </div>
+              <div class="calc-input-label" style="margin-bottom:6px">Split</div>
+              <div class="calc-split-btns">
+                <button class="split-btn active" id="split50" onclick="setSplit(50,50)">50 / 50</button>
+                <button class="split-btn" id="split6040" onclick="setSplit(60,40)">60 / 40</button>
+                <button class="split-btn" id="split7030" onclick="setSplit(70,30)">70 / 30</button>
+              </div>
+              <div class="calc-divider"></div>
+              <div class="calc-result-row">
+                <div class="calc-result-lbl">Your share</div>
+                <div class="calc-result-val" id="myShare">$1,460<span>/mo</span></div>
+              </div>
+              <div class="calc-note" id="calcNote">Avery's budget is $1,400/mo — $60 below this split. Within negotiation range.</div>
+            </div>
+
+            <div class="detail-ctas">
+              <button class="btn-msg" onclick="go(5)">Send Message</button>
+              <button class="btn-save">Save</button>
+            </div>
+          </div>
+          <div class="bottom-nav" style="position:relative">
+            <div class="nav-item" onclick="go(0)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="nav-label">Search</span></div>
+            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="nav-label">Saved</span></div>
+            <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB0FF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-label" style="color:#7AB0FF">RoomMatch</span></div>
+            <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8892A4" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Profile</span></div>
+          </div>
+        </div>
+
+        <!-- SCREEN 5: MESSAGING ─────────────────── -->
+        <div class="screen" id="s5">
+          <div class="status"><span class="status-time">9:41</span><span class="status-icons">LTE ▮▮▮ 100%</span></div>
+          <div class="msg-topbar">
+            <div class="back-btn" onclick="go(4)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8EDF5" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <div class="msg-ava">AC</div>
+            <div><div class="msg-name">Avery Chen</div><div class="msg-status">Active now</div></div>
+          </div>
+          <div class="msg-area" id="msgArea">
+            <div class="msg-time">Today 9:30 AM</div>
+            <div class="bubble them">Hi! I saw we matched. I am looking at places in the Marina. Have you seen anything near Fillmore?</div>
+            <div class="bubble me">Hey Avery! Yes — I saved this 2-bed on Fillmore. Right in the Marina and BART is close.</div>
+            <div class="msg-listing-card">
+              <div class="msg-listing-thumb"></div>
+              <div><div class="msg-listing-addr">1842 Fillmore St, Marina SF</div><div class="msg-listing-price">$2,800/mo · 2 bed · 1 bath</div></div>
+            </div>
+            <div class="bubble them">That looks great. I checked the split — comes to about $1,460 each. I can stretch a little on my budget.</div>
+            <div class="calc-bubble" id="calcBubble">
+              <div class="calc-bubble-title">Split Rent — 1842 Fillmore St</div>
+              <div class="calc-bubble-row"><span class="calc-bubble-lbl">Total rent</span><span class="calc-bubble-val" id="cbTotal">$2,800/mo</span></div>
+              <div class="calc-bubble-row"><span class="calc-bubble-lbl">Utilities</span><span class="calc-bubble-val" id="cbUtils">$120/mo</span></div>
+              <div class="calc-bubble-total"><span class="calc-bubble-total-lbl">Your share (50/50)</span><span class="calc-bubble-total-val" id="cbShare">$1,460/mo</span></div>
+            </div>
+            <div class="bubble me">Let us request a joint viewing. I will message the agent now.</div>
+            <div class="msg-time" style="align-self:flex-end">Delivered</div>
+          </div>
+          <div class="msg-input-bar">
+            <input class="msg-input" id="msgInput" placeholder="Type a message..." onkeydown="sendMsg(event)">
+            <button class="msg-send" onclick="sendMsgBtn()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SIDEBAR ───────────────────────────── -->
+    <div class="sidebar">
+      <div class="sidebar-title">User Journey</div>
+      <div class="flow-card">
+        <div class="flow-steps-list" id="flowList">
+          <div class="flow-step-item active" onclick="go(0)">
+            <div class="step-circle">1</div>
+            <div class="step-info">
+              <div class="step-name">Discovery</div>
+              <div class="step-desc">RoomMatch banner appears contextually inside Zillow's SF rental search — no new app needed.</div>
+            </div>
+          </div>
+          <div class="flow-step-item" onclick="go(1)">
+            <div class="step-circle">2</div>
+            <div class="step-info">
+              <div class="step-name">Enable</div>
+              <div class="step-desc">Clear opt-in with three specific benefits. Users know exactly what they are signing up for.</div>
+            </div>
+          </div>
+          <div class="flow-step-item" onclick="go(2)">
+            <div class="step-circle">3</div>
+            <div class="step-info">
+              <div class="step-name">Profile Setup</div>
+              <div class="step-desc">Budget input, SF neighbourhoods, BART/Caltrain commute tags, lifestyle chips. Under 90 seconds.</div>
+            </div>
+          </div>
+          <div class="flow-step-item" onclick="go(3)">
+            <div class="step-circle">4</div>
+            <div class="step-info">
+              <div class="step-name">Matches Feed</div>
+              <div class="step-desc">Ranked by compatibility. Budget, commute, and lifestyle visible at a glance.</div>
+            </div>
+          </div>
+          <div class="flow-step-item" onclick="go(4)">
+            <div class="step-circle">5</div>
+            <div class="step-info">
+              <div class="step-name">Detail + Calculator</div>
+              <div class="step-desc">Full profile + live split rent calculator. Change rent, utilities, and split ratio in real time.</div>
+            </div>
+          </div>
+          <div class="flow-step-item" onclick="go(5)">
+            <div class="step-circle">6</div>
+            <div class="step-info">
+              <div class="step-name">Messaging</div>
+              <div class="step-desc">In-app chat with listing cards and split rent summary shareable. Type and send your own messages.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DYNAMIC ANNOTATION -->
+      <div class="ann-card hl" id="annotation">
+        <div class="ann-num" id="annNum">1</div>
+        <div class="ann-title" id="annTitle">Contextual Discovery</div>
+        <div class="ann-desc" id="annDesc">RoomMatch is introduced as a banner inside Zillow's existing SF search flow — not a separate app. The feature appears naturally when a user is already browsing rentals, dramatically lowering the activation barrier.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+    </div>
+    <div style="background:#0D1117;padding:10px 20px;border-top:1px solid #2D3A52;font-family:'DM Mono',monospace;font-size:11px;color:#8892A4;display:flex;align-items:center;justify-content:space-between;">
+      <span>Interactive prototype — all inputs, calculator, and messaging are live</span>
+      <a href="prototype.html" target="_blank" style="color:#7AB0FF;text-decoration:none;font-weight:500;">Open full screen</a>
     </div>
   </div>
+</div>
+</div>
 </div>
 </div>
 
@@ -507,6 +915,143 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:fl
 </div>
 
 </div>
+
+<script>
+const ANNOTATIONS = [
+  { title: "Contextual Discovery", desc: "RoomMatch is introduced as a banner inside Zillow's existing SF search flow — not a separate app. The feature appears naturally when a user is already browsing rentals, dramatically lowering the activation barrier." },
+  { title: "SF-first Value Framing", desc: "The enable screen leads with 'San Francisco' and references real neighbourhoods. The split rent calculator is foregrounded because in SF's market, cost-splitting is the primary driver — not a secondary feature." },
+  { title: "Real SF Context", desc: "Profile setup uses actual SF neighbourhoods (Marina, Nob Hill, Mission, SOMA, Hayes Valley) and commute tags (Near BART, Near Caltrain). These reflect how SF renters think about location trade-offs. All inputs are live and interactive." },
+  { title: "Budget + Commute Visible", desc: "Each match card shows monthly budget share and a commute tag prominently. In SF's market these two factors dominate the decision — a $1,300/mo share near BART in the Mission looks very different from $1,800/mo in the Marina." },
+  { title: "Live Split Rent Calculator", desc: "Edit total rent, utilities, and split ratio in real time. The calculator flags when a match's stated budget is close but misaligned — giving users the information to decide whether the gap is negotiable before messaging." },
+  { title: "Working Messenger", desc: "Type and send your own messages. The chat thread includes a shareable listing card and a split rent summary — so both parties are looking at the same numbers when coordinating a joint viewing." }
+];
+
+let cur = 0;
+let splitA = 50, splitB = 50;
+
+function go(idx) {
+  const screens = document.querySelectorAll('.screen');
+  const prev = document.getElementById('s' + cur);
+  const next = document.getElementById('s' + idx);
+  if (!next || idx === cur) return;
+
+  prev.classList.add('slide-out');
+  next.classList.add('active');
+
+  setTimeout(() => {
+    prev.classList.remove('active', 'slide-out');
+  }, 320);
+
+  // Update flow list
+  const steps = document.querySelectorAll('.flow-step-item');
+  steps.forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if (i < idx) s.classList.add('done');
+    else if (i === idx) s.classList.add('active');
+    const circle = s.querySelector('.step-circle');
+    if (i < idx) circle.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    else circle.textContent = i + 1;
+  });
+
+  // Update annotation
+  const ann = ANNOTATIONS[idx];
+  document.getElementById('annNum').textContent = idx + 1;
+  document.getElementById('annTitle').textContent = ann.title;
+  document.getElementById('annDesc').textContent = ann.desc;
+
+  cur = idx;
+
+  // Scroll msg area to bottom on screen 5
+  if (idx === 5) {
+    setTimeout(() => {
+      const area = document.getElementById('msgArea');
+      if (area) area.scrollTop = area.scrollHeight;
+    }, 350);
+  }
+}
+
+// ── SPLIT RENT CALCULATOR ──────────────────────
+function setSplit(a, b) {
+  splitA = a; splitB = b;
+  document.querySelectorAll('.split-btn').forEach(btn => btn.classList.remove('active'));
+  if (a === 50) document.getElementById('split50').classList.add('active');
+  else if (a === 60) document.getElementById('split6040').classList.add('active');
+  else if (a === 70) document.getElementById('split7030').classList.add('active');
+  updateCalc();
+}
+
+function updateCalc() {
+  const rent = parseFloat(document.getElementById('totalRent')?.value) || 2800;
+  const utils = parseFloat(document.getElementById('utilities')?.value) || 120;
+    const userBudget = parseFloat(document.getElementById('budgetInput')?.value) || 1400;
+  const averyBudget = 1400;
+  const total = rent + utils;
+  const myShare = Math.round(total * (splitA / 100));
+
+  // Update display
+  const shareEl = document.getElementById('myShare');
+  if (shareEl) shareEl.innerHTML = '$' + myShare.toLocaleString() + '<span>/mo</span>';
+
+  const noteEl = document.getElementById('calcNote');
+  if (noteEl) {
+    const diff = myShare - averyBudget;
+    if (diff <= 0) {
+      noteEl.textContent = "Avery's budget of $" + averyBudget.toLocaleString() + "/mo covers this split comfortably.";
+      noteEl.className = 'calc-note';
+    } else if (diff <= 150) {
+      noteEl.textContent = "Avery's budget is $" + averyBudget.toLocaleString() + "/mo — $" + diff + " below this split. Within negotiation range.";
+      noteEl.className = 'calc-note warn';
+    } else {
+      noteEl.textContent = "Avery's budget is $" + diff + " below this split. Consider a different ratio or listing.";
+      noteEl.className = 'calc-note warn';
+    }
+  }
+
+  // Sync to message screen bubble
+  const cbTotal = document.getElementById('cbTotal');
+  const cbUtils = document.getElementById('cbUtils');
+  const cbShare = document.getElementById('cbShare');
+  if (cbTotal) cbTotal.textContent = '$' + rent.toLocaleString() + '/mo';
+  if (cbUtils) cbUtils.textContent = '$' + utils.toLocaleString() + '/mo';
+  if (cbShare) cbShare.textContent = '$' + myShare.toLocaleString() + '/mo';
+}
+
+// ── MESSAGING ─────────────────────────────────
+function sendMsg(e) {
+  if (e.key === 'Enter') sendMsgBtn();
+}
+
+function sendMsgBtn() {
+  const input = document.getElementById('msgInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const area = document.getElementById('msgArea');
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble me';
+  bubble.textContent = text;
+  area.appendChild(bubble);
+  input.value = '';
+  area.scrollTop = area.scrollHeight;
+
+  // Auto-reply after short delay
+  setTimeout(() => {
+    const replies = [
+      "That sounds great — when are you free for a viewing?",
+      "I can do Saturday morning. Shall we message the agent together?",
+      "Perfect, let us lock it in. I will share my number when we are ready.",
+      "Have you seen any other listings in the Marina you liked?",
+    ];
+    const reply = document.createElement('div');
+    reply.className = 'bubble them';
+    reply.textContent = replies[Math.floor(Math.random() * replies.length)];
+    area.appendChild(reply);
+    area.scrollTop = area.scrollHeight;
+  }, 1200);
+}
+
+// Init
+updateCalc();
+</script>
 
 <script>
 const obs = new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.07});
